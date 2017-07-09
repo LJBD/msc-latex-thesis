@@ -27,7 +27,7 @@ sorting=none,
 language=autobib,
 autolang=other,
 % Zapisuj datę dostępu do strony WWW w formacie RRRR-MM-DD.
-urldate=iso8601,
+urldate=edtf,
 % Nie dodawaj numerów stron, na których występuje cytowanie.
 backref=false,
 % Podawaj ISBN.
@@ -162,12 +162,20 @@ backend=bibtex
 \tableofcontents
 \clearpage
 
-\include{rozdzial3}
-\include{rozdzial1}
-\include{rozdzial2}
-\include{tests}
+\include{wstep}
+\include{rozdz1model}
+\include{rozdz2czasooptymalny}
+\include{rozdz3lqr}
+\include{rozdz4symulacja}
+\include{rozdz5eksperyment}
+\include{zakonczenie}
+%\include{rozdzial3}
+%\include{rozdzial1}
+%\include{rozdzial2}
+%\include{tests}
 
-
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
 
 % itd.
 % \appendix
