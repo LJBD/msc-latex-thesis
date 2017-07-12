@@ -1,2 +1,26 @@
 \section{Model matematyczny zestawu zbiorników}
 \label{sec:model}
+
+
+\begin{equation}\label{eq:model}
+	\left \{
+	\begin{array}{lr}
+		\frac{\partial h_{1}}{\partial t} = \frac{u - C_{1}\sqrt{h_{1}}}{aw} \\[8pt]
+		\frac{\partial h_{2}}{\partial t} = \frac{C_{1}\sqrt{h_{1}} -  C_{2}\sqrt{h_{2}}}{cw + \frac{h_{2}}{h_{max}}bw} \\[20pt]
+		\frac{\partial h_{3}}{\partial t} = \frac{C_{2}\sqrt{h_{2}} -  C_{3}\sqrt{h_{3}}}{w\sqrt{R^{2} - (R - h_{3})^{2}}}
+	\end{array}
+	\right.
+\end{equation}
+
+Model matematyczny zestawu zbiorników jest dany równaniem \ref{eq:model}, gdzie:
+\begin{itemize}
+	\item $a$ - szerokość pierwszego zbiornika,
+	\item $b$ - szerokość trójkątnej części drugiego zbiornika,
+	\item $c$ - szerokość prostopadłościennej części drugiego zbiornika,
+	\item $R$ - promień trzeciego zbiornika,
+	\item $w$ - głębokość zbiorników,
+	\item $h_{max}$ maksymalna wysokość słupa wody w zbiornikach,
+	\item $C_{1}$ - współczynnik wypływu z pierwszego zbiornika,
+	\item $C_{2}$ - współczynnik wypływu z drugiego zbiornika,
+	\item $C_{3}$ - współczynnik wypływu z trzeciego zbiornika.
+\end{itemize}
