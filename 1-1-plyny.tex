@@ -1,10 +1,35 @@
 \section{Wprowadzenie z zakresu dynamiki płynów}
 \label{sec:plyny}
 
+W niniejszym podrozdziale zostaną przypomniane podstawowe prawa fizyki związane w przepływem cieczy oraz jego związkiem z jej poziomem w zbiorniku.
 
 %-------------------------------------------------
-\subsection{Prawo Torricellego}
+\subsection{Równanie Bernoulliego i prawo Torricellego}
 \label{sub:plyny-torr}
+
+Równanie Bernoulliego jest jednym z podstawowych praw termodynamiki płynów idealnych. Mówi ono, że wzrost prędkości przepływu cieczy musi wiązać się ze spadkiem ciśnienia lub energii potencjalnej. Ma kilka postaci - najpopularniejszą jest tzw. szczególne równanie Bernoulliego, które wiąże energię mechaniczną płynu z jego prędkością w danym miejscu, wysokością w układzie odniesienia służącym do wyznaczania energii potencjalnej, ciśnieniem i gęstością. W takiej formie można je stosować tylko do cieczy nieściśliwych i nielepkich, jednocześnie zakładając stacjonarność i bezwirowość przepływu.
+
+Ta szczególna postać równania Bernoulliego jest przedstawiona jako równanie \ref{eq:bernoulli}, gdzie:
+\begin{itemize}
+	\item $e_{m}$ - energia jednostki masy cieczy,
+	\item $v$ - prędkość cieczy w danym miejscu,
+	\item $g$ - przyspieszenie grawitacyjne,
+	\item $h$ - wysokość w układzie odniesienia, w którym jest wyznaczana energia potencjalna,
+	\item $p$ - ciśnienie cieczy w danym miejscu,
+	\item $\rho$ - gęstość cieczy.
+\end{itemize}
+
+\begin{equation}\label{eq:bernoulli}
+	e_{m} = \frac{v^2}{2} + gh + \frac{p}{\rho} = const
+\end{equation}
+
+Z równania Bernoulliego można wyprowadzić bezpośrednią zależność między prędkością cieczy a jej poziomem w zbiorniku. Jest ona znana pod nazwą prawa Torricellego i przedstawiona jako równanie \ref{eq:torricelli} (przyjęto oznaczenia takie, jak w przypadku równania \ref{eq:bernoulli}).
+
+\begin{equation}\label{eq:torricelli}
+	v = \sqrt{2gh}
+\end{equation}
+
+Można owo prawo zapisać w bardziej ogólnej formie słownej: prędkość wypływu cieczy jest proporcjonalna do pierwiastka z poziomu cieczy w zbiorniku. Takie jego sformułowanie będzie istotne przy wyznaczaniu modelu matematycznego rozważanego układu.
 
 
 %-------------------------------------------------
