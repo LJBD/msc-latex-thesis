@@ -7,9 +7,17 @@ W niniejszym podrozdziale zostaną przypomniane podstawowe prawa fizyki związan
 \subsection{Równanie Bernoulliego i prawo Torricellego}
 \label{sub:plyny-torr}
 
-Równanie Bernoulliego jest jednym z podstawowych praw termodynamiki płynów idealnych. Mówi ono, że wzrost prędkości przepływu cieczy musi wiązać się ze spadkiem ciśnienia lub energii potencjalnej. Ma kilka postaci; najpopularniejszą jest tzw. szczególne równanie Bernoulliego, które wiąże energię mechaniczną płynu z jego prędkością w danym miejscu, wysokością w układzie odniesienia służącym do wyznaczania energii potencjalnej, ciśnieniem i gęstością. W takiej formie można je stosować tylko do cieczy nieściśliwych i nielepkich, jednocześnie zakładając stacjonarność i bezwirowość przepływu.
+Równanie Bernoulliego jest jednym z podstawowych praw termodynamiki płynów idealnych. Mówi ono, że wzrost prędkości przepływu cieczy musi wiązać się ze spadkiem ciśnienia lub energii potencjalnej.
+Ma kilka postaci; najpopularniejszą jest tzw. szczególne równanie Bernoulliego, które wiąże energię mechaniczną płynu z jego prędkością w danym miejscu, wysokością w układzie odniesienia służącym do wyznaczania energii potencjalnej, ciśnieniem i gęstością.
+W takiej formie można je stosować tylko do cieczy nieściśliwych i nielepkich, jednocześnie zakładając stacjonarność i bezwirowość przepływu.
 
-Ta szczególna postać równania Bernoulliego jest przedstawiona jako równanie \ref{eq:bernoulli}, gdzie:
+Ta szczególna postać równania Bernoulliego jest przedstawiona jako równanie \ref{eq:bernoulli}.
+
+\begin{equation}\label{eq:bernoulli}
+e_{m} = \frac{v^2}{2} + gh + \frac{p}{\rho} = const
+\end{equation}
+
+Oznaczenia:
 \begin{itemize}
 	\item $e_{m}$ - energia jednostki masy cieczy,
 	\item $v$ - prędkość cieczy w danym miejscu,
@@ -19,17 +27,24 @@ Ta szczególna postać równania Bernoulliego jest przedstawiona jako równanie 
 	\item $\rho$ - gęstość cieczy.
 \end{itemize}
 
-\begin{equation}\label{eq:bernoulli}
-	e_{m} = \frac{v^2}{2} + gh + \frac{p}{\rho} = const
-\end{equation}
-
-Z równania Bernoulliego można wyprowadzić bezpośrednią zależność między prędkością cieczy a jej poziomem w zbiorniku. Jest ona znana pod nazwą prawa Torricellego i przedstawiona jako równanie \ref{eq:torricelli} (przyjęto oznaczenia takie, jak w przypadku równania \ref{eq:bernoulli}).
+Z równania Bernoulliego można wyprowadzić bezpośrednią zależność między prędkością cieczy a jej poziomem w zbiorniku. Jest ona znana pod nazwą prawa Torricellego i przedstawiona jako równanie \ref{eq:torricelli} (przyjęto oznaczenia takie jak w przypadku równania \ref{eq:bernoulli}).
 
 \begin{equation}\label{eq:torricelli}
 	v = \sqrt{2gh}
 \end{equation}
 
 Można owo prawo zapisać w bardziej ogólnej formie słownej: prędkość wypływu cieczy jest proporcjonalna do pierwiastka kwadratowego z poziomu cieczy w zbiorniku. Takie jego sformułowanie będzie istotne przy wyznaczaniu modelu matematycznego rozważanego układu.
+
+Na podstawie prawa Torricellego można wyznaczyć czas potrzebny na zmianę wysokości słupa cieczy w zamkniętym pojemniku. Niech $h$ będzie ową wysokością, $v$ - prędkością wypływu, a $A$ - polem przekroju poprzecznego zbiornika.
+\begin{equation}
+    \begin{array}{lr}
+        \frac{\partial x}{\partial t} = v = \sqrt{2gh} \\
+        A \partial h = \partial x \\
+        \frac{\partial h}{\partial t} = \frac{\sqrt{2gh}}{A}
+    \end{array}
+\end{equation}
+
+% TODO: uzupelnic wyprowadzenie z https://en.wikipedia.org/wiki/Torricelli%27s_law#Total_time_to_empty_the_container
 
 
 %-------------------------------------------------
@@ -42,4 +57,6 @@ Przytoczona wcześniej szczególna postać równania Bernoulliego (równanie \re
     \item Poszczególne ,,warstwy'' cieczy nie wpływają na siebie.
 \end{enumerate}
 
-Ten drugi warunek jest znany pod nazwą przepływu laminarnego. W takim typie przepływu nie występują żadne jego zaburzenia (ruchy wirowe, )
+Ten drugi warunek jest znany pod nazwą przepływu laminarnego, który zwykle ma miejsce przy niskich prędkościach cieczy. W takim typie przepływu nie występują żadne jego zaburzenia (ruchy wirowe, prądy przeciwne itp.), a poszczególne ,,warstwy'' cieczy zachowują się jak karty do gry przy tasowaniu, przepływając obok siebie bez wpływania jedna na drugą. Jej cząstki będące blisko powierzchni przemieszczają się po liniach równoległych do tafli cieczy.
+
+Niestety, w rzeczywistości ciężko jest spełnić założenie laminarności przepływu, nie mówiąc już o jego stacjonarności. W związku z tym można zastosować pewne uogólnienie prawa Torricellego na ciecze nielaminarne. 
