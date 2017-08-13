@@ -1,13 +1,13 @@
 \section{Regulacja czasooptymalna}
 \label{sec:toc}
 
-W niniejszym podrozdziale przedstawiona zostanie koncepcja regulacji czasooptymalnej. Zostaną podane założenia zagadnienia, twierdzenia, na których podstawie można wyliczyć rozwiązania oraz jego proponowana forma analityczna.
+W niniejszym podrozdziale przedstawiona zostanie koncepcja regulacji czasooptymalnej. Zostaną podane założenia zagadnienia, twierdzenia, na których podstawie można wyliczyć rozwiązanie oraz jego proponowana forma analityczna. Zaznacza się, że mimo iż podane niżej definicje i założenia są wzięte z ogólnych zagadnień optymalizacji dynamicznej, to w podanym brzmieniu stosują się tylko do zagadnienia wyznaczania sterowania czasooptymalnego.
 
 %-------------------------------------------------
 \subsection{Ogólna definicja zagadnienia}
 \label{sub:toc-def}
 
-
+%-------------------
 \subsubsection{Założenia wstępne}
 \label{sub:toc-def-intro}
 Przyjmijmy system dany stacjonarnym, zwyczajnym równaniem różniczkowym (pokazanym jako równanie \ref{eq:general_system}), w którym:
@@ -50,7 +50,7 @@ Trajektoria będąca rozwiązaniem zagadnienia minimalnoczasowego musi spełnia�
 
 Ów czas $T$, po którym przy danym sterowaniu stan systemu osiągnie warunek końcowy, będzie wskaźnikiem jakości: 
 \begin{equation}\label{eq:quality}
-    Q(u) = T
+    Q(u) = q(x_{f}) = T
 \end{equation}
 
 Na tej podstawie można określić \emph{sterowanie optymalne} $\hat{u}(t)$, które spełnia wszystkie wspominane wcześniej warunki oraz zależność \ref{eq:optimal_quality}. Trajektoria układu wygenerowana przez zastosowanie sterowania optymalnego nazwana jest \emph{trajektorią optymalną} i opisana symbolem $\hat{x}(t)$.
@@ -58,9 +58,35 @@ Na tej podstawie można określić \emph{sterowanie optymalne} $\hat{u}(t)$, kt�
     \forall_{u}:~ Q(u) \leq Q(\hat{u})
 \end{equation}
 
+W opisie zagadnienia czasooptymalnego potrzebne są jeszcze dwa pojęcia.
+Pierwsze to \emph{funkcja sprzężona} $\psi: [0, T] \longmapsto \mathbb{R}^{n}$ będąca rozwiązaniem tzw. równania sprzężonego \ref{eq:costate-def} z warunkiem końcowym
+$\psi(T) = - \frac{\partial q(x_{f})}{\partial x_{f}} = 0$.
+\begin{equation}\label{eq:costate-def}
+\frac{\partial \psi(t)}{\partial t} = - \frac{\partial f(x(t), u(t)}{\partial x}
+\end{equation}
+
+Tak, jak w przypadku trajektorii optymalnej układu, trajektoria $\psi(t)$ wyznaczona w układzie, w którym zastosowane zostało sterowanie optymalne $\hat{u}(t)$, nosi nazwę \emph{trajektorii sprzężonej optymalnej} i oznaczona jest symbolem $\hat{\psi}(t)$.
+
+Ostatnim pojęciem potrzebnym w niniejszym zagadnieniu jest \emph{hamiltonian}, zwany również \emph{funkcją Hamiltona}, czyli funkcja $H: \mathbb{R}^{n} \times \mathbb{R}^{n} \times \mathbb{R}^{m} \longmapsto \mathbb{R}$ który dla trajektorii układu $x(t)$ wygenerowanej przy pomocy sterowania $u(t)$ i odpowiadającej im trajektorii sprzężonej $\psi(t)$ zdefiniowany jest zależnością \ref{eq:hamiltonian-def}.
+
+\begin{equation}\label{eq:hamiltonian-def}
+H(\psi(t), x(t), u(t)) = \psi(t) \circ f(x(t), u(t)) = \psi(t)^{T} \cdot f(x(t), u(t))
+\end{equation}
+
+%-------------------
 \subsubsection{Zasada maksimum Pontriagina}
 \label{sub:toc-def-pontriagin}
 
+Aby jednoznacznie opisać, a następnie wyznaczyć sterowanie czasooptymalne, potrzebne jest przytoczenie zasadniczego twierdzenia w optymalizacji dynamicznej. Jest ono znane pod nazwą \emph{zasada maksimum Pontriagina}. Zostało opracowane w 1956 r. przez rosyjskiego matematyka Lwa Pontriagina.
+
+\begin{pontriagin-max}\label{the:pontryagin}
+    Zakładając układ opisany równaniem \ref{eq:general_system} z warunkiem końcowym \ref{eq:final_term} i wskaźnikiem jakości \ref{eq:quality} oraz równanie sprzężone \ref{eq:costate-def}:\\
+    jeśli dla trajektorii układu $\hat{x}(t)$ wygenerowanej przy pomocy sterowania $\hat{u}(t)$ i odpowiadającej im trajektorii sprzężonej $\hat{\psi}(t)$ zachodzi:\\
+    \begin{equation}
+    \forall_{u(t) \in D}~ \forall_{t \in [0, T]}:~ H(\hat{\psi}(t), \hat{x}(t), \hat{u}(t)) ~ \geq ~ H(\hat{\psi}(t), \hat{x}(t), u(t))
+    \end{equation}
+    to sterowanie $\hat{u}(t)$ jest sterowaniem optymalnym.
+\end{pontriagin-max}
 
 %-------------------------------------------------
 \subsection{Wyznaczanie sterowania czasooptymalnego}
