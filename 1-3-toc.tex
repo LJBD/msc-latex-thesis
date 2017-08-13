@@ -1,9 +1,65 @@
 \section{Regulacja czasooptymalna}
 \label{sec:toc}
 
+W niniejszym podrozdziale przedstawiona zostanie koncepcja regulacji czasooptymalnej. Zostaną podane założenia zagadnienia, twierdzenia, na których podstawie można wyliczyć rozwiązania oraz jego proponowana forma analityczna.
+
 %-------------------------------------------------
 \subsection{Ogólna definicja zagadnienia}
 \label{sub:toc-def}
+
+
+\subsubsection{Założenia wstępne}
+\label{sub:toc-def-intro}
+Przyjmijmy system dany stacjonarnym, zwyczajnym równaniem różniczkowym (pokazanym jako równanie \ref{eq:general_system}), w którym:
+
+\begin{equation}\label{eq:general_system}
+    \frac{\partial x(t)}{\partial t} = f(x(t), u(t)), ~ 0 \leq t \leq T
+\end{equation}
+
+\begin{itemize}
+    \item wektor zmiennych stanu w chwili $t$ - $x(t)$ spełnia następujące założenia:
+    \begin{itemize}
+        \item $\forall_{t \geq 0}:~ x(t) \in \mathbb{R}^{n}$ - ma $n$ składowych, a więc rozważany system ma $n$ równań różniczkowych zwyczajnych,
+        \item $x(0) = x_{0} \in \mathbb{R}^{n}$ - spełnia warunek początkowy $x_{0}$;
+    \end{itemize}
+    \item wektor sterowań w chwili $t$ - $u(t)$:
+    \begin{itemize}
+        \item $\forall_{t \geq 0}:~ u(t) \in D \subset \mathbb{R}^{m}$ - ma $m$ składowych zawierającym się w zbiorze $D$ ograniczającym wartości sterowań,
+        \item $u(0) = u_{0}$ - spełnia warunek początkowy $u_{0}$,
+        \item funkcja $u$ jest przedziałami ciągła na przedziale $[0, T]$, czyli:
+        \begin{itemize}
+            \item ma co najwyżej skończoną liczbę punktów nieciągłości,
+            \item w każdym z nich ma skończoną granicę lewostronną,
+            \item jest prawostronnie ciągła,
+            \item w lewym końcu przedziału jest lewostronnie ciągła;
+        \end{itemize}
+    \end{itemize}
+    \item funkcja $f: \mathbb{R}^{n} \times \mathbb{R}^{m} \longmapsto \mathbb{R}^{n}$:
+    \begin{itemize}
+        \item $f \in C^{1}$ - jest ciągła i różniczkowalna ze względu na pierwszy argument,
+        \item $\frac{\partial f(t)}{\partial x} \in C^{0}$ - jej pochodna ze względu na pierwszy argument jest ciągła.
+    \end{itemize}
+\end{itemize}
+
+Rozwiązaniem takiego równania jest oczywiście funkcja $x: [0, T) \longmapsto \mathbb{R}^{n}$ nazywana \emph{trajektorią układu}.
+
+Trajektoria będąca rozwiązaniem zagadnienia minimalnoczasowego musi spełniać następujący warunek końcowy (nazywany również stanem docelowym):
+\begin{equation}\label{eq:final_term}
+    x(T) = x_{f} \in \mathbb{R}^{n}
+\end{equation}
+
+Ów czas $T$, po którym przy danym sterowaniu stan systemu osiągnie warunek końcowy, będzie wskaźnikiem jakości: 
+\begin{equation}\label{eq:quality}
+    Q(u) = T
+\end{equation}
+
+Na tej podstawie można określić \emph{sterowanie optymalne} $\hat{u}(t)$, które spełnia wszystkie wspominane wcześniej warunki oraz zależność \ref{eq:optimal_quality}. Trajektoria układu wygenerowana przez zastosowanie sterowania optymalnego nazwana jest \emph{trajektorią optymalną} i opisana symbolem $\hat{x}(t)$.
+\begin{equation}\label{eq:optimal_quality}
+    \forall_{u}:~ Q(u) \leq Q(\hat{u})
+\end{equation}
+
+\subsubsection{Zasada maksimum Pontriagina}
+\label{sub:toc-def-pontriagin}
 
 
 %-------------------------------------------------
