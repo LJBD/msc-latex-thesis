@@ -84,18 +84,53 @@ Aby jednoznacznie opisać, a następnie wyznaczyć sterowanie czasooptymalne, po
 \begin{pontriagin-max}\label{the:pontryagin}
     Zakładając układ opisany równaniem \ref{eq:general_system} z warunkiem końcowym \ref{eq:final_term} i wskaźnikiem jakości \ref{eq:quality} oraz równanie sprzężone \ref{eq:costate-def}:\\
     jeśli dla trajektorii układu $\hat{x}(t)$ wygenerowanej przy pomocy sterowania $\hat{u}(t)$ i odpowiadającej im trajektorii sprzężonej $\hat{\psi}(t)$ zachodzi:\\
-    \begin{equation}
+    \begin{equation}\label{eq:pontriagin}
     \forall_{u(t) \in D}~ \forall_{t \in [0, T]}:~ H(\hat{\psi}(t), \hat{x}(t), \hat{u}(t)) ~ \geq ~ H(\hat{\psi}(t), \hat{x}(t), u(t))
     \end{equation}
     to sterowanie $\hat{u}(t)$ jest sterowaniem optymalnym.
 \end{pontriagin-max}
 
-Powyższe twierdzenie należy obwarować dodatkowymi warunkami koniecznymi optymalności.
+Powyższe twierdzenie należy obwarować dodatkowymi warunkami koniecznymi optymalności. Niech funkcja $g: \mathbb{R}^{2n} \longmapsto \mathbb{R}^{l}$ opisuje zestaw ograniczeń nierównościowych, a funkcja $h: \mathbb{R}^{2n} \longmapsto \mathbb{R}^{k}$ - ograniczeń równościowych. Obie dane są wzorem \ref{eq:pontryagin-constraints}. Dodatkowo zakłada się, że $g, h \in C^{1}$.
+\begin{equation}\label{eq:pontryagin-constraints}
+    \begin{array}{lr}
+    g(x_{0}, x_{f}) \leq 0 \\
+    h(x_{0}, x_{f}) = 0
+    \end{array}
+\end{equation}
+
+Ponadto, zakłada się, że istnieją $\lambda \in \mathbb{R}$, $\mu \in \mathbb{R}^{l}$ oraz $\rho \in \mathbb{R}^{k}$, które wraz z uprzednio zdefiniowanymi wielkościami i funkcjami spełniają następujące \emph{warunki konieczne optymalności}:
+\begin{itemize}
+    \item warunek nieujemności:
+    \begin{equation}\label{eq:pontryagin-noneg}
+    \lambda \geq 0 \land \|\mu\| \geq 0
+    \end{equation}
+    \item warunek nietrywialności:
+    \begin{equation}\label{eq:pontryagin-notriv}
+    \lambda + \|\mu\| + \|\rho\| > 0
+    \end{equation}
+    \item warunek komplementarności:
+    \begin{equation}\label{eq:pontryagin-comp}
+    \mu \circ g(x_{0}, x_{f}) = 0
+    \end{equation}
+    \item warunki transwersalności:
+    \begin{equation}\label{eq:pontryagin-trans}
+    \begin{array}{lr}
+        \hat{\psi}(0) = \frac{\partial (\mu \circ g + \rho \circ h)}{\partial x_{0}}\\[8pt]
+        \hat{\psi}(T) = - \frac{\partial (\mu \circ g + \rho \circ h)}{\partial x_{f}}\\[8pt]
+        \forall_{t \in [0, T]}:~ H(\psi(t), x(t), u(t)) = \frac{\partial (\lambda T + \mu \circ g + \rho \circ h)}{\partial T} = \lambda
+    \end{array}
+    \end{equation}
+    \item równanie sprzężone dane wzorem \ref{eq:costate-def},
+    \item warunek maksimum hamiltonianu dany wzorem \ref{eq:pontriagin}.
+\end{itemize}
 
 %-------------------------------------------------
 \subsection{Wyznaczanie sterowania czasooptymalnego}
 \label{sub:toc-ctrl}
 
+Analityczne rozwiązania poszukiwania sterowania czasooptymalnego zwykle opierają się bezpośrednio na przytoczonej powyżej zasadzie maksimum i warunkach koniecznych optymalności. W niniejszym podrozdziale zostanie pokrótce przedstawiona droga mogąca zmierzać do wyznaczenia analitycznego czasooptymalnego sterowania w rozważanym układzie zbiorników. Całe rozwiązanie nie jest przeprowadzone ze względu na fakt, iż równiania sprzężone są niestacjonarne, a więc ich rozwiązanie analityczne byłoby bardzo trudne lub wręcz niemożliwe.
+
+Pierwszym krokiem ku wyliczeniu analitycznego rozwiązania jest wyznaczenie równań sprzężonych za pomocą wzoru \ref{eq:costate-def}. Przyjmując współczynniki $\alpha_{i} = \frac{1}{2} \forall_{i \in \{1, 2, 3\}}$ w modelu matematycznym zestawu zbiorników danym równaniem \ref{eq:model}, można wyznaczyć równania sprzężone rozważanego układu. Są one dane wzorem \ref{eq:sprzezone}.
 
 \begin{equation}\label{eq:sprzezone}
 	\left \{
@@ -107,7 +142,9 @@ Powyższe twierdzenie należy obwarować dodatkowymi warunkami koniecznymi optym
 	\right.
 \end{equation}
 
-Równania sprzężone zestawu zbiorników (przy założeniu przepływu laminarnego) są dane wzorem \ref{eq:sprzezone}.
+Następnie trzeba by przedefiniować ograniczenia równościowe (dane wzorem \ref{eq:model-eq-const}) i nierównościowe (\ref{eq:model-noneq-const}) tak, aby spełniały założenia funkcji $g$ i $h$ opisane zależnościami \ref{eq:pontryagin-constraints}. Korzystając z warunków komplementarności (\ref{eq:pontryagin-comp}) oraz nieujemności (\ref{eq:pontryagin-noneg}), powinno się wyznaczyć składowe wektora $\mu$ oraz założyć pewną postać wektora $\rho$.
+
+Na podstawie tych danych należałoby wyznaczyć warunki początkowy i końcowy danym wzorem \ref{eq:pontryagin-trans} dla powyższych równań sprzężonych, co pozwoliłoby wyznaczyć analityczne wzory opisujące wszystkie składowe trajektorii sprzężonych systemu.
 
 
 %-------------------------------------------------

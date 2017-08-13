@@ -33,3 +33,24 @@ Wszystkie wymiary w powyższym wzorze zostały przedstawione na rys. \ref{fig:zb
 Przyjmując $\alpha_{i} = \frac{1}{2}, \forall_{i \in \{1, 2, 3\}}$, można uszczegółowić powyższy model, zakładając tylko przepływ laminarny.
 Taka właśnie jego postać będzie wykorzystywana przy analitycznym wyznaczeniu współczynników równania sprzężonego (definicja znajduje się w sekcji \ref{sub:toc-def-intro}), które jest przeprowadzone w podrozdziale \ref{sub:toc-ctrl}.
 W rzeczywistości, jak zostało wspomniane w podrozdziale \ref{sub:plyny-przeplywy}, wartości tych współczynników będą musiały być trochę mniejsze, aby oddać faktyczny sposób przepływu wody między zbiornikami.
+
+%TODO: dopisać definicję wszystkich ograniczeń
+W rozważanym układzie zbiorników przyjmuje się następujące ograniczenia:
+\begin{itemize}
+    \item ograniczenia równościowe:
+    \begin{equation}\label{eq:model-eq-const}
+    \begin{array}{lr}
+        h_{1}(0) = h_{10}\\
+        h_{2}(0) = h_{20}\\
+        h_{3}(0) = h_{30}\\
+    \end{array}
+    \end{equation}
+    \item ograniczenia nierównościowe:
+    \begin{equation}\label{eq:model-noneq-const}
+    \begin{array}{lr}
+        h_{1}(t) \leq h_{max}\\
+        h_{2}(t) \leq h_{max}\\
+        h_{3}(t) \leq h_{max}\\
+    \end{array}
+    \end{equation}
+\end{itemize}
