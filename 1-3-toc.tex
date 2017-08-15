@@ -12,7 +12,7 @@ Zaznacza się, że mimo iż podane niżej definicje i założenia są wzięte z 
 %-------------------
 \subsubsection{Założenia wstępne}
 \label{sub:toc-def-intro}
-Przyjmijmy system dany stacjonarnym, zwyczajnym równaniem różniczkowym (pokazanym jako równanie \ref{eq:general_system}), w którym:
+Niech dany jest układ opisany stacjonarnym, zwyczajnym równaniem różniczkowym (pokazanym jako równanie \ref{eq:general_system}), w którym:
 
 \begin{equation}\label{eq:general_system}
     \frac{\partial x(t)}{\partial t} = f(x(t), u(t)), ~ 0 \leq t \leq T
@@ -89,6 +89,8 @@ Aby jednoznacznie opisać, a następnie wyznaczyć sterowanie czasooptymalne, po
     to sterowanie $\hat{u}(t)$ jest sterowaniem optymalnym.
 \end{pontriagin-max}
 
+Dowód zasady maksimum nie został uwzględniony w tej pracy. Można go znaleźć w \cite{Korytowski2015} oraz w \cite{Evans}.
+
 Powyższe twierdzenie należy obwarować dodatkowymi warunkami koniecznymi optymalności. Niech funkcja $g: \mathbb{R}^{2n} \longmapsto \mathbb{R}^{l}$ opisuje zestaw ograniczeń nierównościowych, a funkcja $h: \mathbb{R}^{2n} \longmapsto \mathbb{R}^{k}$ - ograniczeń równościowych. Obie dane są wzorem \ref{eq:pontryagin-constraints}. Dodatkowo zakłada się, że $g, h \in C^{1}$.
 \begin{equation}\label{eq:pontryagin-constraints}
     \begin{array}{lr}
@@ -120,7 +122,7 @@ Ponadto, zakłada się, że istnieją $\lambda \in \mathbb{R}$, $\mu \in \mathbb
     \end{array}
     \end{equation}
     \item równanie sprzężone dane wzorem \ref{eq:costate-def},
-    \item warunek maksimum hamiltonianu dany wzorem \ref{eq:pontriagin}.
+    \item warunek maksimum hamiltonianu dany nierównością \ref{eq:pontriagin}.
 \end{itemize}
 
 
@@ -151,7 +153,7 @@ Podobne założenia są częstą praktyką w analizie stabilnych systemów nieli
 \subsection{Wyznaczanie sterowania czasooptymalnego}
 \label{sub:toc-ctrl}
 
-Analityczne rozwiązania poszukiwania sterowania czasooptymalnego zwykle opierają się bezpośrednio na przytoczonej powyżej zasadzie maksimum i warunkach koniecznych optymalności. W niniejszym podrozdziale zostanie pokrótce przedstawiona droga mogąca zmierzać do wyznaczenia analitycznego czasooptymalnego sterowania w rozważanym układzie zbiorników. Całe rozwiązanie nie jest przeprowadzone ze względu na fakt, iż równiania sprzężone są niestacjonarne, a więc ich rozwiązanie analityczne byłoby bardzo trudne lub wręcz niemożliwe.
+Analityczne rozwiązania poszukiwania sterowania czasooptymalnego zwykle opierają się bezpośrednio na przytoczonej powyżej zasadzie maksimum i warunkach koniecznych optymalności. W niniejszym podrozdziale zostanie pokrótce przedstawiona droga mogąca zmierzać do wyznaczenia analitycznego czasooptymalnego sterowania w rozważanym układzie zbiorników. Całe rozwiązanie nie jest przeprowadzone ze względu na fakt, iż równania sprzężone są niestacjonarne, a więc ich rozwiązanie analityczne byłoby bardzo trudne lub wręcz niemożliwe.
 
 Pierwszym krokiem ku wyliczeniu analitycznego rozwiązania jest wyznaczenie równań sprzężonych za pomocą wzoru \ref{eq:costate-def}. Przyjmując współczynniki $\alpha_{i} = \frac{1}{2} \forall_{i \in \{1, 2, 3\}}$ w modelu matematycznym zestawu zbiorników danym równaniem \ref{eq:model}, można wyznaczyć równania sprzężone rozważanego układu. Są one dane wzorem \ref{eq:model-costate}. Pominięto w nim zależności wszystkich funkcji $\psi$ oraz $h$ od czasu, aby uprościć zapis.
 
@@ -166,6 +168,16 @@ Pierwszym krokiem ku wyliczeniu analitycznego rozwiązania jest wyznaczenie rów
 \end{equation}
 
 Następnie trzeba by przedefiniować ograniczenia równościowe (dane wzorem \ref{eq:model-eq-const}) i nierównościowe (\ref{eq:model-noneq-const}) tak, aby spełniały założenia funkcji $g$ i $h$ opisane zależnościami \ref{eq:pontryagin-constraints}.
+Dodatkowo należy dopisać od ograniczeń równościowych to wynikające z faktu poszukiwania sterowania czasooptymalnego, czyli \ref{eq:final_term}, które w tym przypadku będzie miało postać opisaną przez \ref{eq:model-final-term}, gdzie $h_{1f}$, $h_{2f}$ i $h_{3f}$ są dane.
+
+\begin{equation}\label{eq:model-final-term}
+\begin{array}{lr}
+    h_{1}(T) = h_{1f}\\
+    h_{2}(T) = h_{2f}\\
+    h_{3}(T) = h_{3f}
+\end{array}
+\end{equation}
+
 Korzystając z warunków komplementarności (\ref{eq:pontryagin-comp}) oraz nieujemności (\ref{eq:pontryagin-noneg}), powinno się wyznaczyć składowe wektora $\mu$ oraz założyć pewną postać wektora $\rho$ (bazując takie założenie na \ref{eq:pontryagin-notriv}).
 
 Na podstawie tych danych należałoby wyznaczyć warunki początkowy i końcowy danym wzorem \ref{eq:pontryagin-trans} dla powyższych równań sprzężonych, co pozwoliłoby wyznaczyć analityczne wzory opisujące wszystkie składowe trajektorii sprzężonych systemu.

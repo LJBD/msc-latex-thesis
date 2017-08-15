@@ -1,23 +1,113 @@
 \section{Regulacja liniowo - kwadratowa}
 \label{sec:lqr}
 
-W niniejszym podrozdziale zostanie przedstawione zagadnienie szukania sterowania w układach liniowych z tzw. liniowo-kwadratowym wskaźnikiem jakości. Pokazana zostanie również metoda zastosowania takiego typu regulacji dla układów nieliniowych przy użyciu linearyzacji w punkcie pracy.
+W niniejszym podrozdziale zostanie przedstawione zagadnienie szukania sterowania w układach liniowych z tzw. liniowo-kwadratowym wskaźnikiem jakości oraz nieskończonym horyzontem czasowym. Pokazana zostanie również metoda zastosowania takiego typu regulacji dla układów nieliniowych przy użyciu linearyzacji w punkcie pracy. Zostanie również pokrótce omówione zagadnienie doboru wag w wyznaczaniu regulatora liniowo-kwadratowego.
 
 %-------------------------------------------------
 \subsection{Ogólna definicja zagadnienia}
 \label{sub:lqr-def}
 
+Niech dany jest układ opisany liniowym równaniem różniczkowym \ref{eq:lqr-system} z wektorem zmiennych stanu $x(t) \in \mathbb{R}^{n}$ i warunkiem początkowym dla nich $x(0) = x_{0}$. Sterowaniem w tym układzie jest $u(t) \in \mathbb{R}^{m}$. Jak zostało wspomniane wyżej, horyzont czasowy jest nieskończony. Cały układ jest analogiczny do opisanego w sekcji \ref{sub:toc-def}.
+
+\begin{equation}\label{eq:lqr-system}
+\frac{\partial x(t)}{\partial t} = Ax(t) + Bu(t),~ 0 \leq t < \infty
+\end{equation}
+
+Przyjmuje się również wskaźnik jakości w tym układzie dany wzorem \ref{eq:lqr-quality}.
+\begin{equation}\label{eq:lqr-quality}
+Q(u(t)) = \frac{1}{2}\int_{0}^{\infty} \Big(x(t)^{T}Wx(t) + u(t)^{T}Ru(t)\Big)dt
+\end{equation}
+
+Dodatkowo zakłada się następujące właściwości macierzy wymienionych w powyższym wzorze:
+\begin{itemize}
+    \item macierz $W = W^{T} \geq 0$ - jest symetryczna i nieujemnie określona,
+    \item macierz $R = R^{T} > 0$ - jest symetryczna i dodatnio określona.
+\end{itemize}
+
+Oczywiście, aby istniało sterowanie optymalne, musi istnieć również całka będąca wskaźnikiem jakości - jest to warunek konieczny i wystarczający. Sterowalność pary $A$ i $B$ lub asymptotyczna stabilność macierzy $A$ jest warunkiem wystarczającym. Oba są podane w \cite{Korytowski2015} oraz w \cite{AthansOptCtrl}.
+
+Wyznaczenie sterowania optymalnego w tak zdefiniowanym problemie opiera się na rozwiązaniu algebraicznego równania Ricattiego (danego zależnością \ref{eq:ricatti-algebraic}) przy założeniu, że macierz $K$ jest symetryczna i nieujemnie określona. Jest ono opisane szerzej w \cite{AthansOptCtrl}, \cite{Korytowski2015} i \cite{Murray2006}.
+
+\begin{equation}\label{eq:ricatti-algebraic}
+KBR^{-1}B^{T}K - A^{T}K - KA - W =0
+\end{equation}
+
+Sterowanie optymalne $\hat{u}(t)$ ma wówczas postać daną wzorem \ref{eq:lqr-opt-ctrl}.
+\begin{equation}\label{eq:lqr-opt-ctrl}
+\hat{u}(t) = -R^{-1}B^{T}Kx(t),~ t \geq 0
+\end{equation}
+
+Aby taki regulator zapewnił asymptotyczną stabilność kontrolowanego układu, para $(W, A)$ musi być wykrywawlna, a para $(A, B)$ - stabilizowalna (za: \cite{Korytowski2015}).
 
 %-------------------------------------------------
 \subsection{Linearyzacja modelu}
 \label{sub:lqr-lin}
 
+Mimo iż podstawowa definicja zagadnienia liniowo kwadratowego zakłada liniowość sterowanego układu (jak we wzorze \ref{eq:lqr-system}), to można rozszerzyć jego zastosowanie również na układy nieliniowe przez użycie linearyzacji w otoczeniu punktu pracy.
 
-%-------------------------------------------------
-\subsection{Wyznaczanie regulatora liniowo - kwadratowego}
-\label{sub:lqr-ctrl}
+Niech będzie dany układ opisany przez \ref{eq:general_system} wraz ze wszystkimi założeniami opisanymi w sekcji \ref{sub:toc-def-intro}.
+Punkty równowagi (nazywane również stanami ustalonymi) takiego systemu będą opisane przez zależność \ref{eq:stable-points} i wyznaczone przez parę wartości zmiennych stanu $x_{r}$ oraz sterowania $u_{r}$. Brak zależności od czasu owej pary został odpowiednio odnotowany.
+
+\begin{equation}\label{eq:stable-points}
+\frac{\partial x(t)}{\partial t} = 0 ~\Rightarrow~ f(x_{r}(t), u_{r}(t)) = 0
+\end{equation}
+
+Zadany układ można stabilizować tylko w jednym z jego punktów równowagi ze względu na to, iż tylko do takich punktów układ może dążyć w nieskończoności, która jest horyzontem czasowym analizowanego zagadnienia.
+Na podstawie takiego punktu równowagi definiuje się odchyłki od stanu i sterowania ustalonego dane zależnością \ref{eq:lqr-deltas}.
+
+\begin{equation}\label{eq:lqr-deltas}
+\begin{array}{lr}
+    \Delta x(t) = x(t) - x_{r}\\
+    \Delta u(t) = x(t) - u_{r}
+\end{array}
+\end{equation}
+
+Przy użyciu tak zdefiniowanych odchyłek wyjściowy nieliniowy układ można aproksymować układem liniowym (dany wzorem \ref{eq:lqr-nonlnr-system}) w pewnym otoczeniu owych odchyłek.
+
+\begin{equation}\label{eq:lqr-nonlnr-system}
+\begin{array}{lr}
+    \frac{\partial \Delta x(t)}{\partial t} = \bar{A}\Delta x(t) + \bar{B}\Delta u(t)
+\end{array}
+\end{equation}
+
+Macierze $A$ i $B$ zostały uzyskane w procesie linearyzacji funkcji $f(x(t), u(t))$ w punkcie $(x_{r}, u_{r})$ - wzór \ref{eq:lqr-nonlnr-matrices} pokazuje sposób, w jaki są zdefiniowane.
+
+\begin{equation}\label{eq:lqr-nonlnr-matrices}
+\begin{array}{lr}
+    \bar{A} = \bigg(\left. \frac{\partial f(x(t), u_{r})}{\partial x(t)}\right\vert_{x(t) = x_{r}}\bigg)^{T}\\
+    \bar{B} = \bigg(\left. \frac{\partial f(x_{r}, u(t))}{\partial u(t)}\right\vert_{u(t) = u_{r}}\bigg)^{T}
+\end{array}
+\end{equation}
+
+Wskaźnik jakości dla takiego systemu również przyjmuje postać odchyłkową zaprezentowaną jako równanie \ref{eq:lqr-nonlnr-quality}. Założenia co do macierzy $W$ i $R$ są dalej takie same.
+
+\begin{equation}\label{eq:lqr-nonlnr-quality}
+Q(\Delta u(t)) = \frac{1}{2}\int_{0}^{\infty} \Big( \Delta x(t)^{T}W\Delta x(t) + \Delta u(t)^{T}R\Delta u(t) \Big)dt
+\end{equation}
+
+Aby stabilizować układ w punkcie $x_{r}$, potrzebna jest definicja regulatora bazującego na odchyłkach.
+Jego wzór jest analogiczny do \ref{eq:lqr-opt-ctrl} i ma postać daną zależnością \ref{eq:lqr-opt-ctrl-delta} (znaleźć ją można m.in. w \cite{Mitk2007} i w \cite{Korytowski2015}). Tak definiuje się regulator optymalny dla zagadnienia liniowo-kwadratowego w układach nieliniowych.
+
+\begin{equation}\label{eq:lqr-opt-ctrl-delta}
+\Delta \hat{u}(t) = -R^{-1}\bar{B}^{T}K\Delta x(t), t \geq 0
+\end{equation}
+
+Tak jak w przypadku układów liniowych, aby system z zamkniętą pętlą sprzężenia zwrotnego był asymptotycznie stabilny, para $(W, \bar{A})$ musi być wykrywalna, a para $(\bar{A}, \bar{B})$ - stabilizowalna (znów za: \cite{Korytowski2015}).
 
 
 %-------------------------------------------------
 \subsection{Dobór wag w zagadnieniu liniowo - kwadratowym}
 \label{sub:lqr-weights}
+
+Kluczowym aspektem rzeczywistego zastosowania regulatorów liniowo-kwadratowych jest dobór wag, które wpływają na jego funkcjonowanie. Wagi zawierają się we współczynnikach dwóch macierzy obecnych we wskaźniku jakości (wzór \ref{eq:lqr-quality}): $W$ i $R$.
+
+Ze względu na to, iż macierz odwrotna do macierzy $R$ występuje bezpośrednio we wzorach \ref{eq:lqr-opt-ctrl} oraz \ref{eq:lqr-opt-ctrl-delta}, można założyć, że im mniejsza norma macierzy $R$ (a więc również im mniejsze jej poszczególne współczynniki), tym regulator będzie generował mocniejszy sygnał. Wpływa to oczywiście na szybkość zmian w układzie oraz na ewentualne przeregulowania (efekt opisany w \cite{Mitk2007} i w \cite{Korytowski2015}).
+
+Jeśli chodzi o macierz $W$, to jej współczynniki odpowiadają za sterowanie poszczególnymi zmiennymi stanu oraz na wzajemne zależności między nimi. Najprostsza metoda doboru wag, opisana w \cite{Murray2006}, polega na założeniu, że macierz $W$ jest diagonalna i wyznaczeniu maksymalnych dopuszczalnych błędów dla każdej zmiennej stanu. Jako wartość danej wagi należy przyjąć kwadrat odwrotności owego błędu. Przykład takiego postępowania jest podany poniżej:
+\begin{itemize}
+    \item zakłada się, że istnieje zmienna stanu $x_{1}(t)$, dla której dopuszczalny jest błąd $\delta_{x_{1}} = 0.01$,
+    \item wartość odpowiadającego jej współczynnika macierzy $W$ - $w_{1}$ - powinna wynosić $\delta_{x_{1}}^{-2} = 100^{2} = 10000$,
+    \item wtedy przy wyliczaniu wskaźnika jakości pod całką znajdzie się wyrażenie $\Delta x_{1}^{2} w_{1}$, które da wartość 1, gdy odchyłka między wartością zadaną $x_{r1}$ a aktualną wartością $x_{1}(t)$ będzie wynosiła $\delta_{x_{1}}$.
+\end{itemize}
+
+Ogólna zasada może więc być podsumowana następująco: największe współczynniki w macierzy $W$ i najmniejsze w macierzy $R$ przyporządkowuje się tym zmiennym stanu, których minimalizacja ma priorytet (za: \cite{Mitk2007}).
