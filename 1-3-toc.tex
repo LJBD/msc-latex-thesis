@@ -28,7 +28,7 @@ Przyjmijmy system dany stacjonarnym, zwyczajnym równaniem różniczkowym (pokaz
     \begin{itemize}
         \item $\forall_{t \geq 0}:~ u(t) \in D \subset \mathbb{R}^{m}$ - ma $m$ składowych zawierającym się w zbiorze $D$ ograniczającym wartości sterowań,
         \item $u(0) = u_{0}$ - spełnia warunek początkowy $u_{0}$,
-        \item funkcja $u$ jest przedziałami ciągła na przedziale $[0, T]$, czyli:
+        \item funkcja $u$ jest przedziałami ciągła na przedziale $[0, T]$ (dokładny opis w \cite{Korytowski2015}), czyli:
         \begin{itemize}
             \item ma co najwyżej skończoną liczbę punktów nieciągłości,
             \item w każdym z nich ma skończoną granicę lewostronną,
@@ -43,7 +43,7 @@ Przyjmijmy system dany stacjonarnym, zwyczajnym równaniem różniczkowym (pokaz
     \end{itemize}
 \end{itemize}
 
-Rozwiązaniem takiego równania jest oczywiście funkcja $x: [0, T) \longmapsto \mathbb{R}^{n}$ nazywana \emph{trajektorią układu}.
+Rozwiązaniem takiego równania jest oczywiście funkcja $x: [0, T) \longmapsto \mathbb{R}^{n}$ nazywana \emph{trajektorią układu}. 
 
 Trajektoria będąca rozwiązaniem zagadnienia minimalnoczasowego musi spełniać następujący warunek końcowy (nazywany również stanem docelowym):
 \begin{equation}\label{eq:final_term}
@@ -78,11 +78,11 @@ H(\psi(t), x(t), u(t)) = \psi(t) \circ f(x(t), u(t)) = \psi(t)^{T} \cdot f(x(t),
 \subsubsection{Zasada maksimum Pontriagina}
 \label{sub:toc-def-pontriagin}
 
-Aby jednoznacznie opisać, a następnie wyznaczyć sterowanie czasooptymalne, potrzebne jest przytoczenie zasadniczego twierdzenia w optymalizacji dynamicznej. Jest ono znane pod nazwą \emph{zasada maksimum Pontriagina}. Zostało opracowane w 1956 r. przez rosyjskiego matematyka Lwa Pontriagina.
+Aby jednoznacznie opisać, a następnie wyznaczyć sterowanie czasooptymalne, potrzebne jest przytoczenie zasadniczego twierdzenia w optymalizacji dynamicznej. Jest ono znane pod nazwą \emph{zasada maksimum Pontriagina}. Zostało opracowane w 1956 r. przez rosyjskiego matematyka Lwa Pontriagina. Twierdzenie podaje się w brzmieniu z \cite{Korytowski2015}.
 
 \begin{pontriagin-max}\label{the:pontryagin}
-    Zakładając układ opisany równaniem \ref{eq:general_system} z warunkiem końcowym \ref{eq:final_term} i wskaźnikiem jakości \ref{eq:quality} oraz równanie sprzężone \ref{eq:costate-def}:\\
-    jeśli dla trajektorii układu $\hat{x}(t)$ wygenerowanej przy pomocy sterowania $\hat{u}(t)$ i odpowiadającej im trajektorii sprzężonej $\hat{\psi}(t)$ zachodzi:\\
+    Zakładając układ opisany równaniem \ref{eq:general_system} z warunkiem końcowym \ref{eq:final_term} i wskaźnikiem jakości \ref{eq:quality} oraz równanie sprzężone \ref{eq:costate-def}:
+    jeśli dla trajektorii układu $\hat{x}(t)$ wygenerowanej przy pomocy sterowania $\hat{u}(t)$ i odpowiadającej im trajektorii sprzężonej $\hat{\psi}(t)$ zachodzi:
     \begin{equation}\label{eq:pontriagin}
     \forall_{u(t) \in D}~ \forall_{t \in [0, T]}:~ H(\hat{\psi}(t), \hat{x}(t), \hat{u}(t)) ~ \geq ~ H(\hat{\psi}(t), \hat{x}(t), u(t))
     \end{equation}
@@ -123,21 +123,40 @@ Ponadto, zakłada się, że istnieją $\lambda \in \mathbb{R}$, $\mu \in \mathbb
     \item warunek maksimum hamiltonianu dany wzorem \ref{eq:pontriagin}.
 \end{itemize}
 
+
+%-------------------------------------------------
+\subsection{Nieliniowość układu a sterowanie czasooptymalne}
+\label{sub:toc-nonlnr}
+
+Poszukiwanie sterowania czasooptymalnego w systemach nieliniowych jest w ogólności bardzo skomplikowane, przede wszystkim ze względu na trudność rozwiązania analitycznego nieliniowych (lub nawet niestacjonarnych) równań różniczkowych. Układ zbiorników omawiany w niniejszej pracy również takie posiada: zarówno równania dynamiki układu \ref{eq:model}, jak i równania sprzężone \ref{eq:model-costate} są nieliniowe.
+
+Aby uprościć analizę problemu oraz fizyczne zastosowanie wyznaczonego sterowania, zakłada się, że poszukiwane jego postaci będą klasy ,,bang - bang''. To znaczy, że będą przyjmowały tylko wartości z brzegów jednowymiarowego zbioru dopuszczalnego $D \in \mathbb{R} \land D = [0, u_{max}] \Rightarrow \forall_{t \in [0, T]}:~ u(t) \in [0, u_{max}]$.
+
+\begin{equation}\label{eq:nonlin-bang-bang}
+    \frac{\partial x}{\partial t} = f(x(t)) + \sum_{i=1}^{m} g_{i}(x(t)) \cdot u_{i}(t)
+\end{equation}
+
+Można przyjąć takie założenie, ze względu na to, iż (jak pokazano w \cite{YiMa2008} oraz w rozdziale 7.10 \cite{AthansOptCtrl}) dla systemów, których równania mają postać opisaną równaniem \ref{eq:nonlin-bang-bang} (a taką dokładnie ma omawiany układ z $m = 1$), funkcja przełączająca ma wtedy postać: $\phi(t) = \hat{\psi}(t) \circ g(\hat{x}(t))$. Owa funkcja opisuje momenty, w których sterowanie zmienia swoją wartość z jednego krańca zbioru $D$ na drugi. W przypadku rozważanego układu zbiorników sterowanie optymalne będzie dane wzorem \ref{eq:model-opt-ctrl}.
+
+\begin{equation}\label{eq:model-opt-ctrl}
+\begin{array}{lr}
+    \hat{u}(t) = \frac{sgn(\phi(t)) + sgn(\phi(t))^{2}}{2} \cdot u_{max} ~ \land ~ \phi(t) = \frac{\hat{\psi}_{1}(t)}{aw} \Rightarrow \\
+    \hat{u}(t) = \frac{sgn(\hat{\psi}_{1}(t) + sgn(\hat{\psi}_{1}(t))^{2}}{2} \cdot u_{max}
+\end{array}
+\end{equation}
+
+Podobne założenia są częstą praktyką w analizie stabilnych systemów nieliniowych ze względu na prostotę fizycznej aplikacji sterowania ,,bang - bang''. Przykłady zastosowań znajdują się m.in. w \cite{VakKek82}, \cite{BalSom83} oraz \cite{Itik2016}.
+%TODO: dodać referencje do przykładów bang-bang dla nieliniowych systemów
+
 %-------------------------------------------------
 \subsection{Wyznaczanie sterowania czasooptymalnego}
 \label{sub:toc-ctrl}
 
 Analityczne rozwiązania poszukiwania sterowania czasooptymalnego zwykle opierają się bezpośrednio na przytoczonej powyżej zasadzie maksimum i warunkach koniecznych optymalności. W niniejszym podrozdziale zostanie pokrótce przedstawiona droga mogąca zmierzać do wyznaczenia analitycznego czasooptymalnego sterowania w rozważanym układzie zbiorników. Całe rozwiązanie nie jest przeprowadzone ze względu na fakt, iż równiania sprzężone są niestacjonarne, a więc ich rozwiązanie analityczne byłoby bardzo trudne lub wręcz niemożliwe.
 
-Aby dodatkowo uprościć analizę problemu oraz fizyczne zastosowanie wyznaczonego sterowania, zakłada się, że poszukiwane jego postaci będą klasy "bang - bang". To znaczy, że będą przyjmowały tylko wartości z brzegów zbioru dopuszczalnego $D$. Można przyjąć takie założenie, ze względu na to, iż:
-\begin{itemize}
-    \item sterowanie $u$ jest jednowymiarowe: $D \in \mathbb{R} \Rightarrow D = [0, u_{max}]$,
-    \item %TODO: dopisać dlaczego można stosować sterowanie bang-bang
-\end{itemize}
+Pierwszym krokiem ku wyliczeniu analitycznego rozwiązania jest wyznaczenie równań sprzężonych za pomocą wzoru \ref{eq:costate-def}. Przyjmując współczynniki $\alpha_{i} = \frac{1}{2} \forall_{i \in \{1, 2, 3\}}$ w modelu matematycznym zestawu zbiorników danym równaniem \ref{eq:model}, można wyznaczyć równania sprzężone rozważanego układu. Są one dane wzorem \ref{eq:model-costate}. Pominięto w nim zależności wszystkich funkcji $\psi$ oraz $h$ od czasu, aby uprościć zapis.
 
-Pierwszym krokiem ku wyliczeniu analitycznego rozwiązania jest wyznaczenie równań sprzężonych za pomocą wzoru \ref{eq:costate-def}. Przyjmując współczynniki $\alpha_{i} = \frac{1}{2} \forall_{i \in \{1, 2, 3\}}$ w modelu matematycznym zestawu zbiorników danym równaniem \ref{eq:model}, można wyznaczyć równania sprzężone rozważanego układu. Są one dane wzorem \ref{eq:sprzezone}. Pominięto w nim zależności wszystkich funkcji $\psi$ oraz $h$ od czasu, aby uprościć zapis.
-
-\begin{equation}\label{eq:sprzezone}
+\begin{equation}\label{eq:model-costate}
 	\left \{
 	\begin{array}{lr}
 		\frac{\partial \psi_{1}}{\partial t} =  \psi_{1}\frac{C_{1}}{2aw\sqrt{h_{1}}} - \psi_{2}\frac{C_{1}}{2\sqrt{h_{1}}(cw + \frac{h_{2}}{h_{max}}bw)} \\[20pt]
@@ -148,15 +167,11 @@ Pierwszym krokiem ku wyliczeniu analitycznego rozwiązania jest wyznaczenie rów
 \end{equation}
 
 Następnie trzeba by przedefiniować ograniczenia równościowe (dane wzorem \ref{eq:model-eq-const}) i nierównościowe (\ref{eq:model-noneq-const}) tak, aby spełniały założenia funkcji $g$ i $h$ opisane zależnościami \ref{eq:pontryagin-constraints}.
-Korzystając z warunków komplementarności (\ref{eq:pontryagin-comp}) oraz nieujemności (\ref{eq:pontryagin-noneg}), powinno się wyznaczyć składowe wektora $\mu$ oraz założyć pewną postać wektora $\rho$.
-%TODO: sprawdzic, czy rzeczywiście nie da się wyznaczyć 
+Korzystając z warunków komplementarności (\ref{eq:pontryagin-comp}) oraz nieujemności (\ref{eq:pontryagin-noneg}), powinno się wyznaczyć składowe wektora $\mu$ oraz założyć pewną postać wektora $\rho$ (bazując takie założenie na \ref{eq:pontryagin-notriv}).
 
 Na podstawie tych danych należałoby wyznaczyć warunki początkowy i końcowy danym wzorem \ref{eq:pontryagin-trans} dla powyższych równań sprzężonych, co pozwoliłoby wyznaczyć analityczne wzory opisujące wszystkie składowe trajektorii sprzężonych systemu.
 
-
-%-------------------------------------------------
-\subsection{Nieliniowość układu a sterowanie czasooptymalne}
-\label{sub:toc-nonlnr}
+Na koniec, korzystając z zależności \ref{eq:model-opt-ctrl}, można by wyznaczyć analityczny wzór sterowania optymalnego.
 
 
 %-------------------------------------------------
