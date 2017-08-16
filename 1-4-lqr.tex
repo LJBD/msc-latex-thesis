@@ -46,13 +46,12 @@ Aby taki regulator zapewnił asymptotyczną stabilność kontrolowanego układu,
 Mimo iż podstawowa definicja zagadnienia liniowo kwadratowego zakłada liniowość sterowanego układu (jak we wzorze \ref{eq:lqr-system}), to można rozszerzyć jego zastosowanie również na układy nieliniowe przez użycie linearyzacji w otoczeniu punktu pracy.
 
 Niech będzie dany układ opisany przez \ref{eq:general_system} wraz ze wszystkimi założeniami opisanymi w sekcji \ref{sub:toc-def-intro}.
-Punkty równowagi (nazywane również stanami ustalonymi) takiego systemu będą opisane przez zależność \ref{eq:stable-points} i wyznaczone przez parę wartości zmiennych stanu $x_{r}$ oraz sterowania $u_{r}$. Brak zależności od czasu owej pary został odpowiednio odnotowany.
+Można go stabilizować tylko w jednym z jego punktów równowagi $(x_{r}, u_{r})$ (definiowanych równaniem \ref{eq:steady-state-points}) ze względu na to, iż tylko do takich punktów układ może dążyć w nieskończoności, która jest horyzontem czasowym analizowanego zagadnienia.
 
-\begin{equation}\label{eq:stable-points}
+\begin{equation}\label{eq:steady-state-points}
 \frac{\partial x(t)}{\partial t} = 0 ~\Rightarrow~ f(x_{r}(t), u_{r}(t)) = 0
 \end{equation}
 
-Zadany układ można stabilizować tylko w jednym z jego punktów równowagi ze względu na to, iż tylko do takich punktów układ może dążyć w nieskończoności, która jest horyzontem czasowym analizowanego zagadnienia.
 Na podstawie takiego punktu równowagi definiuje się odchyłki od stanu i sterowania ustalonego dane zależnością \ref{eq:lqr-deltas}.
 
 \begin{equation}\label{eq:lqr-deltas}

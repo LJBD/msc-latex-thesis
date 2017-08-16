@@ -8,7 +8,7 @@ Jest on dany równaniem \ref{eq:model} wziętym z \cite{TanksManual}.
 \left \{
 \begin{array}{lr}
 \frac{\partial h_{1}}{\partial t} = \frac{u - C_{1}{h_{1}}^{\alpha_{1}}}{aw} \\[8pt]
-\frac{\partial h_{2}}{\partial t} = \frac{C_{1}{h_{1}}^{\alpha_{1}} -  C_{2}{h_{2}}^{\alpha_{2}}}{cw + \frac{h_{2}}{h_{max}}bw} \\[20pt]
+\frac{\partial h_{2}}{\partial t} = \frac{C_{1}{h_{1}}^{\alpha_{1}} -  C_{2}{h_{2}}^{\alpha_{2}}}{cw + \frac{h_{2}}{h_{max}}bw} \\[12pt]
 \frac{\partial h_{3}}{\partial t} = \frac{C_{2}{h_{2}}^{\alpha_{2}} -  C_{3}{h_{3}}^{\alpha_{3}}}{w\sqrt{R^{2} - (R - h_{3})^{2}}}
 \end{array}
 \right.
@@ -16,7 +16,7 @@ Jest on dany równaniem \ref{eq:model} wziętym z \cite{TanksManual}.
 
 Oznaczenia:
 \begin{itemize}
-    \item $h_{i}(t)$ - poziom wody w $i$-tym zbiorniku ($i \in \{1, 2, 3\}$),
+    \item $h(t) = [h_{1}(t)~ h_{2}(t)~ h_{3}(t)]^{T}$ - poziomy wody w zbiornikach,
     \item $u(t)$ - sterowanie pompą,
     \item $a$ - szerokość pierwszego zbiornika,
     \item $b$ - szerokość trójkątnej części drugiego zbiornika,
@@ -55,3 +55,44 @@ W rozważanym układzie zbiorników przyjmuje się następujące ograniczenia (p
     \end{equation}
 \end{itemize}
 Parametry $h_{10}$, $h_{20}$ i $h_{30}$ oraz $h_{max}$ traktuje się jako zadane.
+
+Punkty równowagi (nazywane również stanami ustalonymi) takiego systemu będą opisane przez zależność \ref{eq:steady-state-def-model} i wyznaczone przez parę wektora wartości zmiennych stanu $h_{r}$ oraz sterowania $u_{r}$. Brak zależności od czasu owej pary został odpowiednio odnotowany.
+
+\begin{equation}\label{eq:steady-state-def-model}
+\frac{\partial h(t)}{\partial t} = 0 ~\Rightarrow~ 
+\left \{
+\begin{array}{lr}
+    \frac{\partial h_{1}}{\partial t} = 0 \\
+    \frac{\partial h_{2}}{\partial t} = 0 \\
+    \frac{\partial h_{3}}{\partial t} = 0
+\end{array}
+\right.
+\end{equation}
+
+Dla rozważanego układu zbiorników będą miały postać daną zależnością \ref{eq:model-steady-state}.
+
+\begin{equation}\label{eq:model-steady-state}
+\begin{array}{lr}
+u_{r} = C_{1}h_{1}^{\alpha_{1}} = C_{2}h_{2}^{\alpha_{2}} = C_{3}h_{3}^{\alpha_{3}}\\
+h_{r} = \begin{bmatrix}
+h_{1r}\\h_{2r}\\h_{3r}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\big( \frac{\textstyle u_{r}}{\textstyle C_{1}}\big)^{\frac{\scriptstyle 1}{\scriptstyle \alpha_{1}}}\\
+\big( \frac{\textstyle u_{r}}{\textstyle C_{2}}\big)^{\frac{\scriptstyle 1}{\scriptstyle \alpha_{2}}}\\
+\big( \frac{\textstyle u_{r}}{\textstyle C_{3}}\big)^{\frac{\scriptstyle 1}{\scriptstyle \alpha_{3}}}
+\end{bmatrix}
+\end{array}
+\end{equation}
+
+Wynika z tego, że układ otwarty jest asymptotycznie stabilny, gdyż posiada tylko jeden, zerowy punkt równowagi (pokazany jako wzór \ref{eq:model-zero-state}). Jest to również zgodne z fizyczną naturą tego systemu zbiorników: przy braku zasilania go pompą, cała woda wycieknie ze wszystkich trzech zbiorników.
+
+\begin{equation}\label{eq:model-zero-state}
+h_{r}^{0} = \begin{bmatrix}
+h_{1r}^{0}\\h_{2r}^{0}\\h_{3r}^{0}
+\end{bmatrix} = 
+\begin{bmatrix}
+0\\0\\0
+\end{bmatrix}
+\end{equation}
