@@ -1,9 +1,9 @@
 \section{Podział zadań między elementami oprogramowania}
 \label{sec:podzial-zadan}
 
-W związku z założoną architekturą oprogramowania, opierającą się na dwóch częściach, kluczowym aspektem jest odpowiedni podział zadań między nimi oraz wybór parametrów wysyłanych przez obie strony.
+W związku z zaproponowaną w niniejszej pracy architekturą oprogramowania, opierającą się na dwóch poziomach, kluczowym aspektem tego opracowania jest odpowiedni podział zadań między tymi poziomami.
 
-Pierwsza z nich to część ,,wyższego poziomu'' - została tak określona ze względu na to, iż nie ma bezpośredniego wpływu na kontrolowany fizyczny obiekt, a zajmuje się tylko modelem matematycznym. Jej zadania są przedstawione na poniższej liście.
+Pierwszy z nich to część ,,wyższego poziomu'' - została tak określona ze względu na to, iż nie ma bezpośredniego wpływu na kontrolowany fizyczny obiekt, a zajmuje się tylko modelem matematycznym. Jej zadania są przedstawione na poniższej liście.
 
 \begin{enumerate}
     \item Symulacja modelu nieliniowego w pętli otwartej, aby zainicjować algorytm optymalizacji dynamicznej.
@@ -51,7 +51,7 @@ Na podstawie powyższych zadań oraz założeń sformułowano poniższą listę 
     \end{itemize}
 \end{itemize}
 
-Druga część zaproponowanego w niniejszej pracy rozwiązania to część ,,niższego poziomu'' - jej nazwa jest związana z tym, że bezpośrednio wpływa na sterowany układ. Nie zawiera tak skomplikowanych narzędzi obliczeniowych, ale za to powinna cechować się dużą niezawodnością. Jej zadania są przedstawione na poniższej liście.
+Drugi poziom zaproponowanego w niniejszej pracy rozwiązania to część ,,niższego poziomu'' - jej nazwa jest związana z tym, że bezpośrednio wpływa na sterowany układ. Nie zawiera tak skomplikowanych narzędzi obliczeniowych, ale za to powinna cechować się dużą niezawodnością. Jej zadania są przedstawione na poniższej liście.
 
 \begin{enumerate}
     \item Aplikacja sterowania czasooptymalnego przez czas, który jest wyliczony przez część ,,wyższego poziomu'' oraz w odpowiedniej postaci (,,bang-bang'').
