@@ -1,3 +1,26 @@
 \section{Komunikacja między elementami oprogramowania}
 \label{sec:komunikacja}
 
+\begin{itemize} 
+    \item Część obliczeniowa wysyła:
+    \begin{enumerate}
+        \item wartości końcowe poziomów w zbiornikach (będące stanem docelowym w zadaniu czasooptymalnym oraz punktem linearyzacji modelu służącym do wyliczenia nastaw regulatora liniowo-kwadratowego),
+        \item dla regulatora czasooptymalnego:
+        \begin{enumerate}
+            \item czasy przełączeń (założono postać sterowania typu ,,bang-bang''),
+            \item wartość początkową sterowania czasooptymalnego,
+            \item wartość ,,drugorzędną'' tego sterowania (założono, że część ,,niższa'' nie musi znać ograniczeń nałożonych na sterowanie),
+            \item czas aplikacji sterowania czasooptymalnego (będący wartością wskaźnika jakości w tym zadaniu),
+        \end{enumerate}
+        \item dla regulatora liniowo-kwadratowego:
+        \begin{enumerate}
+            \item wektor K współczynników regulatora,
+            \item sterowanie ustalone, od którego są liczone odchyłki.
+        \end{enumerate}
+    \end{enumerate}
+    \item Część sterowania bezpośredniego wysyła:
+    \begin{itemize}
+        \item aktualne poziomy wody w zbiornikach,
+        \item aktualną wartość sterowania.
+    \end{itemize}
+\end{itemize}
