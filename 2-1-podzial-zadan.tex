@@ -1,3 +1,32 @@
 \section{Podział zadań między elementami oprogramowania}
 \label{sec:podzial-zadan}
 
+W związku z założoną architekturą oprogramowania, opierającą się na dwóch częściach, kluczowym aspektem jest odpowiedni podział zadań między nimi oraz wybór parametrów wysyłanych przez obie strony.
+
+Pierwsza z nich to część ,,wyższego poziomu'' - została tak określona ze względu na to, iż nie ma bezpośredniego wpływu na kontrolowany fizyczny obiekt. Jej zadania są przedstawione poniżej.
+
+\begin{enumerate}
+    \item Zadania części ,,wyższego poziomu'':
+    \begin{enumerate}
+        \item wyznaczanie sterowania czasooptymalnego dla zadanych wartości początkowych i końcowych,
+        \item symulacja modelu nieliniowego, aby zweryfikować wyliczone sterowanie czasooptymalne,
+        \item linearyzacja modelu w punkcie pracy, czyli w stanie docelowym zagadnienia czasooptymalnego,
+        \item wyznaczanie sterowania optymalnego w sensie liniowo - kwadratowego wskaźnika jakości (dla modelu linearyzowanego w punkcie pracy).
+    \end{enumerate}
+    \item Wysyła ona:
+    \begin{enumerate}
+        \item wartości końcowe poziomów w zbiornikach (będące stanem docelowym w zadaniu czasooptymalnym oraz punktem linearyzacji modelu służącym do wyliczenia nastaw regulatora liniowo-kwadratowego),
+        \item dla regulatora czasooptymalnego:
+        \begin{enumerate}
+            \item czasy przełączeń (założono postać sterowania typu ,,bang-bang''),
+            \item wartość początkową sterowania czasooptymalnego,
+            \item wartość ,,drugorzędną'' tego sterowania (założono, że część ,,niższa'' nie musi znać ograniczeń nałożonych na sterowanie),
+            \item czas aplikacji sterowania czasooptymalnego (będący wartością wskaźnika jakości w tym zadaniu),
+        \end{enumerate}
+        \item dla regulatora liniowo-kwadratowego:
+        \begin{enumerate}
+            \item wektor K współczynników regulatora,
+            \item sterowanie ustalone, od którego są liczone odchyłki.
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
