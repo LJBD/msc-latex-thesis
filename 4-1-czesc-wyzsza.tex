@@ -8,24 +8,27 @@ Aby zapewnić jak najlepszą realizację zadań postawionych przed częścią ob
 \subsection{Opis systemu Tango Controls}
 \label{sub:czesc-wyzsza-tango}
 
-Tango Controls to zestaw narzędzi służący do zarządzania rozproszonymi systemami sterowania umożliwiający przyłączanie dowolnych urządzeń oraz fragmentów oprogramowania do jednej magistrali programowej. Jest on dystrybuowany na otwartej licencji (tzw. słabszej powszechnej licencji publicznej GNU - ang. LGPL - w wersji 3) i utrzymywany przez konsorcjum placówek naukowych z całej Europy (więcj informacji w \cite{TangoWebsite}).
+Tango Controls to zestaw narzędzi służący do zarządzania rozproszonymi systemami sterowania umożliwiający przyłączanie dowolnych urządzeń oraz fragmentów oprogramowania do jednej magistrali programowej. Jest on dystrybuowany na otwartej licencji (tzw. słabszej powszechnej licencji publicznej GNU - ang. \emph{Lesser GNU Public Licence} - w wersji 3) i utrzymywany przez konsorcjum placówek naukowych z całej Europy (więcj informacji w \cite{TangoWebsite}).
 
-Początki tego oprogramowania sięgają roku 1999, kiedy to w Europejskim Ośrodku Synchrotronu Atomowego w Grenoble podjęto próbę implementacji nowego systemu pozwalającego na połączenie wszystkich urządzeń jedną magistralą programową i zaczęto pracę nad jej uogólnieniem, aby mogła przyjąć dowolny sprzęt, który tylko będzie miał napisany odpowiedni do niej sterownik. Osiągnięto ten cel dzięki użyciu odpowiedniej technologii komunikacyjnej (oryginalnie pakietu \texttt{omniORB} - implementacji architektury CORBA) oraz zastosowaniu własnego protokołu oraz ogólnej przestrzeni adresowej dla wszystkich urządzeń w systemie. Przyłączanie nowego sprzętu do tego systemu opiera się na zasadzie opakowywania istniejącego kodu służącego do komunikacji z nim kodem realizującym operacje związane z systemem Tango Controls.
+Początki tego oprogramowania sięgają roku 1999, kiedy to w Europejskim Ośrodku Synchrotronu Atomowego w Grenoble podjęto próbę implementacji nowego systemu pozwalającego na połączenie wszystkich urządzeń jedną magistralą programową i zaczęto pracę nad jej uogólnieniem, aby mogła przyjąć dowolny sprzęt, który tylko będzie miał napisany odpowiedni do niej sterownik. Osiągnięto ten cel dzięki użyciu odpowiedniej technologii komunikacyjnej (oryginalnie pakietu \texttt{omniORB} - implementacji architektury CORBA) oraz zastosowaniu własnego protokołu oraz ogólnej przestrzeni adresowej dla wszystkich urządzeń w systemie.
 
-Podstawowym pojęciem opisywanego systemu jest urządzenie. Może to być:
+Przyłączanie nowego sprzętu do tego systemu opiera się na zasadzie opakowywania istniejącego kodu służącego do komunikacji z nim kodem realizującym operacje związane z systemem Tango Controls. W związku z tym, że jednym z podstawowych założeń tego systemu jest obiektowość, to opakowanie będzie miało postać ,,klasy urządzeń''.
+
+Podstawowym pojęciem opisywanego systemu jest urządzenie, czyli instancja klasy urządzeń. Może to być:
 \begin{itemize}
     \item logiczna abstrakcja istniejącego fizycznie sprzętu,
     \item logiczna abstrakcja grupy urządzeń,
     \item fragment oprogramowania (wtedy mówi się o czysto programowym urządzeniu).
 \end{itemize}
+
+Urządzenia systemu Tango są grupowane w serwery urządzeń - procesy w systemie operacyjnym, które przy swoim starcie pytają warstwy persystencji systemu (bazy danych typu MySQL) o to, jakie urządzenia mają uruchomić. Takie serwery dają również możliwość zarządzania urządzeniami w prosty sposób.
 %TODO: klient/serwer - architektura tango
 
 %TODO: urządzenie jako podstawowy koncept
 
 Tabela \ref{tab:tango-implementations} podsumowuje wszystkie możliwe technologie, z których można korzystać, aby łączyć się z systemem zarządzanym przez bibliotekę Tango Controls.
 
-\begin{table}[t]
-    \label{tab:tango-implementations}
+\begin{table}[hpt]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline 
@@ -49,6 +52,7 @@ Tabela \ref{tab:tango-implementations} podsumowuje wszystkie możliwe technologi
         \hline 
     \end{tabular}
     \caption{Podsumowanie języków programowania, w których istnieje możliwość połączenia z systemem Tango Controls. Źródło: \cite{TangoWebsite}.}
+    \label{tab:tango-implementations}
 \end{table}
 
 %-------------------------------------------------
