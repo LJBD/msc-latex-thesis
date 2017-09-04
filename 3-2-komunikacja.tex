@@ -1,7 +1,10 @@
 \section{Komunikacja między elementami oprogramowania}
 \label{sec:komunikacja}
 
-\begin{itemize} 
+Hybrydowa struktura aplikacji wymusza dokładne zdefiniowanie schematów komunikacyjnych między oboma jej poziomami.
+Poniżej znajduje się podsumowanie wartości wysyłanych przez oba poziomy.
+
+\begin{enumerate} 
     \item Część obliczeniowa wysyła:
     \begin{enumerate}
         \item wartości końcowe poziomów w zbiornikach (będące stanem docelowym w zadaniu czasooptymalnym oraz punktem linearyzacji modelu służącym do wyliczenia nastaw regulatora liniowo-kwadratowego),
@@ -10,7 +13,7 @@
             \item czasy przełączeń (założono postać sterowania typu ,,bang-bang''),
             \item wartość początkową sterowania czasooptymalnego,
             \item wartość ,,drugorzędną'' tego sterowania (założono, że część ,,niższa'' nie musi znać ograniczeń nałożonych na sterowanie),
-            \item czas aplikacji sterowania czasooptymalnego (będący wartością wskaźnika jakości w tym zadaniu),
+            \item czas aplikacji sterowania czasooptymalnego (będący wartością wskaźnika jakości w tym zadaniu);
         \end{enumerate}
         \item dla regulatora liniowo-kwadratowego:
         \begin{enumerate}
@@ -23,4 +26,30 @@
         \item aktualne poziomy wody w zbiornikach,
         \item aktualną wartość sterowania.
     \end{itemize}
-\end{itemize}
+\end{enumerate}
+
+Wyszczególniono 3 możliwe akcje zachodzące w systemie, poniżej znajduje się ich lista. Zilustrowano je odpowiednimi (aczkolwiek uproszczonymi do poziomu ogólnej specyfikacji) diagramami sekwencji według konwencji UML. Wyszczególniono na nich użytkownika, część obliczeniową i sterującą oraz oprogramowanie optymalizacyjne, aby zaznaczyć, że jest ono de facto osobnym elementem, zewnętrznym i niestanowiącym części aplikacji będącej przedmiotem niniejszej pracy.
+
+\begin{enumerate}
+    \item Akcja obliczania sterowania czasooptymalnego (przedstawiona na rys. \ref{fig:comm-toc}).
+    \item Akcja obliczania sterowania liniowo-kwadratowego (pokazana na rys. \ref{fig:comm-lqr}).
+    \item Akcja wysłania obliczonych sterowań między poziomami aplikacji (zaprezentowana na rys. \ref{fig:comm-send} zawierającym pozostałe akcje w uproszczonej formie).
+\end{enumerate}
+
+\begin{figure}[hpt]
+    \centering
+    \includegraphics[width=\textwidth]{Grafika/communication-toc}
+    \caption{Diagram sekwencji ilustrujący akcję obliczenia sterowania czasooptymalnego. Źródło: własne.}\label{fig:comm-toc}
+\end{figure}
+
+\begin{figure}[hpt]
+    \centering
+    \includegraphics[width=\textwidth]{Grafika/communication-lqr}
+    \caption{Diagram sekwencji ilustrujący akcję obliczenia sterowania liniowo-kwadratowego. Źródło: własne.}\label{fig:comm-lqr}
+\end{figure}
+
+\begin{figure}[hpt]
+    \centering
+    \includegraphics[width=\textwidth]{Grafika/communication-between-levels}
+    \caption{Diagram sekwencji ilustrujący akcję wysyłania sterowań. Źródło: własne.}\label{fig:comm-send}
+\end{figure}

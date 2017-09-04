@@ -8,6 +8,48 @@ Aby zapewnić jak najlepszą realizację zadań postawionych przed częścią ob
 \subsection{Opis systemu Tango Controls}
 \label{sub:czesc-wyzsza-tango}
 
+Tango Controls to zestaw narzędzi służący do zarządzania rozproszonymi systemami sterowania umożliwiający przyłączanie dowolnych urządzeń oraz fragmentów oprogramowania do jednej magistrali programowej. Jest on dystrybuowany na otwartej licencji (tzw. słabszej powszechnej licencji publicznej GNU - ang. LGPL - w wersji 3) i utrzymywany przez konsorcjum placówek naukowych z całej Europy (więcj informacji w \cite{TangoWebsite}).
+
+Początki tego oprogramowania sięgają roku 1999, kiedy to w Europejskim Ośrodku Synchrotronu Atomowego w Grenoble podjęto próbę implementacji nowego systemu pozwalającego na połączenie wszystkich urządzeń jedną magistralą programową i zaczęto pracę nad jej uogólnieniem, aby mogła przyjąć dowolny sprzęt, który tylko będzie miał napisany odpowiedni do niej sterownik. Osiągnięto ten cel dzięki użyciu odpowiedniej technologii komunikacyjnej (oryginalnie pakietu \texttt{omniORB} - implementacji architektury CORBA) oraz zastosowaniu własnego protokołu oraz ogólnej przestrzeni adresowej dla wszystkich urządzeń w systemie. Przyłączanie nowego sprzętu do tego systemu opiera się na zasadzie opakowywania istniejącego kodu służącego do komunikacji z nim kodem realizującym operacje związane z systemem Tango Controls.
+
+Podstawowym pojęciem opisywanego systemu jest urządzenie. Może to być:
+\begin{itemize}
+    \item logiczna abstrakcja istniejącego fizycznie sprzętu,
+    \item logiczna abstrakcja grupy urządzeń,
+    \item fragment oprogramowania (wtedy mówi się o czysto programowym urządzeniu).
+\end{itemize}
+%TODO: klient/serwer - architektura tango
+
+%TODO: urządzenie jako podstawowy koncept
+
+Tabela \ref{tab:tango-implementations} podsumowuje wszystkie możliwe technologie, z których można korzystać, aby łączyć się z systemem zarządzanym przez bibliotekę Tango Controls.
+
+\begin{table}[t]
+    \label{tab:tango-implementations}
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline 
+        \textbf{Język} & \textbf{Typ implementacji} &\textbf{Co umożliwia} \\ 
+        \hline 
+        C++ & pełna & klient i serwer \\ 
+        \hline 
+        Java & pełna & klient i serwer \\ 
+        \hline 
+        Python & opakowanie do implementacji w C++ & klient i serwer \\ 
+        \hline 
+        C & opakowanie do implementacji w C++ & klient \\ 
+        \hline 
+        LabView & implementacja pomocnicza w języku C++ & klient i serwer \\ 
+        \hline 
+        MATLAB/Octave & tylko warstwa komunikacyjna napisana w języku C++ & klient \\ 
+        \hline 
+        IgorPro & tylko warstwa komunikacyjna napisana w języku C++ & klient \\ 
+        \hline 
+        JavaScript & tylko warstwa komunikacyjna z użyciem protokołu REST & klient \\ 
+        \hline 
+    \end{tabular}
+    \caption{Podsumowanie języków programowania, w których istnieje możliwość połączenia z systemem Tango Controls. Źródło: \cite{TangoWebsite}.}
+\end{table}
 
 %-------------------------------------------------
 \subsection{Wybór pakietu do optymalizacji dynamicznej}
