@@ -1,7 +1,11 @@
 \section{Część obliczeniowa (,,wyższego poziomu'')}
 \label{sec:czesc-wyzsza}
 
-Aby zapewnić jak najlepszą realizację zadań postawionych przed częścią obliczeniową, należało wybrać odpowiednie oprogramowanie używane przez ten poziom aplikacji. Założono, że ta część powinna być napisana w języku programowania Python oraz używać biblioteki Tango Controls jako swojej podstawy.
+Aby zapewnić jak najlepszą realizację zadań postawionych przed częścią obliczeniową, należało wybrać odpowiednie oprogramowanie używane przez ten poziom aplikacji. Przyjęto dwa podstawowe założenia co do niego
+\begin{itemize}
+    \item powinna być napisana w języku programowania Python,
+    \item powinna używać biblioteki Tango Controls jako swojej podstawy.
+\end{itemize}
 
 
 %-------------------------------------------------
@@ -10,23 +14,35 @@ Aby zapewnić jak najlepszą realizację zadań postawionych przed częścią ob
 
 Tango Controls to zestaw narzędzi służący do zarządzania rozproszonymi systemami sterowania umożliwiający przyłączanie dowolnych urządzeń oraz fragmentów oprogramowania do jednej magistrali programowej. Jest on dystrybuowany na otwartej licencji (tzw. słabszej powszechnej licencji publicznej GNU - ang. \emph{Lesser GNU Public Licence} - w wersji 3) i utrzymywany przez konsorcjum placówek naukowych z całej Europy (więcj informacji w \cite{TangoWebsite}).
 
-Początki tego oprogramowania sięgają roku 1999, kiedy to w Europejskim Ośrodku Synchrotronu Atomowego w Grenoble podjęto próbę implementacji nowego systemu pozwalającego na połączenie wszystkich urządzeń jedną magistralą programową i zaczęto pracę nad jej uogólnieniem, aby mogła przyjąć dowolny sprzęt, który tylko będzie miał napisany odpowiedni do niej sterownik. Osiągnięto ten cel dzięki użyciu odpowiedniej technologii komunikacyjnej (oryginalnie pakietu \texttt{omniORB} - implementacji architektury CORBA) oraz zastosowaniu własnego protokołu oraz ogólnej przestrzeni adresowej dla wszystkich urządzeń w systemie.
+Początki tego oprogramowania sięgają roku 1999, kiedy to w Europejskim Ośrodku Synchrotronu Atomowego w Grenoble podjęto próbę implementacji nowego systemu pozwalającego na połączenie wszystkich urządzeń jedną magistralą programową i zaczęto pracę nad jej uogólnieniem, aby mogła przyjąć dowolny sprzęt, który tylko będzie miał napisany odpowiedni do niej sterownik. Osiągnięto ten cel dzięki użyciu odpowiedniej technologii komunikacyjnej (oryginalnie pakietu \texttt{omniORB} - implementacji architektury CORBA) oraz zastosowaniu własnego protokołu oraz ogólnej przestrzeni adresowej dla wszystkich urządzeń w systemie. Zastosowano tutaj również podejście ,,klient - serwer'', a więc istnieje wyraźne rozgranicznie między interfejsem dla klienta (aplikacji pobierającej dane z systemu) oraz serwera (aplikacji dostarczającej dane).
 
-Przyłączanie nowego sprzętu do tego systemu opiera się na zasadzie opakowywania istniejącego kodu służącego do komunikacji z nim kodem realizującym operacje związane z systemem Tango Controls. W związku z tym, że jednym z podstawowych założeń tego systemu jest obiektowość, to opakowanie będzie miało postać ,,klasy urządzeń''.
+Przyłączanie nowego sprzętu do tego systemu opiera się na zasadzie opakowywania istniejącego kodu służącego do komunikacji z nim kodem realizującym operacje związane z systemem Tango Controls. W związku z tym, że jednym z podstawowych założeń tego systemu jest obiektowość, to opakowanie będzie miało postać \emph{klasy urządzeń}.
+Dzięki temu przejmuje on wszystkie zalety (oraz pułapki) programowania obiektowego: możliwość dziedziczenia między klasami, co ułatwia utrzymywanie hierarchicznej struktury pisanego oprogramowania, jak i możliwość współdzielenia bardziej ogólnych klas między różnymi systemami, które korzystają z Tango Controls.
 
-Podstawowym pojęciem opisywanego systemu jest urządzenie, czyli instancja klasy urządzeń. Może to być:
+Podstawowym pojęciem opisywanego systemu jest \emph{urządzenie}, które jest obiektem w sensie programistycznym (instancją klasy danego typu urządzeń). Może to być:
 \begin{itemize}
-    \item logiczna abstrakcja istniejącego fizycznie sprzętu,
-    \item logiczna abstrakcja grupy urządzeń,
-    \item fragment oprogramowania (wtedy mówi się o czysto programowym urządzeniu).
+    \item logiczna abstrakcja istniejącego fizycznie sprzętu, niezależnie od tego, czy jest to jeden prosty czujnik, czy bardziej skomplikowane urządzenie z własnym HMI (ang. \emph{Human-Machine Interface}: interfejs człowiek-maszyna),
+    \item logiczna abstrakcja grupy urządzeń, również niezależnie od ich stopnia skomplikowania,
+    \item fragment oprogramowania - mówi się wtedy o czysto programowym urządzeniu.
 \end{itemize}
 
-Urządzenia systemu Tango są grupowane w serwery urządzeń - procesy w systemie operacyjnym, które przy swoim starcie pytają warstwy persystencji systemu (bazy danych typu MySQL) o to, jakie urządzenia mają uruchomić. Takie serwery dają również możliwość zarządzania urządzeniami w prosty sposób.
+Definicja przestrzeni adresowej systemu zakłada, że każde urządzenie w systemie ma nazwę składającą się z 3 członów przedzielonych ukośnikami - ,,/'':
+\begin{itemize}
+    \item domeny,
+    \item rodziny,
+    \item członka.
+\end{itemize}
+Przykładowa nazwa wygląda następująco: \texttt{sys/tg\_test/1}.
+
+Dodatkowo podając nazwę urządzenia, można również podać adres bazowy systemu, czyli adres i port, na którym można nawiązać komunikację TCP/IP z urządzeniem zarządzającym dostępem do warstwy persystencji systemu - bazy danych MySQL. Tam przechowywane są informacje na temat urządzeń kiedykolwiek uruchomionych w systemie. Taki adres bazowy systemu określa się jako zmienną środowiskową w systemie operacyjnym o nazwie \texttt{TANGO\_HOST}. Uzupełniona o nią (i o nazwę protokołu) przykładowa nazwa urządzenia wygląda następująco: \texttt{tango://tango-host.org:10000/sys/tg\_test/1}.
+
+Urządzenia systemu Tango są grupowane w \emph{serwery urządzeń} - procesy w systemie operacyjnym, które przy swoim starcie pytają warstwy persystencji systemu (bazy danych MySQL) o to, jakie urządzenia mają uruchomić. Każdy serwer urządzeń ma określony zestaw klas urządzeń, których instancjami może zarządzać.
 %TODO: klient/serwer - architektura tango
 
 %TODO: urządzenie jako podstawowy koncept
 
-Tabela \ref{tab:tango-implementations} podsumowuje wszystkie możliwe technologie, z których można korzystać, aby łączyć się z systemem zarządzanym przez bibliotekę Tango Controls.
+Specyfikacja Tango Controls definiuje API (ang. \emph{Application Programming Interface}: interfejs programowania aplikacji), do którego jest dostęp w różnych językach programowania na wielu systemach operacyjnych (m.in.: różne dystrybucje systemu Linux, Windows, Mac OS oraz Solaris). Jest on dokładnie opisany w dokumentacji dostępnej w \cite{TangoDocs}.
+Tabela \ref{tab:tango-implementations} podsumowuje wszystkie możliwe technologie, z których można korzystać, aby łączyć się z systemem zarządzanym przez Tango Controls. 
 
 \begin{table}[hpt]
     \centering
