@@ -49,7 +49,7 @@ Przykładowa nazwa wygląda następująco: \texttt{sys/tg\_test/1}.
 
 Dodatkowo podając nazwę urządzenia, można również podać adres bazowy systemu, czyli adres i port, na którym można nawiązać komunikację TCP/IP z urządzeniem zarządzającym dostępem do warstwy persystencji systemu - bazy danych MySQL. Tam przechowywane są informacje na temat urządzeń kiedykolwiek uruchomionych w systemie. Taki adres bazowy systemu określa się jako zmienną środowiskową w systemie operacyjnym o nazwie \texttt{TANGO\_HOST}. Określenie takiej pary adresu i portu jednoznacznie definiuje, z którym systemem zarządzanym przez Tango Controls klient się chce połączyć. Uzupełniona o nią (i o nazwę protokołu) przykładowa nazwa urządzenia wygląda następująco: \texttt{tango://tango-host.org:10000/sys/tg\_test/1}.
 
-Urządzenia systemu Tango są grupowane w \emph{serwery urządzeń} - procesy w systemie operacyjnym, które przy swoim starcie pytają warstwy persystencji o to, jakie urządzenia mają uruchomić. Każdy serwer urządzeń ma określony zestaw klas urządzeń, których instancjami może zarządzać. Proponuje się rozróżnienie na klasę urządzeń i typ serwera urządzeń, aby uniknąć nieścisłości. Każdy serwer jest również obiektem klasy urządzeń \emph{DServer}, a jego typ określa to, jakimi klasami urządzeń dysponuje.
+Urządzenia systemu Tango są grupowane w \emph{serwery urządzeń} - procesy w systemie operacyjnym, które przy swoim starcie pytają warstwy persystencji o to, jakie urządzenia mają uruchomić. Każdy serwer urządzeń ma określony zestaw klas urządzeń, których instancjami może zarządzać: uruchamiać je, edytować, wyłączać, kasować itp. Umożliwia on również włączenie odpytywania konkretnego elementu interfejsu urządzenia z okresem zadanym w milisekundach. Proponuje się rozróżnienie na klasę urządzeń i typ serwera urządzeń, aby uniknąć nieścisłości. Każdy serwer jest również obiektem klasy urządzeń \emph{DServer}, a jego typ określa to, jakimi klasami urządzeń dysponuje.
 
 Na interfejs urządzenia składają się cztery typy pól w klasie tego urządzenia:
 \begin{enumerate}
@@ -131,6 +131,43 @@ Architektura systemu Tango Controls wymusiła pewne decyzje co do struktury tej 
 Określając interfejs dla systemu Tango, przyjęto założenie, że wszystkie parametry statyczne modelu matematycznego powinny być również statyczną konfiguracją urządzenia, a więc należy opisać je jako jego właściwości. Głównym powodem przyjęcia takiej reguły jest fakt, iż w czasie działania - realizacji sterowania optymalnego - te wielkości nie będą się zmieniać.
 Parametry dynamiczne, czyli takie, które zmieniają się między uruchomieniami algorytmów optymalizacyjnych, powinny zostać opisane jako atrybuty urządzenia.
 Wszystkie dostępne akcje na modelu matematycznym zostały zaimplementowane jako komendy. Dodano tam również wszystkie akcje opisane w podrozdziale \ref{sec:komunikacja}.
+
+Poniższa lista zawiera wszystkie istotne dla użytkownika elementy interfejsu systemu Tango urządzenia realizującego zadania wyższego poziomu aplikacji. Każdy z nich jest pokrótce opisany.
+
+\begin{enumerate}
+    \item Właściwości:
+    \begin{enumerate}
+        \item \emph{IPOPTTolerance} - tolerancja błędów oprogramowania do rozwiązywania zagadnień algebry liniowej (więcej o wpływie na działanie optymalizacji w sekcji \ref{sub:opt-dokladnosc}).
+        \item \emph{ModelFile} - nazwa pliku z modelem dla oprogramowania do optymalizacji (więcej w sekcji \ref{sub:czesc-wyzsza-wybor}).
+        \item \emph{MaxControl} - górne ograniczenie sterowania.
+        \item \emph{Tank*Outflow} - opory wypływu ze zbiorników $C_{i}$. Dane jako 3 osobne właściwości - w miejscu * jest liczba 1, 2 lub 3.
+        \item \emph{Tank*FlowCoeff} - współczynniki wypływu ze zbiorników $\alpha_{i}$. Dane j.w.
+        \item \emph{SimulationFinalTime} - czas symulacji używanej w celu inicjalizacji algorytmu optymalizacji (więcej o tym procesie w sekcji \ref{sub:opt-init}.
+        \item \emph{TCPServerEnabled} - wartość logiczna zawierająca informację o tym, czy urządzenie ma uruchomić serwer TCP w celu komunikowania się z aplikacją niższego poziomu.
+        \item \emph{TCPServerAddress} - para adres i port (przedzielone dwukropkiem). Pod tym adresem serwer TCP będzie nasłuchiwał przychodzących połączeń.
+    \end{enumerate}
+    \item Atrybuty (nie umożliwiają zapisu, chyba że zaznaczono inaczej):
+    \begin{enumerate}
+        \item \emph{H*Current} - zawierają aktualne poziomy wody w zbiornikach odebrane od aplikacji niższego poziomu. Dane jako 3 osobne atrybuty - w miejscu * jest liczba 1, 2 lub 3.
+        \item \emph{H*Initial} - zawierają początkowe wartości poziomów dla optymalizacji dynamicznej. Dane j.w., możliwy zapis.
+        \item \emph{H*Final} - zawierają końcowe wartości poziomów dla optymalizacji dynamicznej. Dane j.w., możliwy zapis.
+        \item \emph{H*Simulated} - zawierają wektory przebiegu poziomów w zbiornikach uzyskane w symulacji. Dane j.w.
+        \item \emph{OptimalH*} - zawierają wektory przebiegu poziomów w zbiornikach uzyskane w czasie optymalizacji (wyznaczania sterowania czasooptymalnego). Dane j.w.
+        \item \emph{OptimalTime} - liczba będąca wartością wskaźnika jakości uzyskaną w procesie wyznaczania sterowania czasooptymalnego.
+        \item \emph{SimulationTime} - wektor wartości czasu uzyskany w czasie symulacji potrzebny w celu rysowania przebiegów symulacyjnych \emph{H*Simulated}.
+        \item \emph{OptimalControl} - wektor zawierający sterowanie czasooptymalne.
+        \item \emph{ControlCurrent} - zawiera aktualną wartość sterowania odebraną od aplikacji niższego poziomu.
+        \item \emph{SwitchTimes} - wektor zawierający czasy przełączeń po normalizacji sterowania czasooptymalnego.
+        \item \emph{Q} - macierz 3 na 3 zawierająca wagi poziomów do zagadnienia liniowo-kwadratowego. Możliwy zapis.
+        \item \emph{R} - wartość wagi sterowania do zagadnienia liniowo-kwadratowego. Możliwy zapis.
+        \item \emph{K} - wektor współczynników regulatora liniowo-kwadratowego.
+        \item \emph{VerificationError} - wartość błędu weryfikacj (więcej o jego wyznaczaniu w podrozdziale \ref{sec:sym-wer}).
+    \end{enumerate}
+    \item Komendy:
+    \begin{enumerate}
+        \item \emph{text}
+    \end{enumerate}
+\end{enumerate}
 
 %TODO: Lista komend, właściwości i atrybutów
 
