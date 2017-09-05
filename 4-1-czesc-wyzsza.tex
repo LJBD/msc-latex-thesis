@@ -111,7 +111,7 @@ Oprócz tego istnieje też bogaty zestaw narzędzi służących do zarządzania 
     \label{tab:tango-implementations}
 \end{table}
 
-\begin{figure}[htp]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{Grafika/tango_bindings_map1_1}
     \caption{Mapa wtyczek do systemu Tango Controls. Źródło: \cite{TangoDocs}.}\label{fig:tango-bindings}
@@ -162,10 +162,28 @@ Poniższa lista zawiera wszystkie istotne dla użytkownika elementy interfejsu s
         \item \emph{R} - wartość wagi sterowania do zagadnienia liniowo-kwadratowego. Możliwy zapis.
         \item \emph{K} - wektor współczynników regulatora liniowo-kwadratowego.
         \item \emph{VerificationError} - wartość błędu weryfikacj (więcej o jego wyznaczaniu w podrozdziale \ref{sec:sym-wer}).
+        \item Dostępne stany:
+        \begin{enumerate}
+            \item OFF - model początkowy jest niewczytany.
+            \item STANDBY - model początkowy jest wczytany, ale nie trwa żadna długa operacja.
+            \item ON - trwa symulacja.
+            \item RUNNING - trwa optymalizacja.
+            \item ALARM - długa operacja się nie udała. W przypadku optymalizacji oznacza to, iż nie udało się znaleźć sterowania optymalnego. W przypadku weryfikacji, że zwróciła ona błąd (więcej na ten temat w sekcji \ref{sub:sym-wer-jmodelica}).
+        \end{enumerate}
     \end{enumerate}
     \item Komendy:
     \begin{enumerate}
-        \item \emph{text}
+        \item \emph{LoadInitialModel} - wczytuje model początkowy służący do inicjalizacji symulacji i optymalizacji.
+        \item \emph{ResetModel} - resetuje wczytany model początkowy.
+        \item \emph{GetEquilibriumFromControl} - przyjmuje wartość sterowania i na jej podstawie wylicza punkt równowagi, a następnie ustawia odpowiednie wartości poziomów końcowych.
+        \item \emph{RunSimulation} - uruchamia symulację, a po jej zakończeniu ustawia wartości zmiennych symulacyjnych.
+        \item \emph{RunVerification} - uruchamia symulację, a po jej zakończeniu ustawia wartości zmiennych symulacyjnych oraz wylicza błąd weryfikacji.
+        \item \emph{Optimise} - uruchamia procedurę optymalizacji, a następnie ustawia wartości poziomów optymalnych, sterowania optymalnego i osiągniętego czasu. Przyjmuje jeden argument - wartość logiczną, która określa, czy jako wartości początkowych powinna użyć aktualnych poziomów wody w zbiornikach. Jeśli tak się dzieje, to natychmiast po zakończeniu optymalizacji uruchamia komendę \emph{SendControl}.
+        \item \emph{NormaliseOptimalControl} - przeprowadza operację normalizacji sterowania czasooptymalnego (więcej na ten temat w sekcji \ref{sub:opt-dokladnosc}) i ustawia wartości czasów przełączeń.
+        \item \emph{SendControl} - sprawdza, czy są gotowe wartości do wysłania do aplikacji niższego poziomu, czyli czasy przełączeń i wartości wektora $K$ (jeśli nie są gotowe, uruchamia komendę \emph{GetLQR}), a następnie wysyła je do serwera TCP.
+        \item \emph{GetDataFromDirectControl} - odbiera od serwera TCP dane od aplikacji sterowania bezpośredniego. Jest odpytywana standardowo co 50 milisekund. Ustawia aktualne poziomy i sterowanie.
+        \item \emph{GetLQR} - uruchamia procedurę linearyzacji i wyliczania parametrów regulatora liniowo-kwadratowego. Ustawia wartości wektora K.
+        \item \emph{GetEigenvaluesFromClosedLoopWithLQR} - zwraca w formie tekstowej wartości własne macierzy $A - BR^{-1}B^{T}K$ opisującej układ zamknięty sterowany regulatorem liniowo-kwadratowym.
     \end{enumerate}
 \end{enumerate}
 
