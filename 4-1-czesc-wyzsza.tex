@@ -126,6 +126,8 @@ W związku ze wszystkimi opisanymi cechami uznano Tango Controls za odpowiednią
 
 Architektura systemu Tango Controls wymusiła pewne decyzje co do struktury tej części aplikacji. Zdecydowano, że będzie ona napisana jako klasa urządzeń, która określa interfejs dla wszystkich operacji wymaganych do spełnienia zadań postawionych przed tym poziomem aplikacji w podrozdziale \ref{sec:podzial-zadan}. Nie zdecydowano się na podział zadań na mniejsze klasy urządzeń komunikujące się ze sobą. Przyjęto, że prostsza struktura z jedną klasą ułatwi użycie napisanego kodu w przyszłości, np. w formie części zajęć laboratoryjnych.
 
+Dokumentacja kodu klasy urządzeń jest zaimplementowana jako jego część. Można również zbudować ją osobno, na przykład w środowisku testowym dla wyższego poziomu aplikacji, którego opis znajduje się w sekcji \ref{sub:czesc-wyzsza-docker}.
+
 \subsubsection{Interfejs dla systemu Tango}
 
 Określając interfejs dla systemu Tango, przyjęto założenie, że wszystkie parametry statyczne modelu matematycznego powinny być również statyczną konfiguracją urządzenia, a więc należy opisać je jako jego właściwości. Głównym powodem przyjęcia takiej reguły jest fakt, iż w czasie działania - realizacji sterowania optymalnego - te wielkości nie będą się zmieniać.
@@ -162,6 +164,7 @@ Poniższa lista zawiera wszystkie istotne dla użytkownika elementy interfejsu s
         \item \emph{R} - wartość wagi sterowania do zagadnienia liniowo-kwadratowego. Możliwy zapis.
         \item \emph{K} - wektor współczynników regulatora liniowo-kwadratowego.
         \item \emph{VerificationError} - wartość błędu weryfikacj (więcej o jego wyznaczaniu w podrozdziale \ref{sec:sym-wer}).
+        \item \emph{FEMElements} - liczba elementów metody elementów skończonych, używanej przez algorytm optymalizacyjny. Możliwy zapis.
         \item Dostępne stany:
         \begin{enumerate}
             \item OFF - model początkowy jest niewczytany.
@@ -196,9 +199,33 @@ Podstawowym elementem istotnym dla powodzenia takiego zadania był wybór pakiet
 
 \subsubsection{Opis pakietu ACADO}
 
-%TODO: definicja modelu w ACADO
-Pierwszym z pakietów optymalizacyjnych, który był rozważany, jest ACADO. 
+Pierwszym z pakietów optymalizacyjnych, który był rozważany, jest ACADO (ang. \emph{Automatic Control and Dynamic
+Optimization}). Jest to zestaw algorytmów napisanych w języku C++ służących do różnych zastosowań związanych ze sterowaniem optymalnym, dostępny na otwartej licencji (za: \cite{Houska2011}). W jego skład wchodzą między innymi metody:
+\begin{itemize}
+    \item optymalizacji dynamicznej (w tym wielokryterialnej oraz modeli nieliniowych),
+    \item sterowania predykcyjnego (MPC, ang. \emph{Model Predictive Control}),
+    \item estymacji parametrów i stanu.
+\end{itemize}
 
+Dodatkowo opisywane oprogramowanie umożliwia generowanie kodu w języku C rozwiązującego konkretny problem, który może być użyty w mikrokontrolerze. Oprócz tego istnieje również możliwość użycia go w programie MATLAB, jako dodatkowego pakietu.
+
+Twórcom tej biblioteki przyświecały cztery główne założenia:
+\begin{enumerate}
+    \item Oprogramowanie musi być dostępne na otwartej licencji przynajmniej pracownikom akademickim.
+    \item Składnia musi być jak najbardziej intuicyjna, aby nie odrzucać potencjalnych użytkowników (którzy mogą nie mieć dużego doświadczenia z językiem C++) ilością kodu szablonowego (ang. \emph{boilerplate code}). Powinna umożliwiać prostą definicję problemów sterowania optymalnego. Udało się to osiągnąć, stosując różne bardziej zaawansowane elementy składni języka programowania, w szczególności przeładowywania operatorów, aby składnia była jak najbardziej zbliżona do matematycznego zapisu.
+    \item Kod powinien być napisany w taki sposób, aby ułatwić rozszerzanie go o własne algorytmy oraz używanie metod z tej biblioteki w innych, większych projektach. To założenie jest spełnione przez odpowiednie zaplanowanie struktury oprogramowania oraz przestrzeganie paradygmatu programowania obiektowego.
+    \item Brak zewnętrznych zależności. Użytkownik może zastosować ACADO, jeśli tylko posiada kompilator języka C++. Dodatkowe biblioteki nie są wymagane, ale mogą być użyte przy rysowaniu wykresów oraz specjalistycznych obliczeniach algebraicznych.
+\end{enumerate}
+
+Aby zilustrować prostotę składni, poniżej załączono definicję modelu matematycznego opisywanego w niniejszej pracy zestawu zbiorników. Znajduje się tu definicja stanu, sterowania i parametrów (linie 4 - 6), samego równania różniczkowego (linie 8 - 15) oraz problemu optymalizacji wraz z ograniczeniami (linie 20 - 38).
+\lstinputlisting[language=C++, firstline=21, lastline=58]{../masthe-acado-tanks-optimisation/tanks-optimisation.cpp}
+
+Ogólna forma funkcjonału celu obsługiwanego przez ACADO jest dana równaniem \ref{eq:acado-quality}, która składa się z wyrażenia podcałkowego Lagrange'a $L$ oraz wyrażenia Mayera $M$.
+
+\begin{equation}\label{eq:acado-quality}
+\Phi[x(\cdot), z(\cdot), u(\cdot), p, T] = \int_{t_{0}}^{T}L(\tau, x(\tau), z(\tau), u(\tau), p, T)d\tau + M(x(T), p, T)
+\end{equation}
+%TODO: dokończyć ten opis po ogólnym opisie metod numerycznych rozwiązywania problemów optymalizacji dynamicznej
 
 \subsubsection{Opis pakietu Modelica i \texttt{JModelica.org}}
 % TODO: definicja modelu w Modelice
@@ -206,5 +233,39 @@ Pierwszym z pakietów optymalizacyjnych, który był rozważany, jest ACADO.
 %-------------------------------------------------
 \subsection{Środowisko testowe części obliczeniowej}
 \label{sub:czesc-wyzsza-docker}
-%TODO opisać Dockera
-%TODO wspomnieć o budowaniu dokumentacji
+
+Ze względu na długi i skomplikowany proces instalacji oprogramowania JModelica.org z jego zależnościami, jak i pakietu Tango Controls zdecydowano przygotować przenośne środowisko testowe części obliczeniowej opisywanego w niniejszej pracy oprogramowania. W tym celu użyto platformy Docker służącej do zarządzania kontenerami. Są one lekkimi opakowaniami na aplikacje symulującymi zachowanie systemu operacyjnego, które są gotowe do uruchomienia przez silnik Dockera. Do ich zapisu używa się specjalnego systemu kontroli wersji, który zachowuje konkretny stan kontenera (nazywany obrazem), aby można go było w szybki sposób odtworzyć.
+Oprócz tego istnieje również możliwość grupowania kontenerów w środowiska pracy, które uruchamiane są jednym poleceniem.
+
+Jest to idealne środowisko do testowania aplikacji wymagających wielu zależności, w tym również sieciowych. Na potrzeby części obliczeniowej przygotowano obraz platformy Docker zawierający:
+\begin{itemize}
+    \item oprogramowanie JModelica.org wraz z zależnościami:
+    \begin{itemize}
+        \item pakiet do optymalizacji nieliniowej IPOP (ang. \emph{Interior Point Optimizer}) oraz jego zależności:
+        \begin{itemize}
+            \item biblioteka operacji wektorowych i macierzowych BLAS (ang. \emph{Basic Linear Algebra Subprograms}),
+            \item biblioteka operacji algebraicznych LAPACK (ang. \emph{Linear Algebra Package}),
+            \item biblioteka opisu problemów matematycznych AMPL/MP,
+            \item oprogramowanie do rozwiązywania układów liniowych MUMPS;
+        \end{itemize}
+        \item pakiet do wyliczania wartości pochodnych funkcji CppAd,
+        \item biblioteka do rozwiązywania równań różniczkowych i algebraicznych Sundials (ang. \emph{Suite of Nonlinear and Differential/Algebraic Equation Solvers}),
+        \item pakiet funkcji matematycznych w języku Python SciPy;
+    \end{itemize}
+    \item oprogramowanie Tango Controls w wersji klienckiej (bez serwera do komunikacji z bazą danych) wraz z zależnościami:
+    \begin{itemize}
+        \item pakiet implementujący architekturę komunikacji CORBA omniORB,
+        \item pakiet do komunikacji zdarzeniowej ZeroMQ,
+        \item biblioteka obliczeń numerycznych języka Python NumPy;
+    \end{itemize}
+    \item pakiet PyTango, czyli API systemu Tango Controls w języku Python.
+\end{itemize}
+
+Przygotowano również środowisko pracy zawierające następujące kontenery:
+\begin{itemize}
+    \item bazę danych z silnikiem MariaDB,
+    \item serwer urządzeń DatabaseDS systemu Tango Controls służący jako host systemu,
+    \item opisany wyżej kontener służący do uruchamiania części obliczeniowej aplikacji.
+\end{itemize}
+
+Takie podejście pozwoliło uniezależnić testowanie tego poziomu aplikacji od posiadanego sprzętu, jeśli tylko obsługiwał on platformę Docker.
