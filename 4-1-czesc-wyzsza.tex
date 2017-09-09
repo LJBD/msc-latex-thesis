@@ -220,11 +220,7 @@ Twórcom tej biblioteki przyświecały cztery główne założenia:
 Aby zilustrować prostotę składni, poniżej załączono definicję modelu matematycznego opisywanego w niniejszej pracy zestawu zbiorników. Znajduje się tu definicja stanu, sterowania i parametrów (linie 4 - 6), samego równania różniczkowego (linie 8 - 15) oraz problemu optymalizacji wraz z ograniczeniami (linie 20 - 38).
 \lstinputlisting[language=C++, firstline=21, lastline=58]{../masthe-acado-tanks-optimisation/tanks-optimisation.cpp}
 
-Ogólna forma funkcjonału celu obsługiwanego przez ACADO jest dana równaniem \ref{eq:acado-quality}, która składa się z wyrażenia podcałkowego Lagrange'a $L$ oraz wyrażenia Mayera $M$.
-
-\begin{equation}\label{eq:acado-quality}
-\Phi[x(\cdot), z(\cdot), u(\cdot), p, T] = \int_{t_{0}}^{T}L(\tau, x(\tau), z(\tau), u(\tau), p, T)d\tau + M(x(T), p, T)
-\end{equation}
+Ogólna forma funkcjonału celu obsługiwanego przez ACADO
 %TODO: dokończyć ten opis po ogólnym opisie metod numerycznych rozwiązywania problemów optymalizacji dynamicznej
 
 \subsubsection{Opis pakietu Modelica i \texttt{JModelica.org}}
