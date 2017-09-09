@@ -218,13 +218,14 @@ Ogólna definicja problemu optymalizacji rozwiązywanego przez takie metody zost
 Q[x(\cdot), u(\cdot), p, T] = \int_{t_{0}}^{T}L(\tau, x(\tau), u(\tau), p, T)d\tau + M(t_{0}, x(t_{0}), x(T), p, T)
 \end{equation}
 
-Gdy we wskaźniku jakości występuje tylko człon podcałkowy, to mówi się, że jest postaci Lagrange'a. Jeśli ma tylko drugi człon, nazywa się go postacią Mayera. Sytuację, w której występują oba, określa się mianem postaci Boltza.
+Gdy we wskaźniku jakości występuje tylko człon podcałkowy, to mówi się, że jest postaci Lagrange'a. Jeśli ma tylko drugi człon, nazywa się go postacią Mayera. Sytuację, w której występują oba, określa się mianem postaci Boltza. Oczywiście, podział między członami jest umowny i można ten sam funkcjonał zapisać zarówno w postaci Lagrange'a, jak i Mayera. Przykładem jest rozpatrywany w niniejszej pracy wskaźnik jakości dany postacią Mayera we wzorze \ref{eq:quality}. Równie dobrze można by go zapisać w postaci Lagrange'a: $Q = \int_{0}^{T} 1 ~d\tau$.
 
 Podstawowy podział metod obliczeniowych to metody \emph{pośrednie} oraz \emph{bezpośrednie}, choć ich rozróżnienie nie jest ścisłe i istnieją metody łączące cechy obu tych klas (za: \cite{Betts98}).
 
 Pierwsze z nich polegają na dyskretyzacji sterowania (czasem również stanu), aby móc przybliżyć wyjściowy problem optymalizacji dynamicznej zadaniem optymalizacji statycznej: programowania nieliniowego (ang. \emph{NLP - Non-Linear Programming})lub optymalizacji nieliniowej. To przybliżenie jest zwykle aproksymacją sterowań (oraz stanów w tych metodach, które z nich korzystają) w konkretnych przedziałach czasu wielomianami. Dzięki temu zastępuje się nieskończenie wymiarowy problem optymalizacji takim o skończonym wymiarze. Ta klasa metod jest bardziej uniwersalna i mniej wrażliwa na błędy, ale stosunkowo wolniej zbieżna i przez to mniej dokładna (za: \cite{Korytowski2015}). Przykładowe metody bezpośrednie przedstawione są poniżej:
 \begin{itemize}
     \item optymalizacja czasów przełączeń (do zastosowania tylko w przypadku sterowania o postaci ,,bang-bang''),
+    \item parametryzacja sterowania (np. aproksymacja funkcją schodkową),
     \item bezpośrednie metody kolokacyjne,
     \item metody strzałów bezpośrednich.
 \end{itemize}
@@ -244,5 +245,3 @@ Rys. \ref{fig:num-methods} przedstawia operacje matematyczne wykorzystywane prze
     \caption{Trzy główne komponenty wyznaczania sterowania optymalnego i klasy metod, które z nich korzystają. Źródło: \cite{Rao2010}. Tłumaczenie: własne.}
     \label{fig:num-methods}
 \end{figure}
-
-% TODO: Napisać podsekcję o numerycznych metodach wyznaczania sterowania!

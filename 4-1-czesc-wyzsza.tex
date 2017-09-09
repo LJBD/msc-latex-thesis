@@ -202,7 +202,11 @@ Podstawowym elementem istotnym dla powodzenia takiego zadania był wybór pakiet
 Pierwszym z pakietów optymalizacyjnych, który był rozważany, jest ACADO (ang. \emph{Automatic Control and Dynamic
 Optimization}). Jest to zestaw algorytmów napisanych w języku C++ służących do różnych zastosowań związanych ze sterowaniem optymalnym, dostępny na otwartej licencji (za: \cite{Houska2011}). W jego skład wchodzą między innymi metody:
 \begin{itemize}
-    \item optymalizacji dynamicznej (w tym wielokryterialnej oraz modeli nieliniowych),
+    \item bezpośrednie optymalizacji dynamicznej (w tym wielokryterialnej):
+        \begin{itemize}
+            \item programowanie nieliniowe (w tym programowanie kwadratowe: ang. \emph{QP - Quadratic Programming}),
+            \item bezpośrednia metoda strzałów wielokrotnych;
+        \end{itemize}
     \item sterowania predykcyjnego (MPC, ang. \emph{Model Predictive Control}),
     \item estymacji parametrów i stanu.
 \end{itemize}
@@ -211,7 +215,7 @@ Dodatkowo opisywane oprogramowanie umożliwia generowanie kodu w języku C rozwi
 
 Twórcom tej biblioteki przyświecały cztery główne założenia:
 \begin{enumerate}
-    \item Oprogramowanie musi być dostępne na otwartej licencji przynajmniej pracownikom akademickim.
+    \item Oprogramowanie musi być dostępne na otwartej licencji.
     \item Składnia musi być jak najbardziej intuicyjna, aby nie odrzucać potencjalnych użytkowników (którzy mogą nie mieć dużego doświadczenia z językiem C++) ilością kodu szablonowego (ang. \emph{boilerplate code}). Powinna umożliwiać prostą definicję problemów sterowania optymalnego. Udało się to osiągnąć, stosując różne bardziej zaawansowane elementy składni języka programowania, w szczególności przeładowywania operatorów, aby składnia była jak najbardziej zbliżona do matematycznego zapisu.
     \item Kod powinien być napisany w taki sposób, aby ułatwić rozszerzanie go o własne algorytmy oraz używanie metod z tej biblioteki w innych, większych projektach. To założenie jest spełnione przez odpowiednie zaplanowanie struktury oprogramowania oraz przestrzeganie paradygmatu programowania obiektowego.
     \item Brak zewnętrznych zależności. Użytkownik może zastosować ACADO, jeśli tylko posiada kompilator języka C++. Dodatkowe biblioteki nie są wymagane, ale mogą być użyte przy rysowaniu wykresów oraz specjalistycznych obliczeniach algebraicznych.
@@ -220,11 +224,11 @@ Twórcom tej biblioteki przyświecały cztery główne założenia:
 Aby zilustrować prostotę składni, poniżej załączono definicję modelu matematycznego opisywanego w niniejszej pracy zestawu zbiorników. Znajduje się tu definicja stanu, sterowania i parametrów (linie 4 - 6), samego równania różniczkowego (linie 8 - 15) oraz problemu optymalizacji wraz z ograniczeniami (linie 20 - 38).
 \lstinputlisting[language=C++, firstline=21, lastline=58]{../masthe-acado-tanks-optimisation/tanks-optimisation.cpp}
 
-Ogólna forma funkcjonału celu obsługiwanego przez ACADO
-%TODO: dokończyć ten opis po ogólnym opisie metod numerycznych rozwiązywania problemów optymalizacji dynamicznej
+Mimo iż pakiet ACADO jest napisany w języku C++, a nie w języku Python, została przeprowadzona próba użycia go do rozwiązania problemu znajdowania sterowania czasooptymalnego w opisywanym w niniejszej pracy układzie zbiorników. Wykorzystano tutaj metodę bezpośrednią opartą na programowaniu nieliniowym. Niestety, nie zakończyła się ona powodzeniem: bez względu na zmiany opcji algorytmu (w tym tolerancji rozwiązania) oraz na zastosowane techniki inicjalizacji nie udało się przeprowadzić ani jednej poprawnej optymalizacji. W związku z tym zdecydowano się zrezygnować z dalszych prób użycia pakietu ACADO i poszukać oprogramowania bardziej odpowiedniego do rozpatrywanego problemu.
 
-\subsubsection{Opis pakietu Modelica i \texttt{JModelica.org}}
+\subsubsection{Opis pakietu Modelica i JModelica.org}
 % TODO: definicja modelu w Modelice
+Pakiet Modelica 
 
 %-------------------------------------------------
 \subsection{Środowisko testowe części obliczeniowej}
@@ -237,7 +241,7 @@ Jest to idealne środowisko do testowania aplikacji wymagających wielu zależno
 \begin{itemize}
     \item oprogramowanie JModelica.org wraz z zależnościami:
     \begin{itemize}
-        \item pakiet do optymalizacji nieliniowej IPOP (ang. \emph{Interior Point Optimizer}) oraz jego zależności:
+        \item pakiet do optymalizacji nieliniowej IPOPT (ang. \emph{Interior Point Optimizer}) oraz jego zależności:
         \begin{itemize}
             \item biblioteka operacji wektorowych i macierzowych BLAS (ang. \emph{Basic Linear Algebra Subprograms}),
             \item biblioteka operacji algebraicznych LAPACK (ang. \emph{Linear Algebra Package}),
