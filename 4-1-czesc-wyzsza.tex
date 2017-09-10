@@ -78,7 +78,7 @@ Urządzenie jest obiektem takiej klasy i należy do serwera urządzeń (ang. \em
 \subsubsection{Interfejs programistyczny systemu}
 Specyfikacja Tango Controls definiuje API (ang. \emph{Application Programming Interface}: interfejs programowania aplikacji), do którego jest dostęp w różnych językach programowania na wielu systemach operacyjnych (m.in.: różne dystrybucje systemu Linux, Windows, Mac OS oraz Solaris). Jest on dokładnie opisany w dokumentacji dostępnej w \cite{TangoDocs}.
 
-Tabela \ref{tab:tango-implementations} podsumowuje wszystkie możliwe technologie, z których można korzystać, aby łączyć się z systemem zarządzanym przez Tango Controls. Informacje te są też przedstawione w graficznej formie na rys. \ref{fig:tango-bindings}.
+Tabela \ref{tab:tango-implementations} podsumowuje wszystkie możliwe technologie, z których można korzystać, aby łączyć się z systemem zarządzanym przez Tango Controls.
 
 Oprócz tego istnieje też bogaty zestaw narzędzi służących do zarządzania systemem, nadzorowania go, tworzenia interfejsów graficznych oraz realizowania innych usług wymaganych w rozproszonym systemie sterowania (np. archiwizacji, zbierania logów czy automatycznej konfiguracji).
 
@@ -111,13 +111,7 @@ Oprócz tego istnieje też bogaty zestaw narzędzi służących do zarządzania 
     \label{tab:tango-implementations}
 \end{table}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{Grafika/tango_bindings_map1_1}
-    \caption{Mapa wtyczek do systemu Tango Controls. Źródło: \cite{TangoDocs}.}\label{fig:tango-bindings}
-\end{figure}
-
-W związku ze wszystkimi opisanymi cechami uznano Tango Controls za odpowiednią bibliotekę do oparcia na niej części obliczeniowej aplikacji stanowiącej podstawę niniejszej pracy magisterskiej.
+W związku ze wszystkimi opisanymi cechami uznano Tango Controls za odpowiednią bibliotekę do oparcia na niej części obliczeniowej aplikacji stanowiącej podstawę niniejszej pracy.
 
 
 %-------------------------------------------------
@@ -276,7 +270,7 @@ Architektura platformy JModelica.org składa się następujących komponentów (
 \begin{itemize}
     \item kompilatora, który sprawdza poprawność modeli opisanych w językach Modelica i Optimica, a następnie generuje kod w języku C zawierający równania układów i pliki w formacie XML z metadanymi,
     \item biblioteki wykonywalnej JModelica.org napisanej w języku C, która pozwala skompilować model opisany w języku C i dostarczyć go do zewnętrznego oprogramowania do wyliczania pochodnych w formie przez nie zrozumiałej,
-    \item biblioteki w językach C++ i Java zawierającej implementacje metod optymalizacji dynamicznej (używana jest tu metoda kolokacji bezpośredniej opisana w \cite{ake+10cace}),
+    \item biblioteki w językach C++, Java i Python zawierającej implementacje metod optymalizacji dynamicznej (używana jest tu metoda kolokacji bezpośredniej opisana w \cite{ake+10cace}),
     \item API do języka Python dającego użytkownikowi dostęp do wszystkich pozostałych komponentów; w jego skład wchodzą 3 pakiety:
     \begin{itemize}
         \item \emph{PyModelica} dostarcza interfejs do kompilatorów języków Modelica i Optimica,
@@ -312,7 +306,7 @@ Jest to idealne środowisko do testowania aplikacji wymagających wielu zależno
             \item biblioteka opisu problemów matematycznych AMPL/MP,
             \item oprogramowanie do rozwiązywania układów liniowych MUMPS;
         \end{itemize}
-        \item pakiet do wyliczania wartości pochodnych funkcji CppAd,
+        \item pakiety do wyliczania wartości pochodnych funkcji CppAD i CasADi,
         \item biblioteka do rozwiązywania równań różniczkowych i algebraicznych Sundials (ang. \emph{Suite of Nonlinear and Differential/Algebraic Equation Solvers}),
         \item pakiet funkcji matematycznych w języku Python SciPy;
     \end{itemize}

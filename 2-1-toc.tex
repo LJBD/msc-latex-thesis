@@ -222,7 +222,14 @@ Gdy we wskaźniku jakości występuje tylko człon podcałkowy, to mówi się, �
 
 Podstawowy podział metod obliczeniowych to metody \emph{pośrednie} oraz \emph{bezpośrednie}, choć ich rozróżnienie nie jest ścisłe i istnieją metody łączące cechy obu tych klas (za: \cite{Betts98}).
 
-Pierwsze z nich polegają na dyskretyzacji sterowania (czasem również stanu), aby móc przybliżyć wyjściowy problem optymalizacji dynamicznej zadaniem optymalizacji statycznej: programowania nieliniowego (ang. \emph{NLP - Non-Linear Programming})lub optymalizacji nieliniowej. To przybliżenie jest zwykle aproksymacją sterowań (oraz stanów w tych metodach, które z nich korzystają) w konkretnych przedziałach czasu wielomianami. Dzięki temu zastępuje się nieskończenie wymiarowy problem optymalizacji takim o skończonym wymiarze. Ta klasa metod jest bardziej uniwersalna i mniej wrażliwa na błędy, ale stosunkowo wolniej zbieżna i przez to mniej dokładna (za: \cite{Korytowski2015}). Przykładowe metody bezpośrednie przedstawione są poniżej:
+Pierwsze z nich polegają na dyskretyzacji sterowania (czasem również stanu), aby móc przybliżyć wyjściowy problem optymalizacji dynamicznej zadaniem optymalizacji statycznej: programowania nieliniowego (ang. \emph{NLP - Non-Linear Programming})lub optymalizacji nieliniowej. To przybliżenie jest zwykle aproksymacją sterowań (oraz stanów w tych metodach, które z nich korzystają) w konkretnych przedziałach czasu wielomianami. Dzięki temu zastępuje się nieskończenie wymiarowy problem optymalizacji takim o skończonym wymiarze. Ta klasa metod jest bardziej uniwersalna i mniej wrażliwa na błędy, ale stosunkowo wolniej zbieżna i przez to mniej dokładna (za: \cite{Korytowski2015}).
+Dzieli się je dalej na metody:
+\begin{itemize}
+    \item \emph{sekwencyjne}, które używają wysokiej klasy oprogramowania do całkowania sterowania, aproksymowanego wielomianami i traktują wyliczone na jego podstawie trajektorie jako dokładne,
+    \item \emph{równoczesne}, które korzystają z parametrycznej aproksymacji trajektorii układu uzyskanej w wyniku kolokacji.
+\end{itemize}
+
+Przykładowe metody bezpośrednie przedstawione są poniżej:
 \begin{itemize}
     \item optymalizacja czasów przełączeń (do zastosowania tylko w przypadku sterowania o postaci ,,bang-bang''),
     \item parametryzacja sterowania (np. aproksymacja funkcją schodkową),
