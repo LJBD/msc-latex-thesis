@@ -36,6 +36,8 @@ Wyszczególniono 3 możliwe akcje zachodzące w systemie, poniżej znajduje się
     \item Akcja wysłania obliczonych sterowań między poziomami aplikacji (zaprezentowana na rys. \ref{fig:comm-send} zawierającym pozostałe akcje w uproszczonej formie).
 \end{enumerate}
 
+Zdecydowano, że protokołem przesyłu danych między poziomami aplikacji będzie TCP (ang. \emph{Transmission Control Protocol}). Jest to zdecydowanie najpopularniejszy sposób przesyłu danych w sieci Internet między dwoma urządzeniami, z których jedno jest serwerem, a drugie klientem. Ze względu na to, że wyższy poziom aplikacji dostarcza większej ilości danych, zdecydowano, że to właśnie on będzie działał jako serwer TCP.
+
 \begin{figure}[hpt]
     \centering
     \includegraphics[width=\textwidth]{Grafika/communication-toc}

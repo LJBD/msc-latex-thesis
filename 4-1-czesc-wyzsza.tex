@@ -126,7 +126,9 @@ W związku ze wszystkimi opisanymi cechami uznano Tango Controls za odpowiednią
 
 Architektura systemu Tango Controls wymusiła pewne decyzje co do struktury tej części aplikacji. Zdecydowano, że będzie ona napisana jako klasa urządzeń, która określa interfejs dla wszystkich operacji wymaganych do spełnienia zadań postawionych przed tym poziomem aplikacji w podrozdziale \ref{sec:podzial-zadan}. Nie zdecydowano się na podział zadań na mniejsze klasy urządzeń komunikujące się ze sobą. Przyjęto, że prostsza struktura z jedną klasą ułatwi użycie napisanego kodu w przyszłości, np. w formie części zajęć laboratoryjnych.
 
-Dokumentacja kodu klasy urządzeń jest zaimplementowana jako jego część. Można również zbudować ją osobno, na przykład w środowisku testowym dla wyższego poziomu aplikacji, którego opis znajduje się w sekcji \ref{sub:czesc-wyzsza-docker}.
+Dokumentacja kodu klasy urządzeń jest wpisana w pliki źródłowe. Można również zbudować ją osobno, na przykład w środowisku testowym dla wyższego poziomu aplikacji, którego opis znajduje się w sekcji \ref{sub:czesc-wyzsza-docker}.
+
+Dodatkowym elementem wyższego poziomu aplikacji jest serwer TCP, który zarządza komunikacją z aplikacją sterowania bezpośredniego. Został on zaimplementowany jako osobny moduł uruchamiany z poziomu urządzenia systemu Tango.
 
 \subsubsection{Interfejs dla systemu Tango}
 
@@ -290,7 +292,7 @@ Jest ona rozszerzeniem modelu podstawowego opisanego wyżej i zawiera dodatkowe 
 \lstinputlisting[language=modelica, firstline=64, lastline=85]
 {../masthe-tango-ds-tanks-regulation/optimica_model/opt_3_tanks.mop}
 
-Ze względu na opisane cechy platformy JModelica.org oraz na fakt, iż stosowano ją do rozwiązywania podobnych problemów (np. \cite{Hast09}), zdecydowano się zastosować ją jako oprogramowanie rozwiązujące rozważany w niniejszej pracy problem sterowania czasooptymalnego.
+Ze względu na opisane cechy platformy JModelica.org oraz na fakt, iż stosowano ją do rozwiązywania podobnych problemów (np. \cite{Hast09}), zdecydowano się zastosować ją jako oprogramowanie rozwiązujące rozważany w niniejszej pracy problem sterowania czasooptymalnego. Pozwala ona również na linearyzację modeli, co zostało wykorzystane w celu przygotowania do obliczenia nastaw regulatora liniowo-kwadratowego.
 
 %-------------------------------------------------
 \subsection{Środowisko testowe części obliczeniowej}
