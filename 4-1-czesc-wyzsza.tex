@@ -274,10 +274,23 @@ Architektura platformy JModelica.org składa się następujących komponentów (
 \begin{itemize}
     \item kompilatora, który sprawdza poprawność modeli opisanych w językach Modelica i Optimica, a następnie generuje kod w języku C zawierający równania układów i pliki w formacie XML z metadanymi,
     \item biblioteki wykonywalnej JModelica.org napisanej w języku C, która pozwala skompilować model opisany w języku C i dostarczyć go do zewnętrznego oprogramowania do wyliczania pochodnych w formie przez nie zrozumiałej,
-    \item biblioteki w językach C++ i Java zawierającej implementacje metod optymalizacji dynamicznej (używana jest tu metoda kolokacji bezpośredniej),
-    \item API do języka Python mającego dostęp do wszystkich pozostałych komponentów.
+    \item biblioteki w językach C++ i Java zawierającej implementacje metod optymalizacji dynamicznej (używana jest tu metoda kolokacji bezpośredniej opisana w \cite{ake+10cace}),
+    \item API do języka Python dającego użytkownikowi dostęp do wszystkich pozostałych komponentów; w jego skład wchodzą 3 pakiety:
+    \begin{itemize}
+        \item \emph{PyModelica} dostarcza interfejs do kompilatorów języków Modelica i Optimica,
+        \item \emph{PyFMI} umożliwia manipulację parametrami skompilowanych modeli i ich symulację,
+        \item \emph{PyJMI} służy jako interfejs do algorytmów optymalizacji;
+    \end{itemize}
+    \item wtyczki do środowiska programistycznego Eclipse.
 \end{itemize}
 
+Poniżej pokazano definicję problemu optymalizacji rozważanego w niniejszej pracy napisaną w języku Optimica.
+Jest ona rozszerzeniem modelu podstawowego opisanego wyżej i zawiera dodatkowe definicje wskaźnika jakości, parametrów i ograniczeń zawartych w problemie. Jest ona również częścią przygotowanej paczki \texttt{TanksPkg}.
+
+\lstinputlisting[language=modelica, firstline=64, lastline=85]
+{../masthe-tango-ds-tanks-regulation/optimica_model/opt_3_tanks.mop}
+
+Ze względu na opisane cechy platformy JModelica.org oraz na fakt, iż stosowano ją do rozwiązywania podobnych problemów (np. \cite{Hast09}), zdecydowano się zastosować ją jako oprogramowanie rozwiązujące rozważany w niniejszej pracy problem sterowania czasooptymalnego.
 
 %-------------------------------------------------
 \subsection{Środowisko testowe części obliczeniowej}
