@@ -39,23 +39,62 @@ W związku z tym przyjęto następujący algorytm inicjalizacyjny:
     \item podaj wyniki uzyskane w symulacji jako trajektorie inicjalizacyjne do algorytmu optymalizacji.
 \end{itemize}
 
-Rysunek \ref{fig:initialguess} przedstawia przykładowe sterowanie ustalone i przebiegi zmiennych stanu uzyskane według powyższego algorytmu.
-
-\begin{figure}[tph]
+\begin{figure}[ht]
     \centering
     \includegraphics[scale=0.9]{Grafika/initial_guess}
     \caption{Przykładowa trajektoria początkowa dla algorytmu optymalizacji. Źródło: własne.}
     \label{fig:initialguess}
 \end{figure}
 
+Rysunek \ref{fig:initialguess} przedstawia przykładowe sterowanie ustalone i przebiegi zmiennych stanu uzyskane według powyższego algorytmu.
+
+Tak dobrany algorytm inicjalizacji pozwolił osiągnąć zadowalające wyniki optymalizacji.
+
 
 %-------------------------------------------------
 \subsection{Uzyskana postać sterowania}
 \label{sub:opt-ctrl-form}
-%TODO: opisac heurystyke normalizacji sterowania
+
+W związku z tym, że użyte oprogramowanie jest w stanie dokonywać optymalizacji sterowania w układach nieliniowych, nie ma możliwości, aby ograniczyć postać sterowania tylko do postaci ,,bang-bang''. Sterowanie wyznaczane przez opisany wyżej algorytm optymalizacji jest wektorem o rozmiarze danym wzorem \ref{eq:ctrl-len}, gdzie $k$ to liczba punktów kolokacji, a $e$ to liczba elementów skończonych. Dodatkowy element wektora sterowania bierze się od wartości początkowej.
+
+\begin{equation}\label{eq:ctrl-len}
+k \cdot e + 1
+\end{equation}
+
+Niezależnie od tego okazało się, że sterowanie optymalne wyliczone przy pomocy pakietu JModelica.org ma często postać zbliżoną do ,,bang-bang'' ze spodziewaną liczbą dwóch przełączeń. Dowodzi to, iż założenie opisane w sekcji \ref{sub:toc-nonlnr} nie jest zawsze prawdziwe, ale może być zastosowane w pewnym podzbiorze zbioru stanów osiągalnych. Zauważono, że zwykle sprawdza się w przypadku niewielkiego oddalenia stanu docelowego optymalizacji od punktu równowagi systemu.
+
+Rysunek \ref{fig:optimisationexample} przedstawia przykładowe sterowanie optymalne oraz trajektorie układu przez nie wygenerowane. Można na nim zauważyć, że sterowanie nie jest dokładnie postaci ,,bang-bang'' (zbocze narastające zawiera punkt zmiany szybkości narastania), ale jest to niego zbliżone.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics{Grafika/optimisation_example}
+    \caption{Przykładowy wynik optymalizacji. Źródło: własne.}
+    \label{fig:optimisationexample}
+\end{figure}
+
+Przyjęto więc prostą metodę normalizacji sterowania do postaci ,,bang-bang'': każdemu punktowi powyżej połowy różnicy między ograniczeniami nałożonymi na sterowanie zostaje przypisana wartość maksymalna, a każdemu poniżej - minimalna. Taka operacja pozwala wyznaczyć czasy przełączeń potrzebne niższemu poziomowi aplikacji, jeśli tylko sterowanie otrzymane z algorytmu optymalizacji ma spodziewaną strukturę. Przykład działania operacji normalizacji jest dany poniżej: przedstawiono sterowanie w postaci ,,surowej'' obliczonej przez algorytm optymalizacyjny i po normalizacji odpowiednio na rysunkach \ref{fig:ctrl-raw-example} i \ref{fig:ctrl-normalised-example}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{Grafika/ctrl_10_10_10-20_20_20-raw}
+    \caption{Przykład sterowania ,,surowego'' otrzymanego w wyniku optymalizacji. Źródło: własne.}
+    \label{fig:ctrl-raw-example}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics{Grafika/ctrl_10_10_10-20_20_20-normalised}
+    \caption{Przykład sterowania znormalizowanego. Źródło: własne.}
+    \label{fig:ctrl-normalised-example}
+\end{figure}
+
+Niestety, tak prosty algorytm ma swoje wady. Przede wszystkim nie umożliwia wyznaczania tylko dwóch czasów przełączeń w przypadku, gdy postać sterowania jest bardziej skomplikowana.
 
 
 %-------------------------------------------------
 \subsection{Dokładność wyznaczania rozwiązania}
 \label{sub:opt-dokladnosc}
-%TODO: opisać wpływ wartości tolerancji IPOPT na rozwiązanie
+
+Jedynym parametrem, który wyznacza dokładność wyznaczania rozwiązania przez pakiet JModelica.org jest relatywna tolerancja zbieżności programu IPOPT, którą można ustawić we właściwości \emph{IPOPTTolerance} (opisanej w sekcji \ref{sub:czesc-wyzsza-klasa}). Domyślną wartością jest $10^{-5}$, która jednak okazała się zbyt mała dla opisywanego problemu i prowadziła do błędów zbieżności i niemożliwości wyznaczenia odpowiedniego rozwiązania. Dobrano doświadczalnie wartość $10^{-3}$ ze względu na fakt, iż w tym przypadku niemożliwość wyliczenia sterowania optymalnego zdarzała się relatywnie rzadko.
+
+Dodatkowo wartość wspomnianej właściwości \emph{IPOPTTolerance} jest również wykorzystywana do sprawdzenia, czy rozwiązanie zwrócone przez algorytm optymalizacyjny jest poprawne. Sprawdza się, czy odległość między wartościami końcowymi trajektorii systemu a stanem docelowym jest mniejsza niż wartość tej właściwości.
