@@ -222,30 +222,68 @@ Twórcom tej biblioteki przyświecały cztery główne założenia:
 \end{enumerate}
 
 Aby zilustrować prostotę składni, poniżej załączono definicję modelu matematycznego opisywanego w niniejszej pracy zestawu zbiorników. Znajduje się tu definicja stanu, sterowania i parametrów (linie 4 - 6), samego równania różniczkowego (linie 8 - 15) oraz problemu optymalizacji wraz z ograniczeniami (linie 20 - 38).
+
 \lstinputlisting[language=C++, firstline=21, lastline=58]{../masthe-acado-tanks-optimisation/tanks-optimisation.cpp}
 
 Mimo iż pakiet ACADO jest napisany w języku C++, a nie w języku Python, została przeprowadzona próba użycia go do rozwiązania problemu znajdowania sterowania czasooptymalnego w opisywanym w niniejszej pracy układzie zbiorników. Wykorzystano tutaj metodę bezpośrednią opartą na programowaniu nieliniowym. Niestety, nie zakończyła się ona powodzeniem: bez względu na zmiany opcji algorytmu (w tym tolerancji rozwiązania) oraz na zastosowane techniki inicjalizacji nie udało się przeprowadzić ani jednej poprawnej optymalizacji. W związku z tym zdecydowano się zrezygnować z dalszych prób użycia pakietu ACADO i poszukać oprogramowania bardziej odpowiedniego do rozpatrywanego problemu.
 
 \subsubsection{Opis pakietu Modelica i JModelica.org}
-% TODO: definicja modelu w Modelice
 
-Dalsze poszukiwania oprogramowania do optymalizacji dynamicznej przyniosły odkrycie pakietu Modelica. Jest to obiektowy język opisu dynamiki układów fizycznych oparty na definicji równań i matematycznych zależności między nimi (za: \cite{ModelicaWebsite}). Zawiera on narzędzia służące do przedstawiania w formie testowej i graficznej m.in układów:
+Dalsze poszukiwania oprogramowania do optymalizacji dynamicznej przyniosły odkrycie pakietu Modelica. Jest to obiektowy język opisu dynamiki układów fizycznych oparty na definicji równań i matematycznych zależności między nimi (za: \cite{ModelicaWebsite}). Pozwala on na definicję równań różniczkowych i algebraicznych, zarówno ciągłych, jak i dyskretnych.
+Celem przyświecającym jego twórcom jest dostarczenie narzędzia służącego do prostego przedstawiania w formie tekstowej i graficznej komponentów układów fizycznych:
 \begin{itemize}
-    \item mechanicznych,
+    \item mechanicznych (jedno-, dwu- i trójwymiarowych),
     \item elektrycznych,
     \item termodynamicznych,
     \item hydraulicznych,
     \item pneumatycznych.
 \end{itemize}
 
-%TODO: opisać JModelicę
-\cite{JModelicaUserGuide} \cite{JModelicaWebsite}
+Opisywany układ może zawierać dowolną kombinację komponentów każdego z tych rodzajów. Każdy z nich ma odpowiadającą sobie część biblioteki standardowej języka Modelica, która oprócz tego zawiera również komponenty przydatne w opisie złożonych systemów (m.in definicje jednostek układu SI, maszyn stanów, zaawansowanych funkcji matematycznych czy stałych fizycznych). Zgodnie z paradygmatem obiektowości, wszystkie komponenty można rozszerzać, aby tworzyć własne ich wariacje.
+Całe oprogramowanie jest dostępne na własnej, otwartej licencji, która również może być wykorzystywana do licencjonowania modeli napisanych w tym języku.
+
+Poniżej podano definicję modelu opisywanego w niniejszej pracy układu zbiorników w języku Modelica w formie tekstowej, aby zaprezentować jego składnię. Przygotowano paczkę \texttt{TanksPkg} rozszerzającą bibliotekę standardową o następujące komponenty:
+\begin{itemize}
+    \item model częściowy zawierający definicje parametrów i równań różniczkowych opisujących układ (na podstawie wzoru \ref{eq:model}), ale bez wejścia sterowania $u$ (linie 3 - 33),
+    \item model podstawowy rozszerzający powyższy o definicję wejścia sterowania (linie 35 - 37),
+    \item model inicjalizacyjny służący do wyznaczania punktów równowagi układu (linie 39 - 45).
+\end{itemize}
+
+Każdy z nich zawiera definicję parametrów i zmiennych określającą ich typy (i jednostki, jeśli to możliwe) oraz równania (lub równania początkowe w przypadku modelu inicjalizacyjnego). Wyjątkiem jest tutaj tylko model podstawowy, który tylko rozszerza model częściowy i nie zawiera żadnych dodatkowych definicji poza redeklaracją typu parametru \texttt{u}.
+
+\lstinputlisting[language=modelica, firstline=2, lastline=45]
+{../masthe-tango-ds-tanks-regulation/optimica_model/opt_3_tanks.mop}
+
+Modelica jest wykorzystywana jako podstawa opisu modeli w różnego rodzaju komercyjnym oprogramowaniu do symulacji (m.in. CATIA, Dymola czy MapleSim), ale są dostępne również jego bezpłatne odpowiedniki: OpenModelica i JModelica.org. Drugi z nich zasługuje na szczególną uwagę ze względu na dwa względy:
+\begin{itemize}
+    \item rozszerzenie biblioteki Modelica o opis problemów optymalizacji,
+    \item dostępność API w języku Python do modeli napisanych w języku Modelica.
+\end{itemize} 
+Ze względu na te fakty podjęta została próba wykorzystania go w wyższym poziomie aplikacji.
+
+JModelica.org jest platformą do symulacji, optymalizacji i analizy układów opisanych w języku Modelica. Jak wspomniano wcześniej, dostarcza również możliwości opisu problemów optymalizacji dynamicznej i metody do ich rozwiązywania zebrane we wspólnym pakiecie Optimica (dokładniejszy opis w \cite{JModelicaUserGuide}). Jest dostępna na otwartej licencji (GPL w wersji 3) i utrzymywana przez firmę Modelon AB, choć sam pomysł stworzenia takiej platformy powstał na Uniwersytecie w Lund (za: \cite{JModelicaWebsite}).
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=\textwidth]{Grafika/jmodelica_architecture}
+    \caption{Schemat architektury platformy JModelica.org. Źródło: \cite{JModelicaWebsite}.}
+    \label{fig:jmodelicaarchitecture}
+\end{figure}
+
+Architektura platformy JModelica.org składa się następujących komponentów (pokazanych schematycznie na rys. \ref{fig:jmodelicaarchitecture}):
+\begin{itemize}
+    \item kompilatora, który sprawdza poprawność modeli opisanych w językach Modelica i Optimica, a następnie generuje kod w języku C zawierający równania układów i pliki w formacie XML z metadanymi,
+    \item biblioteki wykonywalnej JModelica.org napisanej w języku C, która pozwala skompilować model opisany w języku C i dostarczyć go do zewnętrznego oprogramowania do wyliczania pochodnych w formie przez nie zrozumiałej,
+    \item biblioteki w językach C++ i Java zawierającej implementacje metod optymalizacji dynamicznej (używana jest tu metoda kolokacji bezpośredniej),
+    \item API do języka Python mającego dostęp do wszystkich pozostałych komponentów.
+\end{itemize}
+
 
 %-------------------------------------------------
 \subsection{Środowisko testowe części obliczeniowej}
 \label{sub:czesc-wyzsza-docker}
 
-Ze względu na długi i skomplikowany proces instalacji oprogramowania JModelica.org z jego zależnościami, jak i pakietu Tango Controls zdecydowano przygotować przenośne środowisko testowe części obliczeniowej opisywanego w niniejszej pracy oprogramowania. W tym celu użyto platformy Docker służącej do zarządzania kontenerami. Są one lekkimi opakowaniami na aplikacje symulującymi zachowanie systemu operacyjnego, które są gotowe do uruchomienia przez silnik Dockera. Do ich zapisu używa się specjalnego systemu kontroli wersji, który zachowuje konkretny stan kontenera (nazywany obrazem), aby można go było w szybki sposób odtworzyć.
+Ze względu na długi i skomplikowany proces instalacji oprogramowania JModelica.org z jego zależnościami, jak i pakietu Tango Controls zdecydowano przygotować przenośne środowisko testowe części obliczeniowej opisywanego w niniejszej pracy oprogramowania. W tym celu użyto platformy Docker służącej do zarządzania kontenerami. Są one lekkimi opakowaniami na aplikacje i ich zależności symulującymi zachowanie systemu operacyjnego, które są gotowe do uruchomienia przez silnik Dockera. Do ich zapisu używa się specjalnego systemu kontroli wersji, który zachowuje konkretny stan kontenera (nazywany obrazem), aby można go było w szybki sposób odtworzyć.
 Oprócz tego istnieje również możliwość grupowania kontenerów w środowiska pracy, które uruchamiane są jednym poleceniem.
 
 Jest to idealne środowisko do testowania aplikacji wymagających wielu zależności, w tym również sieciowych. Na potrzeby części obliczeniowej przygotowano obraz platformy Docker zawierający:
