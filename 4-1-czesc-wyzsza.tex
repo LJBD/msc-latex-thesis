@@ -296,7 +296,7 @@ Ze względu na opisane cechy platformy JModelica.org oraz na fakt, iż stosowano
 \subsection{Środowisko testowe części obliczeniowej}
 \label{sub:czesc-wyzsza-docker}
 
-Ze względu na długi i skomplikowany proces instalacji oprogramowania JModelica.org z jego zależnościami, jak i pakietu Tango Controls zdecydowano przygotować przenośne środowisko testowe części obliczeniowej opisywanego w niniejszej pracy oprogramowania. W tym celu użyto platformy Docker służącej do zarządzania kontenerami. Są one lekkimi opakowaniami na aplikacje i ich zależności symulującymi zachowanie systemu operacyjnego, które są gotowe do uruchomienia przez silnik Dockera. Do ich zapisu używa się specjalnego systemu kontroli wersji, który zachowuje konkretny stan kontenera (nazywany obrazem), aby można go było w szybki sposób odtworzyć.
+Ze względu na długi i skomplikowany proces instalacji pakietu JModelica.org z jego zależnościami zdecydowano przygotować przenośne środowisko testowe części obliczeniowej opisywanego w niniejszej pracy oprogramowania. W tym celu użyto platformy Docker służącej do zarządzania kontenerami. Są one lekkimi opakowaniami na aplikacje i ich zależności symulującymi zachowanie systemu operacyjnego, które są gotowe do uruchomienia przez silnik Dockera. Do ich zapisu używa się specjalnego systemu kontroli wersji, który zachowuje konkretny stan kontenera (nazywany obrazem), aby można go było w szybki sposób odtworzyć.
 Oprócz tego istnieje również możliwość grupowania kontenerów w środowiska pracy, które uruchamiane są jednym poleceniem.
 
 Jest to idealne środowisko do testowania aplikacji wymagających wielu zależności, w tym również sieciowych. Na potrzeby części obliczeniowej przygotowano obraz platformy Docker zawierający:
