@@ -6,7 +6,6 @@ Podstawowym zadaniem wyższego poziomu aplikacji było przeprowadzenie optymaliz
 %-------------------------------------------------
 \subsection{Opis algorytmu optymalizacji dynamicznej}
 \label{sub:opt-alg}
-%TODO: opisać algorytm CasADI
 
 Algorytm wykorzystywany do optymalizacji dynamicznej można ogólnie opisać jako bezpośrednią metodę kolokacji. Polega ona na aproksymacji układu równań różniczkowych w dyskretnych chwilach czasu i konstrukcji na tej podstawie zadania programowania nieliniowego, zwykle o rzadkiej strukturze. Jest napisana w języku Python i używa biblioteki CasADi do wyznaczenia wartości pochodnych funkcji oraz oprogramowania IPOPT do obliczenia wynikowego zagadnienia programowania nieliniowego. Można z niej korzystać pod warunkiem, że model matematyczny nie zawiera nieciągłości (za: \cite{JModelicaUserGuide}). W związku z tym, że nieciągłość występuje w rozważanym modelu zbiorników dla zerowego poziomu w trzecim zbiorniku, należało unikać trajektorii zawierających ten punkt.
 
@@ -14,9 +13,10 @@ Programy rozwiązujące problemy NLP wykazują się dużo większą zbieżności
 W każdym punkcie kolokacji zastosowano pakiet IPOPT, który rozwiązuje zadanie w postaci danej wzorem \ref{eq:opt-stat} za pomocą metody punktu wewnętrznego. Metoda ta wykorzystuje funkcję graniczną do poruszania się tylko wewnątrz zbioru dopuszczalnego, gdzie metodą Newtona szuka lokalnego minimum.
 
 \begin{equation}\label{eq:opt-stat}
-    \min\limits_{x \in [x_{l}, x_{u}]} f(x),~~ g_{l} <= g(x) <= g_{u}
+    \min\limits_{x \in [x_{l}, x_{u}]~ \land~ g_{l} \leq g(x) \leq g_{u}} f(x)
 \end{equation}
 
+Algorytm optymalizacyjny zwraca wektor sterowań oraz trajektorie układu w czasie będącym wartością wskaźnika jakości w tym zagadnieniu. Te wartości są prezentowane użytkownikowi jako odpowiednie atrybuty urządzenia systemu Tango Controls.
 
 %-------------------------------------------------
 \subsection{Inicjalizacja optymalizacji dynamicznej}
@@ -58,12 +58,10 @@ Tak dobrany algorytm inicjalizacji pozwolił osiągnąć zadowalające wyniki op
 W związku z tym, że użyte oprogramowanie jest w stanie dokonywać optymalizacji sterowania w układach nieliniowych, nie ma możliwości, aby ograniczyć postać sterowania tylko do postaci ,,bang-bang''. Sterowanie wyznaczane przez opisany wyżej algorytm optymalizacji jest wektorem o rozmiarze danym wzorem \ref{eq:ctrl-len}, gdzie $k$ to liczba punktów kolokacji, a $e$ to liczba elementów skończonych. Dodatkowy element wektora sterowania bierze się od wartości początkowej.
 
 \begin{equation}\label{eq:ctrl-len}
-k \cdot e + 1
+l_{u} = k \cdot e + 1
 \end{equation}
 
 Niezależnie od tego okazało się, że sterowanie optymalne wyliczone przy pomocy pakietu JModelica.org ma często postać zbliżoną do ,,bang-bang'' ze spodziewaną liczbą dwóch przełączeń. Dowodzi to, iż założenie opisane w sekcji \ref{sub:toc-nonlnr} nie jest zawsze prawdziwe, ale może być zastosowane w pewnym podzbiorze zbioru stanów osiągalnych. Zauważono, że zwykle sprawdza się w przypadku niewielkiego oddalenia stanu docelowego optymalizacji od punktu równowagi systemu.
-
-Rysunek \ref{fig:optimisationexample} przedstawia przykładowe sterowanie optymalne oraz trajektorie układu przez nie wygenerowane. Można na nim zauważyć, że sterowanie nie jest dokładnie postaci ,,bang-bang'' (zbocze narastające zawiera punkt zmiany szybkości narastania), ale jest to niego zbliżone.
 
 \begin{figure}[ht]
     \centering
@@ -72,23 +70,26 @@ Rysunek \ref{fig:optimisationexample} przedstawia przykładowe sterowanie optyma
     \label{fig:optimisationexample}
 \end{figure}
 
-Przyjęto więc prostą metodę normalizacji sterowania do postaci ,,bang-bang'': każdemu punktowi powyżej połowy różnicy między ograniczeniami nałożonymi na sterowanie zostaje przypisana wartość maksymalna, a każdemu poniżej - minimalna. Taka operacja pozwala wyznaczyć czasy przełączeń potrzebne niższemu poziomowi aplikacji, jeśli tylko sterowanie otrzymane z algorytmu optymalizacji ma spodziewaną strukturę. Przykład działania operacji normalizacji jest dany poniżej: przedstawiono sterowanie w postaci ,,surowej'' obliczonej przez algorytm optymalizacyjny i po normalizacji odpowiednio na rysunkach \ref{fig:ctrl-raw-example} i \ref{fig:ctrl-normalised-example}.
+Rysunek \ref{fig:optimisationexample} przedstawia przykładowe sterowanie optymalne oraz trajektorie układu przez nie wygenerowane. Można na nim zauważyć, że sterowanie nie jest dokładnie postaci ,,bang-bang'' (zbocze narastające zawiera punkt zmiany szybkości narastania), ale jest to niego zbliżone.
+
+Przyjęto więc prostą metodę normalizacji sterowania do postaci ,,bang-bang'': każdemu punktowi powyżej połowy różnicy między ograniczeniami nałożonymi na sterowanie zostaje przypisana wartość maksymalna, a każdemu poniżej - minimalna. Jeśli występuje tylko jeden czas przełączenia, to dodaje się drugi w ostatniej chwili
+Taka operacja pozwala wyznaczyć czasy przełączeń potrzebne niższemu poziomowi aplikacji, jeśli tylko sterowanie otrzymane z algorytmu optymalizacji ma spodziewaną strukturę. Przykład działania operacji normalizacji jest dany poniżej: przedstawiono sterowanie w postaci ,,surowej'' obliczonej przez algorytm optymalizacyjny i po normalizacji odpowiednio na rysunkach \ref{fig:ctrl-raw-example} i \ref{fig:ctrl-normalised-example}.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{Grafika/ctrl_10_10_10-20_20_20-raw}
+    \includegraphics[width=\textwidth]{Grafika/ctrl_30_30_30-20_25_20-raw}
     \caption{Przykład sterowania ,,surowego'' otrzymanego w wyniku optymalizacji. Źródło: własne.}
     \label{fig:ctrl-raw-example}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
-    \includegraphics{Grafika/ctrl_10_10_10-20_20_20-normalised}
+    \includegraphics[width=\textwidth]{Grafika/ctrl_30_30_30-20_25_20-normalised}
     \caption{Przykład sterowania znormalizowanego. Źródło: własne.}
     \label{fig:ctrl-normalised-example}
 \end{figure}
 
-Niestety, tak prosty algorytm ma swoje wady. Przede wszystkim nie umożliwia wyznaczania tylko dwóch czasów przełączeń w przypadku, gdy postać sterowania jest bardziej skomplikowana.
+Niestety, tak prosty algorytm ma swoje wady. Przede wszystkim nie umożliwia wyznaczania tylko dwóch czasów przełączeń w przypadku, gdy postać sterowania jest bardziej skomplikowana. To ogranicza stosowanie całej aplikacji tylko do przypadków, w których da się to zrobić, ponieważ założono, że wyższy jej poziom wysyła zawsze 2 czasy przełączeń.
 
 
 %-------------------------------------------------
