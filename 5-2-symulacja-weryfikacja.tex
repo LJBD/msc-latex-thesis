@@ -2,10 +2,10 @@
 \label{sec:sym-wer}
 
 Aby sprawdzić poprawność działania algorytmu optymalizacji dynamicznej, wykonano symulacje weryfikacyjne przy użyciu oprogramowania JModelica.org na wyższym poziomie aplikacji oraz środowiska MATLAB/Simulink na niższym.
-W obu tych przypadkach błąd weryfikacji jest liczony według wzoru \ref{eq:ver-error}, gdzie $\hat{h_{i}}(T)$ to ostatnia wartość trajektorii odpowiedniego poziomu (po upływie wyliczonego czasu), a $h_{i}^{f}$ to wartość docelowa tego poziomu.
+W obu tych przypadkach błąd weryfikacji jest liczony według wzoru \ref{eq:ver-error}, gdzie $h_{i}^{s}(T)$ to wartość odpowiedniego poziomu po upływie czasu optymalnego uzyskana w symulacji, a $h_{i}^{f}$ to wartość docelowa tego poziomu.
 
 \begin{equation}\label{eq:ver-error}
-e_{wer} = \sum_{i=1}^{3} (\hat{h_{i}}(T) - h_{i}^{f})^{2}
+e_{wer} = \sum_{i=1}^{3} (h_{i}^{s}(T) - h_{i}^{f})^{2}
 \end{equation}
 
 Należy zwrócić uwagę na to, iż weryfikacja poprawności rozwiązania korzysta z innych danych, niż sprawdzenie dokładności rozwiązania opisane w sekcji \ref{sub:opt-dokladnosc}. Pierwsza procedura używa danych symulacyjnych uzyskanych po optymalizacji, a druga - danych pochodzących bezpośrednio z algorytmu optymalizacyjnego.
@@ -52,7 +52,18 @@ Drugi przykład to upuszczanie niewielkiej ilości wody ze zbiorników od poziom
 
 
 \subsubsection{Wpływ liczby elementów metody elementów skończonych na rozwiązanie}
-%TODO: opisać wpływ liczby elementów na rozwiązanie
+
+W związku z tym, że zastosowana metoda przynosiła dobre rezultaty, lecz wartości błędu weryfikacji były dosyć duże (rzędu 0,1), podjęto próbę zwiększenia liczby elementów skończonych i przeprowadzenia ponownej optymalizacji i weryfikacji. Odkryto, iż istotnie ma ono wpływ na wartość błędów weryfikacji, ale również na czas obliczeń.
+
+Przeprowadzono więc eksperyment, który miał pokazać ten wpływ liczby elementów skończonych na błędy weryfikacji dla sterowania ,,surowego'' i znormalizowanego oraz czas obliczeń. Przyjęto zmianę tej liczby w przedziale 50 do 500 z krokiem 50 tak, aby uzyskać 10 punktów pomiarowych.
+
+W pierwszym przypadku skorzystano z napełniania zbiorników od poziomu $h_{1}^{0} = h_{2}^{0} = h_{3}^{0} = 1 cm$ do $h_{1}^{f} = h_{2}^{f} = h_{3}^{f} = 15 cm$. Uzyskane wyniki przedstawiono na rys. \ref{fig:elementsinfluence1-15_50-500}. Zauważono, iż:
+\begin{itemize}
+    \item różnica absolutna i relatywna między błędem weryfikacji dla sterowania ,,surowego'' i znormalizowanego jest największa w przypadku najmniejszej rozważanej liczby elementów,
+    \item prędkość zmniejszania się błędów
+    \item wartości czasów obliczeń rosną najprawdopodobniej wielomianowo,
+    \item należy stosować wartości liczby elementów z przedziału między 200 a 350, gdyż tam występuje najlepszy stosunek czasu obliczeń do wartości błędów.
+\end{itemize}
 
 \begin{figure}[ht]
     \centering
@@ -60,6 +71,13 @@ Drugi przykład to upuszczanie niewielkiej ilości wody ze zbiorników od poziom
     \caption{Wpływ liczby elementów skończonych na rozwiązanie. Źródło: własne.}
     \label{fig:elementsinfluence1-15_50-500}
 \end{figure}
+
+Przeprowadzono drugi eksperyment dla innych danych w celu weryfikacji powyższych wniosków. Tym razem skorzystano z napełniania zbiorników od poziomu $h_{1}^{0} = h_{2}^{0} = h_{3}^{0} = 10 cm$ do $h_{1}^{f} = h_{2}^{f} = h_{3}^{f} = 20 cm$. Wyniki pokazano na rys. \ref{fig:elementsinfluence10-2050-500}. Tym razem zaobserwowano, iż:
+\begin{itemize}
+    \item wartości błędów są zależne od warunków zadania - w tym przypadku błędy były około 2 razy większe,
+    \item czasy obliczeń nie zachowują się tak regularnie, jak w powyższym przypadku i osiągają wartości o rząd wielkości większe, a więc również silnie zależą od warunków zadania,
+    \item potwierdziła się hipoteza, iż należy wybierać wartości liczby elementów między 200 a 350.
+\end{itemize}
 
 \begin{figure}[ht]
     \centering
