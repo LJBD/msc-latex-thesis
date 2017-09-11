@@ -11,7 +11,7 @@ e_{wer} = \sum_{i=1}^{3} (h_{i}^{s}(T) - h_{i}^{f})^{2}
 Należy zwrócić uwagę na to, iż weryfikacja poprawności rozwiązania korzysta z innych danych, niż sprawdzenie dokładności rozwiązania opisane w sekcji \ref{sub:opt-dokladnosc}. Pierwsza procedura używa danych symulacyjnych uzyskanych po optymalizacji, a druga - danych pochodzących bezpośrednio z algorytmu optymalizacyjnego.
 
 %-------------------------------------------------
-\subsection{Przy użyciu pakietu JModelica.org}
+\subsection{Weryfikacja przy użyciu pakietu JModelica.org}
 \label{sub:sym-wer-jmodelica}
 
 Po zakończeniu optymalizacji wyższy poziom aplikacji umożliwia przeprowadzenie symulacji weryfikacyjnej. Podaje się wtedy cały uzyskany wektor sterowania optymalnego (w postaci ,,surowej'' lub znormalizowanej) jako trajektorię wejściową do symulacji, a na koniec wylicza się błąd weryfikacji.
@@ -86,15 +86,14 @@ Przeprowadzono drugi eksperyment dla innych danych w celu weryfikacji powyższyc
     \label{fig:elementsinfluence10-2050-500}
 \end{figure}
 
-\subsubsection{Problemy z weryfikacją}
+\subsubsection{Problemy z błędną wartością pochodnej}
 
 W przypadku niektórych wartości początkowych i końcowych oraz znalezionego dla nich sterowania optymalnego napotykano problem związany z tym, iż pakiet JModelica.org nie był w stanie obliczyć pochodnej jednego ze stanów w punkcie czasu niedługo po pierwszym przełączeniu. Rozwiązano go poprzez zwiększenie liczby elementów skończonych przy rozwiązywaniu danego zadania. Nie zaobserwowano takich problemów przy liczbie elementów powyżej 50.
 
 %-------------------------------------------------
-\subsection{Przy użyciu oprogramowania MATLAB/Simulink}
+\subsection{Weryfikacja przy użyciu oprogramowania MATLAB/Simulink}
 \label{sub:sym-wer-matlab}
 
-%TODO: opisać okres próbkowania i inne ustawienia symulacji
 %TODO: opisać wykresy i porównać z JModelicą
 
 Symulację weryfikacyjną w programie MATLAB/Simulink przeprowadzono, łącząc oba poziomy aplikacji w całość i uruchamiając odpowiednie obliczenia. Zastosowano tam pewne uproszczenie: symulację uruchamiano dopiero po obliczeniu pierwszego sterowania optymalnego. Pokazano jednak, że w przy kolejnych optymalizacjach dokonywano ich w czasie trwania symulacji i niższy poziom aplikacji był w stanie przełączać się w czasie rzeczywistym między sterowaniem czasooptymalnym a liniowo-kwadratowym.
@@ -103,14 +102,11 @@ Poniżej pokazano dwa przykłady funnkcjonowania symulacji weryfikacyjnej niższ
 W obu użyto metody Runge-Kutty 4 rzędu i stałego kroku o wartości 0.001 s. Dobrano taką metodę i wartość kroku czasowego ze względu na przewidywanie możliwości wykorzystania całej opisywanej aplikacji również z rzeczywistym układem zbiorników.
 Symulacje przeprowadzono z nieskończonym czasem końcowym, ale prezentowane są tylko interesujące przedziały czasu.
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5,angle=90]{Grafika/ext_ctrl_2_opts}
-    \caption{Dwa procesy optymalizacji zweryfikowane w symulacji niższym poziomem aplikacji. Źródło: własne.}
-    \label{fig:extctrl2opts}
-\end{figure}
+Pierwszy przykład jest pokazany na rys. \ref{fig:extctrl3opts}. Widoczne są tam 3 procesy aplikacji sterowania czasooptymalnego przedzielone okresami, w których działa regulator liniowo-kwadratowy. Te pierwsze można zauważyć na wykresie przedstawiającym sterowanie, gdyż ma ono wtedy postać ,,bang-bang''. W czasie działania regulatora liniowo-kwadratowego nie obserwuje się zbyt dużych zmian sterowania, gdyż układ jest już w otoczeniu punktu równowagi.
+Jak wspominano w podrozdziale \ref{sec:podzial-zadan}, wyznacza się go na podstawie stanu docelowego zagadnienia optymalizacji dynamicznej. Używa się w tym celu metody identycznej z algorytmem inicjalizacyjnym opisanym w sekcji \ref{sub:opt-init}: wyznacza się 3 sterowania ustalone odpowiadające wartościom stanów docelowych w zbiornikach, a następnie wylicza się z nich średnią i traktuje się ją jako sterowanie ustalone dla regulatora liniowo-kwadratowego.
 
-Pierwszy przykład jest pokazany na rys. \ref{fig:extctrl3opts}. Widoczne są tam 3 
+Wyniki weryfikacji porównano z wynikami analogicznych operacji przeprowadzonych przy użyciu wyższego poziomu aplikacji. Podsumowanie wyników zostało przedstawione w tabeli \ref{tab:extctrl3opts}.
+%TODO: opis kolumn tabeli
 
 \begin{figure}
     \centering
@@ -118,3 +114,46 @@ Pierwszy przykład jest pokazany na rys. \ref{fig:extctrl3opts}. Widoczne są ta
     \caption{Trzy procesy optymalizacji zweryfikowane w symulacji niższego poziomu aplikacji. Źródło: własne.}
     \label{fig:extctrl3opts}
 \end{figure}
+
+
+\begin{table}[htp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline 
+        \textbf{Czas} & \textbf{Stan początkowy} & \textbf{Stan docelowy} & \textbf{$e_{MATLAB}$} & \textbf{$e_{JModelica.org}$} \\ 
+        \hline 
+        81,623 & $h^{0} = [20 ~20~ 20]^{T}$ & $h^{f} = [15 ~15~ 15]^{T}$ & 0,021 & 0,008 \\ 
+        \hline 
+        219,268 & $h^{0} = [15.77~ 15.37~ 13.02]^{T}$ & $h^{f} = [10 ~10~ 10]^{T}$ & 0,047 & 0,0095 \\ 
+        \hline 
+        466,422 & $h^{0} = [10.62~ 10.39~ 8.37]^{T}$ & $h^{f} = [15 ~13~ 12]^{T}$ & 0,221 & 0,0007 \\ 
+        \hline 
+    \end{tabular}
+\caption{Podsumowanie wyników weryfikacji wyższego i niższego poziomu aplikacji. Źródło: własne.}
+\label{tab:extctrl3opts}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5,angle=90]{Grafika/ext_ctrl_2_opts}
+    \caption{Dwa procesy optymalizacji zweryfikowane w symulacji niższym poziomem aplikacji. Źródło: własne.}
+    \label{fig:extctrl2opts}
+\end{figure}
+
+Drugi przykład
+%TODO: opisać drugi przykład
+
+\begin{table}[htp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline 
+        \textbf{Czas} & \textbf{Stan początkowy} & \textbf{Stan docelowy} & \textbf{$e_{MATLAB}$} & \textbf{$e_{JModelica.org}$} \\
+        \hline 
+        114,141 & $h^{0} = [20~ 20~ 20]$ & $h^{f} = [10 ~10~ 10]^{T}$ & 0,081 & 0,002 \\ 
+        \hline 
+        168,743 & $h^{0} = [9.82~ 9.99~ 9.37]$ & $h^{f} = [10 ~12~ 9]^{T}$ & 0,203 & 0,0005 \\ 
+        \hline 
+    \end{tabular}
+    \caption{Podsumowanie wyników weryfikacji wyższego i niższego poziomu aplikacji. Źródło: własne.}
+    \label{tab:extctrl2opts}
+\end{table}
