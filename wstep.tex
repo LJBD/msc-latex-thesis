@@ -1,4 +1,22 @@
 \chapter*{Wstęp}
 \addcontentsline{toc}{chapter}{Wstęp}
 
-Wstęp!
+Rozwój techniki komputerowej w ostatnich dziesięcioleciach spowodował szeroki dostęp do metod numerycznych obliczeń problemów analitycznie trudnych bądź niemożliwych do rozwiązywania. W tym momencie skomplikowane algorytmy potrzebujące dużych zasobów sprzętowych można uruchomić na urządzeniach o relatywnie niewielkich rozmiarach.
+Skorzystała na tym w oczywisty sposób również automatyka, gdyż metody optymalizacji sterowania w układach nieliniowych stały się możliwe do stosowania w czasie rzeczywistym ze względu na krótki czas obliczeń i niewielkie gabaryty urządzeń wykonujących je.
+
+W obecnych czasach istnieje w automatyce tendencja, aby rozdzielać elementy odpowiedzialne za bezpośrednią komunikację z urządzeniami wykonawczymi od elementów uruchamiających skomplikowane matematycznie algorytmy, aby oba rodzaje można było udoskonalać w wykonywaniu tylko jednej klasy zadań.
+Takie podejście zostało również zaprezentowane w niniejszej pracy. Hybrydowa (z łac.: \emph{hybrida}: mieszaniec, krzyżówka) struktura polega na zastosowaniu dwóch poziomów: obliczeniowego i realizującego sterowanie bezpośrednie. 
+
+Niewątpliwą zaletą takiego podejścia jest modułowość: posiadając dobrze określoną specyfikację komunikacji, można bez większego problemu wymienić jeden z elementów składowych takiej aplikacji na inny, szybko tworząc prototypy i testując różne technologie w sposób, który nie zakłóca działania całości aplikacji.
+
+Celem niniejszej pracy jest przygotowanie oprogramowania, będącego w stanie wyliczać i aplikować sterowanie czasooptymalne dla układu trzech zbiorników z wodą. Powinno ono móc również symulować funkcjonowanie tego układu i weryfikować w ten sposób działanie optymalizacji. Dodatkowo powinno umieć podtrzymywać stan docelowy zagadnienia czasooptymalnego przy użyciu regulatora liniowo-kwadratowego.
+
+Pierwszy rozdział niniejszej pracy zawiera opis praw i zjawisk fizycznych, które użyto do wyznaczenia modelu matematycznego rozważanego układu zbiorników. Podano tam również inżynierskie uproszczenia skutkujące prostą strukturą tegoż modelu oraz sam model wraz z jego ograniczeniami.
+
+W drugim rozdziale przytoczono matematyczne podstawy optymalizacji dynamicznej służące do wyznaczenia dwóch rodzajów sterowań optymalnych potrzebnych w niniejszej pracy: czasooptymalnego i liniowo-kwadratowego. Opisano też analityczne i numeryczne metody rozwiązywania pierwszego z tych zagadnień.
+
+Trzeci rozdział jest poświęcony architekturze oprogramowania realizującego cele pracy. Przestawiono tam konkretne zadania dwóch elementów aplikacji o hybrydowej strukturze oraz opisano komunikację między nimi z wyszczególnieniem parametrów wysyłanych przez obie strony.
+
+Techniczny opis zagadnień związanych z oprogramowaniem znajduje się w rozdziale czwartym. Zawiera on opisy użytego oprogramowania, w szczególności tego wykorzystywanego do rozwiązywania zadań optymalizacji dynamicznej.
+
+W ostatnim rozdziale zawarto podsumowanie wszystkich przeprowadzonych badań symulacyjnych. Przedstawiono użyty algorytm optymalizacyjny oraz omówiono jego wyniki. Pokazano sposób na weryfikację otrzymanego rozwiązania na obu poziomach aplikacji i zawarto wnioski z niej płynące.

@@ -1,12 +1,11 @@
 \chapter{Architektura zaproponowanego rozwiązania}
 \label{cha:arch}
 
-W niniejszej pracy została zaproponowana hybrydowa struktura aplikacji realizującej zadania wyliczania i aplikowania sterowania czasooptymalnego, jak i minimalnego w sensie liniowo-kwadratowego wskaźnika jakości.
-Taka jej architektura jest odbiciem faktycznej tendencji w automatyce ostatnich lat: aby skomplikowane zadania obliczeniowe zadawać nie tym elementom, które realizują bezpośrednie sterowanie, ale zlecać je innym urządzeniom o architekturze sprzętu odpowiedniejszej do radzenia sobie z takimi problemami.
+W niniejszej pracy została zaproponowana hybrydowa struktura aplikacji realizującej zadania wyliczania i aplikowania sterowania czasooptymalnego, jak i optymalnego w sensie liniowo-kwadratowego wskaźnika jakości.
+Taka jej architektura jest odbiciem faktycznej tendencji w automatyce ostatnich lat: aby skomplikowane zadania obliczeniowe zadawać nie tym elementom, które realizują bezpośrednie sterowanie, ale zlecać je innym urządzeniom o architekturze sprzętu odpowiedniejszej do takich zadań.
 
-Niewątpliwą zaletą takiego podejścia jest modułowość: posiadając dobrze określoną specyfikację komunikacji, można bez większego problemu wymienić jeden z elementów składowych takiej aplikacji na inny, szybko tworząc prototypy i testując różne technologie w sposób, który nie zakłóca działania całości aplikacji.
+W niniejszym rozdziale opisano cele każdego z dwóch poziomów aplikacji: obliczeniowego i realizującego sterowanie bezpośrednie oraz podano specyfikację komunikacji między nimi.
 
-Dokładnie takie podejście zostało również zaprezentowane w niniejszej pracy. Hybrydowa (z łaciny: \emph{hybrida}: mieszaniec, krzyżówka) struktura polega na zastosowaniu dwóch poziomów: obliczeniowego i realizującego sterowanie bezpośrednie. Zostały one szerzej opisane w tym rozdziale.
 
 \input{3-1-podzial-zadan}
 
