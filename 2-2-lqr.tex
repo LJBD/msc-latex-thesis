@@ -15,7 +15,7 @@ Dany jest układ opisany liniowym równaniem różniczkowym \ref{eq:lqr-system} 
 
 Przyjmuje się również wskaźnik jakości w tym układzie dany wzorem \ref{eq:lqr-quality}.
 \begin{equation}\label{eq:lqr-quality}
-Q(u(t)) = \frac{1}{2}\int_{0}^{\infty} \Big(x(t)^{T}Wx(t) + u(t)^{T}Ru(t)\Big)dt
+Q(x(t), u(t)) = \frac{1}{2}\int_{0}^{\infty} \Big(x(t)^{T}Wx(t) + u(t)^{T}Ru(t)\Big)dt
 \end{equation}
 
 Dodatkowo zakłada się następujące właściwości macierzy wymienionych w powyższym wzorze:
@@ -24,7 +24,7 @@ Dodatkowo zakłada się następujące właściwości macierzy wymienionych w pow
     \item macierz $R = R^{T} > 0$ - jest symetryczna i dodatnio określona (jest również czasem w literaturze oznaczana symbolem $Q$, gdy wskaźnik jakości jest oznaczony symbolem $J$).
 \end{itemize}
 
-Oczywiście, aby istniało sterowanie optymalne, musi istnieć również całka będąca wskaźnikiem jakości - jest to warunek konieczny i wystarczający. Sterowalność pary $A$ i $B$ lub asymptotyczna stabilność macierzy $A$ jest warunkiem wystarczającym. Oba są podane w \cite{Korytowski2015} oraz w \cite{AthansOptCtrl}.
+Oczywiście, aby istniało sterowanie optymalne, musi istnieć również całka będąca wskaźnikiem jakości - jest to warunek konieczny i wystarczający. Sterowalność pary $A$ i $B$ lub asymptotyczna stabilność macierzy $A$ jest warunkiem wystarczającym. Oba są podane w \cite{AthansOptCtrl} i w \cite{Korytowski2015}.
 
 Wyznaczenie sterowania optymalnego w tak zdefiniowanym problemie opiera się na rozwiązaniu algebraicznego równania Ricattiego (danego zależnością \ref{eq:ricatti-algebraic}) przy założeniu, że macierz $K$ jest symetryczna i nieujemnie określona. Jest ono opisane szerzej w \cite{AthansOptCtrl}, \cite{Korytowski2015} i \cite{Murray2006}.
 
@@ -37,15 +37,15 @@ Sterowanie optymalne $\hat{u}(t)$ ma wówczas postać daną wzorem \ref{eq:lqr-o
 \hat{u}(t) = -R^{-1}B^{T}Kx(t),~ t \geq 0
 \end{equation}
 
-Aby taki regulator zapewnił asymptotyczną stabilność kontrolowanego układu, para $(W, A)$ musi być wykrywawlna, a para $(A, B)$ - stabilizowalna (za: \cite{Korytowski2015}).
+Aby taki regulator zapewnił asymptotyczną stabilność kontrolowanego układu, para $(W, A)$ musi być wykrywalna, a para $(A, B)$ - stabilizowalna (za: \cite{Korytowski2015}).
 
 %-------------------------------------------------
 \subsection{Linearyzacja modelu}
 \label{sub:lqr-lin}
 
-Mimo iż podstawowa definicja zagadnienia liniowo kwadratowego zakłada liniowość sterowanego układu (jak we wzorze \ref{eq:lqr-system}), to można rozszerzyć jego zastosowanie również na układy nieliniowe przez użycie linearyzacji w otoczeniu punktu pracy.
+Mimo iż podstawowa definicja zagadnienia liniowo kwadratowego zakłada liniowość sterowanego układu (jak we wzorze \ref{eq:lqr-system}), to można rozszerzyć jego zastosowanie również na układy nieliniowe przez użycie linearyzacji w punkcie pracy.
 
-Niech będzie dany układ opisany przez \ref{eq:general_system} wraz ze wszystkimi założeniami opisanymi w sekcji \ref{sub:toc-def-intro}.
+Niech będzie dany układ opisany przez \ref{eq:general_system} wraz ze wszystkimi założeniami opisanymi w sekcji \ref{sub:toc-def}.
 Można go stabilizować tylko w jednym z jego punktów równowagi $(x_{r}, u_{r})$ (definiowanych równaniem \ref{eq:steady-state-points}) ze względu na to, iż tylko do takich punktów układ może dążyć w nieskończoności, która jest horyzontem czasowym analizowanego zagadnienia.
 
 \begin{equation}\label{eq:steady-state-points}
@@ -81,7 +81,7 @@ Macierze $A$ i $B$ zostały uzyskane w procesie linearyzacji funkcji $f(x(t), u(
 Wskaźnik jakości dla takiego systemu również przyjmuje postać odchyłkową zaprezentowaną jako równanie \ref{eq:lqr-nonlnr-quality}. Założenia co do macierzy $W$ i $R$ są dalej takie same.
 
 \begin{equation}\label{eq:lqr-nonlnr-quality}
-Q(\Delta u(t)) = \frac{1}{2}\int_{0}^{\infty} \Big( \Delta x(t)^{T}W\Delta x(t) + \Delta u(t)^{T}R\Delta u(t) \Big)dt
+Q(\Delta x(t), \Delta u(t)) = \frac{1}{2}\int_{0}^{\infty} \Big( \Delta x(t)^{T}W\Delta x(t) + \Delta u(t)^{T}R\Delta u(t) \Big)dt
 \end{equation}
 
 Aby stabilizować układ w punkcie $x_{r}$, potrzebna jest definicja regulatora bazującego na odchyłkach.

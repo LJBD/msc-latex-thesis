@@ -89,7 +89,7 @@ Aby jednoznacznie opisać, a następnie wyznaczyć sterowanie czasooptymalne, po
     to sterowanie $\hat{u}(t)$ jest sterowaniem optymalnym.
 \end{pontriagin-max}
 
-Dowód zasady maksimum nie został uwzględniony w tej pracy. Można go znaleźć w \cite{Korytowski2015} oraz w \cite{Evans}.
+Dowód zasady maksimum nie został uwzględniony w niniejszej pracy. Można go znaleźć w \cite{Korytowski2015} oraz w \cite{Evans}.
 
 Powyższe twierdzenie należy obwarować dodatkowymi warunkami koniecznymi optymalności. Niech funkcja $g: \mathbb{R}^{2n} \longmapsto \mathbb{R}^{l}$ opisuje zestaw ograniczeń nierównościowych, a funkcja $h: \mathbb{R}^{2n} \longmapsto \mathbb{R}^{k}$ - ograniczeń równościowych. Obie dane są wzorem \ref{eq:pontryagin-constraints}. Dodatkowo zakłada się, że $g, h \in C^{1}$.
 \begin{equation}\label{eq:pontryagin-constraints}
@@ -132,13 +132,14 @@ Ponadto, zakłada się, że istnieją $\lambda \in \mathbb{R}$, $\mu \in \mathbb
 
 Poszukiwanie sterowania czasooptymalnego w systemach nieliniowych jest skomplikowane, przede wszystkim ze względu na trudność rozwiązania analitycznego nieliniowych (lub nawet niestacjonarnych) równań różniczkowych. Układ zbiorników omawiany w niniejszej pracy jest również takimi opisany: zarówno równania dynamiki układu \ref{eq:model}, jak i równania sprzężone \ref{eq:model-costate} są nieliniowe.
 
-Aby uprościć analizę problemu oraz fizyczne zastosowanie wyznaczonego sterowania, zakłada się, że poszukiwane jego postaci będą klasy ,,bang - bang''. To znaczy, że będą przyjmowały tylko wartości z brzegów jednowymiarowego zbioru dopuszczalnego $D \in \mathbb{R} \land D = [0, u_{max}] \Rightarrow \forall_{t \in [0, T]}:~ u(t) \in [0, u_{max}]$.
+Aby uprościć analizę problemu oraz fizyczne zastosowanie wyznaczonego sterowania, zakłada się, że poszukuje się go tylko w postaci ,,bang - bang''. To znaczy, że będą przyjmowały tylko wartości z brzegów jednowymiarowego zbioru dopuszczalnego $D \subset \mathbb{R} \land D = [0, u_{max}] \Rightarrow \forall_{t \in [0, T]}:~ u(t) \in [0, u_{max}]$.
+
+Można przyjąć takie założenie, ze względu na to, iż dla układów, których równania mają postać opisaną równaniem \ref{eq:nonlin-bang-bang}, funkcja przełączająca ma postać: $\phi(t) = \hat{\psi}(t) \circ g(\hat{x}(t))$. Opisano taką sytuację w \cite{YiMa2008} oraz w rozdziale 7.10 \cite{AthansOptCtrl}. Taka sytuacja zachodzi również w omawianym układzie, gdzie $m = 1$.
 
 \begin{equation}\label{eq:nonlin-bang-bang}
-    \frac{\partial x}{\partial t} = f(x(t)) + \sum_{i=1}^{m} g_{i}(x(t)) \cdot u_{i}(t)
+\frac{\partial x}{\partial t} = f(x(t)) + \sum_{i=1}^{m} g_{i}(x(t)) \cdot u_{i}(t)
 \end{equation}
 
-Można przyjąć takie założenie, ze względu na to, iż dla układów, których równania mają postać opisaną równaniem \ref{eq:nonlin-bang-bang}, funkcja przełączająca ma postać: $\phi(t) = \hat{\psi}(t) \circ g(\hat{x}(t))$. Opisano taką sytuację w \cite{YiMa2008} oraz w rozdziale 7.10 \cite{AthansOptCtrl}. Taka sytuacja zachodzi w omawianym układzie, gdzie $m = 1$.
 Funkcja przełączająca opisuje momenty, w których sterowanie zmienia swoją wartość z jednego krańca zbioru $D$ na drugi. W przypadku rozważanego układu zbiorników sterowanie optymalne będzie dane wzorem \ref{eq:model-opt-ctrl}.
 
 \begin{equation}\label{eq:model-opt-ctrl}
@@ -171,7 +172,7 @@ Pierwszym krokiem ku wyliczeniu analitycznego rozwiązania jest wyznaczenie rów
 \end{equation}
 
 Następnie trzeba by przedefiniować ograniczenia równościowe (dane wzorem \ref{eq:model-eq-const}) i nierównościowe (\ref{eq:model-noneq-const}) tak, aby spełniały założenia funkcji $g$ i $h$ opisane zależnościami \ref{eq:pontryagin-constraints}.
-Dodatkowo należy dopisać od ograniczeń równościowych to wynikające z faktu poszukiwania sterowania czasooptymalnego, czyli \ref{eq:final_term}, które w tym przypadku będzie miało postać opisaną przez \ref{eq:model-final-term}, gdzie $h_{1f}$, $h_{2f}$ i $h_{3f}$ są dane.
+Dodatkowo należy dopisać od ograniczeń równościowych to wynikające z faktu poszukiwania sterowania czasooptymalnego (wzór \ref{eq:final_term}). W tym przypadku będzie ono miało postać opisaną przez \ref{eq:model-final-term}, gdzie $h_{1f}$, $h_{2f}$ i $h_{3f}$ są dane.
 
 \begin{equation}\label{eq:model-final-term}
 \begin{array}{lr}
@@ -239,14 +240,14 @@ Przykładowe metody bezpośrednie przedstawione są poniżej:
     \item metody strzałów bezpośrednich.
 \end{itemize}
 
-Metody pośrednie wykorzystują warunki konieczne optymalności oryginalnego zadania i sprowadzają je do problemu granicznego lub dwugranicznego, który jest dany układem równań bazującym na zasadzie maksimum Pontriagina. Rozwiązanie takiego układu równań skutkuje wyznaczeniem trajektorii układu będących potencjalnie rozwiązaniem problemu. Każdą z nich bada się, jakeigo rodzaju ekstremem jest: minimum, maksimum lub punktem siodłowym, a następnie wybiera się taką, której koszt jest najmniejszy. Metody pośrednie wymagają dobrze dobranej trajektorii początkowej układu, która zawiera informacje na temat struktury sterowania (za: \cite{Korytowski2015}). Jest to wada tego rodzaju metod - wymagają większego nakładu pracy analitycznej przed rozpoczęciem obliczeń, aby wyznaczyć odpowiedni punkt startowy dla algorytmu. Zaletą za to jest dużo szybsza zbieżność w otoczeniu rozwiązania (za: \cite{Korytowski2015}). Przykładowe metody pośrednie to:
+Metody pośrednie wykorzystują warunki konieczne optymalności oryginalnego zadania i sprowadzają je do problemu granicznego lub dwugranicznego, który jest dany układem równań bazującym na zasadzie maksimum Pontriagina. Rozwiązanie takiego układu równań skutkuje wyznaczeniem trajektorii będących potencjalnie rozwiązaniem problemu. Każdą z tych trajektorii bada się, sprawdzając, jakim jest ekstremum: minimum, maksimum lub punktem siodłowym. Następnie wybiera się taką, której koszt jest najmniejszy. Metody pośrednie wymagają dobrze dobranej trajektorii początkowej układu, która zawiera informacje na temat struktury sterowania (za: \cite{Korytowski2015}). Jest to wada tego rodzaju metod - wymagają większego nakładu pracy analitycznej przed rozpoczęciem obliczeń, aby wyznaczyć odpowiedni punkt startowy dla algorytmu. Zaletą za to jest dużo szybsza zbieżność w otoczeniu rozwiązania (za: \cite{Korytowski2015}). Przykładowe metody pośrednie to:
 \begin{itemize}
     \item pośrednia metoda strzałów,
     \item pośrednia metoda strzałów wielokrotnych,
     \item pośrednie metody kolokacyjne.
 \end{itemize}
 
-Rys. \ref{fig:num-methods} przedstawia operacje matematyczne wykorzystywane przez oba rodzaje metod rozwiązywania problemów optymalizacji dynamicznej. Dokładniejszy opis metod wykonujących te operacje znajduje się w \cite{Rao2010}. W niniejszej pracy również zawarto ich opis w sekcji \ref{sub:opt-alg}.
+Rys. \ref{fig:num-methods} przedstawia operacje matematyczne wykorzystywane przez oba rodzaje metod rozwiązywania problemów optymalizacji dynamicznej. Dokładniejszy opis metod wykonujących te operacje znajduje się w \cite{Rao2010}.
 
 \begin{figure}[htp]
     \centering

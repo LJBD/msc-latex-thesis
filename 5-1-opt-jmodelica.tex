@@ -11,7 +11,7 @@ Algorytm wykorzystywany do optymalizacji dynamicznej można ogólnie opisać jak
 Rzeczywiście, przy próbie uruchomienia optymalizacji dla warunku początkowego niedaleko tego punktu, algorytm zwracał błąd niepoprawnej wartości pochodnej.
 Nie można więc stosować tego algorytmu do napełniania zbiorników od stanu zerowego, co zmniejsza jego praktyczne zastosowanie.
 
-Programy rozwiązujące problemy NLP wykazują się dużo większą zbieżnością w przypadku, gdy dostarczy się im informacje o pochodnych pierwszego i drugiego rzędu (za: \cite{and+11mod11}). W związku z tym w użytym algorytmie użyto najpierw oprogramowania CasADi, aby ze skompilowanego modelu w języku Modelica wyznaczyć wartości tych pochodnych (w formie jakobianu), a następnie używa się metody elementów skończonych. Dzieli ona wyjściowy przedział czasowy na określoną liczbę przedziałów nazywanych elementami skończonymi i dostarcza aproksymacji nieznanych wartości sterowania i stanów systemu w określonej liczbie punktów kolokacji. Wpływ liczby elementów na jakość rozwiązania jest przedstawiony w sekcji \ref{sub:sym-wer-jmodelica}.
+Programy rozwiązujące problemy NLP wykazują się dużo większą zbieżnością w przypadku, gdy dostarczy się im informacje o pochodnych pierwszego i drugiego rzędu (za: \cite{and+11mod11}). W związku z tym w użytym algorytmie użyto najpierw oprogramowania CasADi, aby ze skompilowanego modelu w języku Modelica wyznaczyć wartości tych pochodnych (w formie jakobianu), a następnie używa się metody elementów skończonych. Dzieli ona wejściowy czas działania na określoną liczbę przedziałów nazywanych elementami skończonymi i dostarcza aproksymacji nieznanych wartości sterowania i stanów systemu w określonej liczbie punktów kolokacji. Wpływ liczby elementów na jakość rozwiązania jest przedstawiony w sekcji \ref{sub:sym-wer-jmodelica}.
 W każdym punkcie kolokacji zastosowano pakiet IPOPT, który rozwiązuje zadanie w postaci danej wzorem \ref{eq:opt-stat} za pomocą metody punktu wewnętrznego. Metoda ta wykorzystuje funkcję graniczną do poruszania się tylko wewnątrz zbioru dopuszczalnego, gdzie metodą Newtona szuka lokalnego minimum.
 
 \begin{equation}\label{eq:opt-stat}
@@ -20,8 +20,8 @@ W każdym punkcie kolokacji zastosowano pakiet IPOPT, który rozwiązuje zadanie
 
 Algorytm optymalizacyjny zwraca wektor sterowań oraz trajektorie układu w czasie będącym wartością wskaźnika jakości w tym zagadnieniu. Te wartości są prezentowane użytkownikowi jako odpowiednie atrybuty urządzenia systemu Tango Controls.
 
-Interesującym jest fakt, iż brak uwzględnienia ograniczenia czasu końcowego $T \geq 0$ w niektórych skutkowało znalezieniem sterowania z ujemnym czasem optymalnym. Wynika z tego, że opisana metoda nie jest wrażliwa na to, że symuluje fizyczny układ, co może dziwić, zważywszy na fakt, iż została napisana dla oprogramowania służącego tylko do symulacji.
-To ograniczenie zostało uwzględnione w definicji optymalizacji w języku Optimica, które pokazano w sekcji \ref{sub:czesc-wyzsza-wybor}, aby uniknąć ujemnego czasu optymalnego.
+Brak uwzględnienia ograniczenia czasu końcowego $T \geq 0$ w niektórych przypadkach skutkowało znalezieniem sterowania z ujemnym czasem optymalnym. Wynika z tego, że opisana metoda nie jest wrażliwa na to, że symuluje fizyczny układ, co może dziwić, zważywszy na fakt, iż została napisana dla oprogramowania służącego tylko do symulacji.
+To ograniczenie zostało uwzględnione w definicji optymalizacji w języku Optimica, które pokazano w sekcji \ref{sub:czesc-wyzsza-wybor}, aby uniknąć pojawiania się ujemnego czasu optymalnego.
 
 %-------------------------------------------------
 \subsection{Inicjalizacja optymalizacji dynamicznej}

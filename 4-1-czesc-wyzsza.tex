@@ -3,8 +3,8 @@
 
 Aby zapewnić jak najlepszą realizację zadań postawionych przed częścią obliczeniową, należało wybrać odpowiednie oprogramowanie używane przez ten poziom aplikacji. Przyjęto dwa podstawowe założenia co do niego:
 \begin{itemize}
-    \item powinna być napisana w języku programowania Python,
-    \item powinna używać biblioteki Tango Controls jako swojej podstawy.
+    \item powinien być napisana w języku programowania Python,
+    \item powinien używać biblioteki Tango Controls jako swojej podstawy.
 \end{itemize}
 
 Pierwsze założenie zostało przyjęte ze względu na niewątpliwe zalety tego języka. Jest on mocno zorientowany na programowanie obiektowe, posiada przejrzystą, nieskomplikowaną składnię oraz, jako język interpretowany, umożliwia szybkie prototypowanie i korzystanie z interaktywnego wiersza poleceń.
@@ -21,15 +21,15 @@ Tango Controls to zestaw narzędzi służący do zarządzania rozproszonymi syst
 
 
 \subsubsection{Ogólne założenia systemu}
-Początki tego oprogramowania sięgają roku 1999, kiedy to w Europejskim Ośrodku Synchrotronu Atomowego w Grenoble podjęto próbę implementacji nowego systemu pozwalającego na połączenie wszystkich urządzeń jedną magistralą programową i zaczęto pracę nad jej uogólnieniem, aby mogła przyjąć dowolny sprzęt, który tylko będzie miał napisany odpowiedni do niej sterownik. Osiągnięto ten cel dzięki użyciu odpowiedniej technologii komunikacyjnej (oryginalnie implementacji architektury CORBA, od wersji 7 również biblioteki ZeroMQ) oraz zastosowaniu własnego protokołu oraz ogólnej przestrzeni adresowej dla wszystkich urządzeń w systemie. Zastosowano tutaj również podejście ,,klient - serwer'', a więc istnieje wyraźne rozgranicznie między interfejsem dla klienta (aplikacji pobierającej dane z systemu) oraz serwera (aplikacji dostarczającej dane). Dostępne są 3 tryby komunikacji między klientami a serwerami:
+Początki tego oprogramowania sięgają roku 1999, kiedy to w Europejskim Ośrodku Synchrotronu Atomowego w Grenoble podjęto próbę implementacji nowego systemu pozwalającego na połączenie wszystkich urządzeń jedną magistralą programową i zaczęto pracę nad jej uogólnieniem, aby mogła przyjąć dowolny sprzęt, który tylko będzie miał napisany odpowiedni do niej sterownik. Osiągnięto ten cel dzięki użyciu odpowiedniej technologii komunikacyjnej (oryginalnie implementacji architektury CORBA, od wersji 7 również biblioteki ZeroMQ) oraz zastosowaniu własnego protokołu i ogólnej przestrzeni adresowej dla wszystkich urządzeń w systemie. Zastosowano tutaj również podejście ,,klient - serwer'', a więc istnieje wyraźne rozgraniczenie między interfejsem dla klienta (aplikacji pobierającej dane z systemu) oraz serwera (aplikacji dostarczającej dane). Dostępne są 3 tryby komunikacji między klientami a serwerami:
 \begin{itemize}
     \item synchroniczny,
     \item asynchroniczny,
     \item zdarzeniowy.
 \end{itemize}
 
-Przyłączanie nowego sprzętu do tego systemu opiera się na zasadzie opakowywania istniejącego kodu służącego do komunikacji z nim kodem realizującym operacje związane z systemem Tango Controls. W związku z tym, że jednym z podstawowych założeń tego systemu jest obiektowość, to opakowanie będzie miało postać \emph{klasy urządzeń}.
-Dzięki temu przejmuje on wszystkie zalety (oraz pułapki) programowania obiektowego: możliwość dziedziczenia między klasami, co ułatwia utrzymywanie hierarchicznej struktury pisanego oprogramowania, jak i możliwość współdzielenia bardziej ogólnych klas między różnymi systemami, które korzystają z Tango Controls. W szczególności wszystkie klasy muszą dziedziczyć po bazowej klasie - \emph{Device}.
+Przyłączanie nowego sprzętu do tego systemu opiera się na zasadzie opakowywania istniejącego kodu służącego do komunikacji z danym urządzeniem kodem realizującym operacje związane z systemem Tango Controls. W związku z tym, że jednym z podstawowych założeń tego systemu jest obiektowość, to opakowanie będzie miało postać \emph{klasy urządzeń}.
+Dzięki temu przejmuje on wszystkie zalety programowania obiektowego: możliwość dziedziczenia między klasami, co ułatwia utrzymywanie hierarchicznej struktury pisanego oprogramowania, jak i możliwość współdzielenia bardziej ogólnych klas między różnymi systemami, które korzystają z Tango Controls. W szczególności wszystkie klasy muszą dziedziczyć po bazowej klasie - \emph{Device}.
 
 \subsubsection{Urządzenia i ich serwery}
 Podstawowym pojęciem opisywanego systemu jest \emph{urządzenie}, które jest obiektem w sensie programistycznym (instancją klasy danego typu urządzeń). Może to być:
@@ -47,7 +47,7 @@ Definicja przestrzeni adresowej systemu zakłada, że każde urządzenie w syste
 \end{itemize}
 Przykładowa nazwa wygląda następująco: \texttt{sys/tg\_test/1}.
 
-Dodatkowo podając nazwę urządzenia, można również podać adres bazowy systemu, czyli adres i port, na którym można nawiązać komunikację TCP/IP z urządzeniem zarządzającym dostępem do warstwy persystencji systemu - bazy danych MySQL. Tam przechowywane są informacje na temat urządzeń kiedykolwiek uruchomionych w systemie. Taki adres bazowy systemu określa się jako zmienną środowiskową w systemie operacyjnym o nazwie \texttt{TANGO\_HOST}. Określenie takiej pary adresu i portu jednoznacznie definiuje, z którym systemem zarządzanym przez Tango Controls klient się chce połączyć. Uzupełniona o nią (i o nazwę protokołu) przykładowa nazwa urządzenia wygląda następująco: \texttt{tango://tango-host.org:10000/sys/tg\_test/1}.
+Dodatkowo podając nazwę urządzenia, można również podać adres bazowy systemu, czyli adres i port, na którym można nawiązać komunikację TCP z urządzeniem zarządzającym dostępem do warstwy persystencji systemu - bazy danych MySQL. Tam przechowywane są informacje na temat urządzeń kiedykolwiek uruchomionych w systemie. Ten adres bazowy systemu określa się zmienną środowiskową w systemie operacyjnym o nazwie \texttt{TANGO\_HOST}. Określenie takiej pary adresu i portu jednoznacznie definiuje, z którym systemem zarządzanym przez Tango Controls klient się chce połączyć. Uzupełniona o nią (i o nazwę protokołu) przykładowa nazwa urządzenia wygląda następująco: \texttt{tango://tango-host.org:10000/sys/tg\_test/1}.
 
 Urządzenia systemu Tango są grupowane w \emph{serwery urządzeń} - procesy w systemie operacyjnym, które przy swoim starcie pytają warstwy persystencji o to, jakie urządzenia mają uruchomić. Każdy serwer urządzeń ma określony zestaw klas urządzeń, których instancjami może zarządzać: uruchamiać je, edytować, wyłączać, kasować itp. Umożliwia on również włączenie odpytywania konkretnego elementu interfejsu urządzenia z okresem zadanym w milisekundach. Proponuje się rozróżnienie na klasę urządzeń i typ serwera urządzeń, aby uniknąć nieścisłości. Każdy serwer jest również obiektem klasy urządzeń \emph{DServer}, a jego typ określa to, jakimi klasami urządzeń dysponuje.
 
@@ -55,9 +55,9 @@ Na interfejs urządzenia składają się cztery typy pól w klasie tego urządze
 \begin{enumerate}
     \item Atrybuty (ang. \emph{attributes}) - reprezentują wielkości fizyczne, zmieniające się w czasie działania urządzenia. Muszą mieć zdefiniowany typ (jeden z podstawowych typów danych numerycznych lub ciągu znaków) oraz wymiar (Tango Controls obsługuje atrybuty skalarne, wektorowe i macierzowe). Każde urządzenie musi mieć przynajmniej 2 atrybuty: stan i status (testowy opis tego, co się dzieje z urządzeniem). Przykładowy atrybut urządzenia będącego odwzorowaniem silnika krokowego w systemie Tango to pozycja (zmiennoprzecinkowa wartość skalarna) lub stan wyłączników krańcowych (dwuelementowy wektor wartości logicznych).
     
-    \item Strumienie (ang. \emph{pipe} - pozwalają na przesyłanie dowolnego typu surowych danych do urządzenia lub na jego zewnątrz. Dla każdej ich paczki trzeba jednak określić ten typ przed transmisją. Mogą być jedno- lub dwukierunkowe. Jest to nowy typ pola w klasach urządzeń, obecny od wersji 9.
+    \item Strumienie (ang. \emph{pipes}) - pozwalają na przesyłanie dowolnego typu surowych danych do urządzenia lub na jego zewnątrz. Dla każdego ich pakietu trzeba jednak określić ten typ przed transmisją. Mogą być jedno- lub dwukierunkowe. Jest to nowy typ pola w klasach urządzeń, obecny od wersji 9.
     
-    \item Komendy (ang. \emph{commands})- będące operacjami, których wykonanie urządzenie umożliwia. Mogą być wywoływane z maksymalnie jednym argumentem wejściowym i również tylko jeden argument wyjściowy mogą zwracać. Przykładem komendy urządzenia będącego logiczną abstrakcją silnika krokowego jest operacja bazowania - znalezienie określonej pozycji sprzężonego enkodera i wyzerowanie rejestru położenia.
+    \item Komendy (ang. \emph{commands}) - będące operacjami, których wykonanie urządzenie umożliwia. Mogą być wywoływane z maksymalnie jednym argumentem wejściowym i również tylko jeden argument wyjściowy mogą zwracać. Przykładem komendy urządzenia będącego logiczną abstrakcją silnika krokowego jest operacja bazowania - znalezienie określonej pozycji sprzężonego enkodera i wyzerowanie rejestru położenia.
     
     \item Właściwości (ang. \emph{properties}) - zawierające statyczną konfigurację urządzenia. Jako jedyne są przechowywane w bazie danych, skąd serwer urządzeń przy starcie pobiera ich wartości.
 \end{enumerate}
@@ -135,12 +135,12 @@ Poniższa lista zawiera wszystkie istotne dla użytkownika elementy interfejsu s
 \begin{enumerate}
     \item Właściwości:
     \begin{enumerate}
-        \item \emph{IPOPTTolerance} - tolerancja błędów oprogramowania do rozwiązywania zagadnień algebry liniowej (więcej o wpływie na działanie optymalizacji w sekcji \ref{sub:opt-dokladnosc}).
+        \item \emph{IPOPTTolerance} - tolerancja błędów oprogramowania do rozwiązywania zagadnień programowania nieliniowego (więcej o wpływie na działanie optymalizacji w sekcji \ref{sub:opt-dokladnosc}).
         \item \emph{ModelFile} - nazwa pliku z modelem dla oprogramowania do optymalizacji (więcej w sekcji \ref{sub:czesc-wyzsza-wybor}).
         \item \emph{MaxControl} - górne ograniczenie sterowania.
         \item \emph{Tank*Outflow} - opory wypływu ze zbiorników $C_{i}$. Dane jako 3 osobne właściwości - w miejscu * jest liczba 1, 2 lub 3.
         \item \emph{Tank*FlowCoeff} - współczynniki wypływu ze zbiorników $\alpha_{i}$. Dane j.w.
-        \item \emph{SimulationFinalTime} - czas symulacji używanej w celu inicjalizacji algorytmu optymalizacji (więcej o tym procesie w sekcji \ref{sub:opt-init}.
+        \item \emph{SimulationFinalTime} - czas symulacji używanej w celu inicjalizacji algorytmu optymalizacji (więcej o tym procesie w sekcji \ref{sub:opt-init}).
         \item \emph{TCPServerEnabled} - wartość logiczna zawierająca informację o tym, czy urządzenie ma uruchomić serwer TCP w celu komunikowania się z aplikacją niższego poziomu.
         \item \emph{TCPServerAddress} - para adres i port (przedzielone dwukropkiem). Pod tym adresem serwer TCP będzie nasłuchiwał przychodzących połączeń.
     \end{enumerate}
@@ -160,15 +160,7 @@ Poniższa lista zawiera wszystkie istotne dla użytkownika elementy interfejsu s
         \item \emph{R} - wartość wagi sterowania do zagadnienia liniowo-kwadratowego. Możliwy zapis.
         \item \emph{K} - wektor współczynników regulatora liniowo-kwadratowego.
         \item \emph{VerificationError} - wartość błędu weryfikacj (więcej o jego wyznaczaniu w podrozdziale \ref{sec:sym-wer}).
-        \item \emph{FEMElements} - liczba elementów metody elementów skończonych, używanej przez algorytm optymalizacyjny. Możliwy zapis.
-        \item Dostępne stany:
-        \begin{enumerate}
-            \item OFF - model początkowy jest niewczytany.
-            \item STANDBY - model początkowy jest wczytany, ale nie trwa żadna długa operacja.
-            \item ON - trwa symulacja.
-            \item RUNNING - trwa optymalizacja.
-            \item ALARM - długa operacja się nie udała. W przypadku optymalizacji oznacza to, iż nie udało się znaleźć sterowania optymalnego. W przypadku weryfikacji, że zwróciła ona błąd (więcej na ten temat w sekcji \ref{sub:sym-wer-jmodelica}).
-        \end{enumerate}
+        \item \emph{FEMElements} - liczba elementów metody elementów skończonych, używanej przez algorytm optymalizacyjny (więcej o jej wpływie na optymalizację w sekcji \ref{sub:sym-wer-jmodelica}). Możliwy zapis.
     \end{enumerate}
     \item Komendy:
     \begin{enumerate}
@@ -177,18 +169,26 @@ Poniższa lista zawiera wszystkie istotne dla użytkownika elementy interfejsu s
         \item \emph{GetEquilibriumFromControl} - przyjmuje wartość sterowania i na jej podstawie wylicza punkt równowagi, a następnie ustawia odpowiednie wartości poziomów końcowych.
         \item \emph{RunSimulation} - uruchamia symulację, a po jej zakończeniu ustawia wartości zmiennych symulacyjnych.
         \item \emph{RunVerification} - uruchamia symulację, a po jej zakończeniu ustawia wartości zmiennych symulacyjnych oraz wylicza błąd weryfikacji.
-        \item \emph{Optimise} - uruchamia procedurę optymalizacji, a następnie ustawia wartości poziomów optymalnych, sterowania optymalnego i osiągniętego czasu. Przyjmuje jeden argument - wartość logiczną, która określa, czy jako wartości początkowych powinna użyć aktualnych poziomów wody w zbiornikach. Jeśli tak się dzieje, to natychmiast po zakończeniu optymalizacji uruchamia komendę \emph{SendControl}.
+        \item \emph{Optimise} - uruchamia procedurę optymalizacji, a następnie ustawia wartości poziomów optymalnych, sterowania optymalnego i osiągniętego czasu. Przyjmuje jeden argument - wartość logiczną, która określa, czy jako wartości początkowych powinna użyć aktualnych poziomów wody w zbiornikach. Jeśli tak jest, to natychmiast po zakończeniu optymalizacji uruchamia komendę \emph{SendControl}.
         \item \emph{NormaliseOptimalControl} - przeprowadza operację normalizacji sterowania czasooptymalnego (więcej na ten temat w sekcji \ref{sub:opt-dokladnosc}) i ustawia wartości czasów przełączeń.
         \item \emph{SendControl} - sprawdza, czy są gotowe wartości do wysłania do aplikacji niższego poziomu, czyli czasy przełączeń i wartości wektora $K$ (jeśli nie są gotowe, uruchamia komendę \emph{GetLQR}), a następnie wysyła je do serwera TCP.
         \item \emph{GetDataFromDirectControl} - odbiera od serwera TCP dane od aplikacji sterowania bezpośredniego. Jest odpytywana standardowo co 50 milisekund. Ustawia aktualne poziomy i sterowanie.
         \item \emph{GetLQR} - uruchamia procedurę linearyzacji i wyliczania parametrów regulatora liniowo-kwadratowego. Ustawia wartości wektora K.
         \item \emph{GetEigenvaluesFromClosedLoopWithLQR} - zwraca w formie tekstowej wartości własne macierzy $A - BR^{-1}B^{T}K$ opisującej układ zamknięty sterowany regulatorem liniowo-kwadratowym.
     \end{enumerate}
+    \item Dostępne stany:
+    \begin{enumerate}
+        \item OFF - model początkowy jest niewczytany.
+        \item STANDBY - model początkowy jest wczytany, ale nie trwa żadna długa operacja.
+        \item ON - trwa symulacja.
+        \item RUNNING - trwa optymalizacja.
+        \item ALARM - długa operacja się nie udała. W przypadku optymalizacji oznacza to, iż nie udało się znaleźć sterowania optymalnego. W przypadku weryfikacji, że zwróciła ona błąd (więcej na ten temat w sekcji \ref{sub:sym-wer-jmodelica}).
+    \end{enumerate}
 \end{enumerate}
 
 \subsubsection{Problem dostępności interfejsu systemu Tango}
 
-Biblioteka Tango Controls nakłada jeszcze jedno ograniczenie na część obliczeniową aplikacji: interfejs powinien być dostępny z maksymalnie trzysekundowym opóźnieniem. To znaczy, że każda prośba klienta musi zostać obsłużona w ciągu 3 sekund. W przypadku operacji symulacji, a szczególnie optymalizacji to założenie nie jest spełnione, ponieważ szczególnie ta druga operacja może trwać nawet kilka minut.
+Biblioteka Tango Controls nakłada jeszcze jedno ograniczenie na część obliczeniową aplikacji: interfejs powinien być dostępny z maksymalnie trzysekundowym opóźnieniem. To znaczy, że każda prośba klienta musi zostać obsłużona w ciągu 3 sekund. W przypadku operacji symulacji i optymalizacji to założenie nie jest spełnione, ponieważ szczególnie ta druga może trwać nawet kilka minut.
 
 W API Tango Controls do języka Python (nazywającym się PyTango) istnieją sposoby na asynchroniczne wywoływanie operacji (tzw. \emph{green modes}), ale mają dwie wady:
 \begin{itemize}
@@ -196,7 +196,7 @@ W API Tango Controls do języka Python (nazywającym się PyTango) istnieją spo
     \item procedury pakietu JModelica.org są z nimi niekompatybilne.
 \end{itemize}
 
-W związku z tym zaproponowano własne, ogólne rozwiązanie problemu potrzeby asynchronicznego wykonywania operacji wewnątrz klasy urządzeń. W tym celu użyto biblioteki \texttt{multiprocessing} wchodzącej w skład standardowego zestawu narzędzi języka Python. Za jej pomocą zaimplementowano asynchroniczne wywoływanie długich operacji w osobnych procesach, które po swoim końcu wywołuja metody odwołania (ang. \emph{callback}) w głównym wątku aplikacji. Dzięki temu wszystkie komendy, które wywołują długie operacje (\emph{Optimise}, \emph{RunSimulation} oraz \emph{RunVerification}) tylko uruchamiają osobny proces i przypisują odpowiednią metodę odwołania, nie blokując interfejsu urządzenia.
+W związku z tym zaproponowano własne, ogólne rozwiązanie problemu potrzeby asynchronicznego wykonywania operacji wewnątrz klasy urządzeń. W tym celu użyto biblioteki \texttt{multiprocessing} wchodzącej w skład standardowego zestawu narzędzi języka Python. Za jej pomocą zaimplementowano asynchroniczne wywoływanie długich operacji w osobnych procesach, które po swoim końcu wywołuja metody odwołania (ang. \emph{callback}) w głównym procesie aplikacji. Dzięki temu wszystkie komendy, które wywołują długie operacje (\emph{Optimise}, \emph{RunSimulation} oraz \emph{RunVerification}) tylko uruchamiają osobny proces i przypisują odpowiednią metodę odwołania, nie blokując interfejsu urządzenia.
 
 Osobnym procesem jest również serwer TCP. Posiada on własny system logowania i komunikuje się z głównym procesem aplikacji wyższego poziomu poprzez potok danych (ang. \emph{pipe}, nie mylić z częścią interfejsu urządzenia systemu Tango). Jest on dwukierunkowy: serwer może przez niego wysyłać aktualne dane odebrane od aplikacji niższego poziomu, a główny proces wszystkie informacje o sterowaniu. Odbiór danych po stronie serwera znajduje się na początku pętli obsługi komunikacji z klientem TCP (aplikacją niższego poziomu). Odbiór danych po stronie urządzenia odbywa się w odpytywanej co 50 milisekund komendzie \emph{GetDataFromDirectControl}.
 
@@ -209,14 +209,14 @@ Osobnym procesem jest również serwer TCP. Posiada on własny system logowania 
 
 Na rys. \ref{fig:tanksoptctrlarchitecture} przedstawiono schematycznie użycie procesów (oznaczonych prostokątami o ostrych wierzchołkach) i wątków (oznaczonych prostokątami o obłych wierzchołkach) w wyższym poziomie aplikacji. Kolorem szarym zaznaczono kontener procesów klasy \texttt{multiprocessing.Pool}. Wywołuje on odpowiednie procesy robocze dla zadań optymalizacji i/lub symulacji. Wszystkie wątki odpalane przez główny proces tego poziomu aplikacji są uruchamiane przez system Tango Controls. Kolorem czerwonym oznaczono wątki związane z komunikacją synchroniczną i asynchroniczną, kolorem żółtym - zdarzeniową, a fioletowym wątek sygnałowy (dokładniejszy opis znajduje się w \cite{TangoDocs}).
 
-Użyto w tym celu procesów, a nie wątków ze względu na tzw. \emph{Global Interpreter Lock} - globalny zamek interpretera. Jest to cecha języka Python, która powoduje, że wątki nie mogą być uruchamiane równolegle (nawet w przypadku dostępnych rdzeni procesora), a zawsze są tylko współbieżne. Z kolei procesy nie są objęte tym ograniczeniem i można ich używać w prawdziwie równoległy sposób.
+Użyto w tym celu procesów, a nie wątków ze względu na tzw. \emph{Global Interpreter Lock}. Jest to cecha języka Python, która powoduje, że wątki nie mogą być uruchamiane równolegle (nawet w przypadku dostępnych rdzeni procesora) - zawsze są tylko współbieżne. Procesy nie są objęte tym ograniczeniem i można ich używać w prawdziwie równoległy sposób.
 
 
 %-------------------------------------------------
 \subsection{Wybór pakietu do optymalizacji dynamicznej}
 \label{sub:czesc-wyzsza-wybor}
 
-Podstawowym elementem istotnym dla powodzenia takiego zadania był wybór pakietu realizującego operacje optymalizacji dynamicznej. Istnieje na rynku kilka płatnych bibliotek bądź pakietów oprogramowania, które są w stanie rozwiązywać tego typu problemy (np. MATLAB, Mathematica itp.), ale postanowiono poszukać darmowego odpowiednika, który posiadałby interfejs w języku programowania Python (w związku z ogólnymi założeniami co do struktury tej części aplikacji).
+Podstawowym elementem istotnym dla powodzenia zadań postawionych przed wyższym poziomem aplikacji był wybór pakietu realizującego operacje optymalizacji dynamicznej. Istnieje na rynku kilka płatnych bibliotek bądź pakietów oprogramowania, które są w stanie rozwiązywać tego typu problemy (np. MATLAB, Mathematica itp.), ale postanowiono poszukać darmowego odpowiednika, który posiadałby interfejs w języku programowania Python (w związku z ogólnymi założeniami co do struktury tej części aplikacji).
 
 
 \subsubsection{Opis pakietu ACADO}
@@ -224,11 +224,7 @@ Podstawowym elementem istotnym dla powodzenia takiego zadania był wybór pakiet
 Pierwszym z pakietów optymalizacyjnych, który był rozważany, jest ACADO (ang. \emph{Automatic Control and Dynamic
 Optimization}). Jest to zestaw algorytmów napisanych w języku C++ służących do różnych zastosowań związanych ze sterowaniem optymalnym, dostępny na otwartej licencji (za: \cite{Houska2011}). W jego skład wchodzą między innymi metody:
 \begin{itemize}
-    \item bezpośrednie optymalizacji dynamicznej (w tym wielokryterialnej):
-        \begin{itemize}
-            \item programowanie nieliniowe (w tym programowanie kwadratowe: ang. \emph{QP - Quadratic Programming}),
-            \item bezpośrednia metoda strzałów wielokrotnych;
-        \end{itemize}
+    \item bezpośrednie optymalizacji dynamicznej (w tym wielokryterialnej),
     \item sterowania predykcyjnego (MPC, ang. \emph{Model Predictive Control}),
     \item estymacji parametrów i stanu.
 \end{itemize}
@@ -238,7 +234,7 @@ Dodatkowo opisywane oprogramowanie umożliwia generowanie kodu w języku C rozwi
 Twórcom tej biblioteki przyświecały cztery główne założenia:
 \begin{enumerate}
     \item Oprogramowanie musi być dostępne na otwartej licencji.
-    \item Składnia musi być jak najbardziej intuicyjna, aby nie odrzucać potencjalnych użytkowników (którzy mogą nie mieć dużego doświadczenia z językiem C++) ilością kodu szablonowego (ang. \emph{boilerplate code}). Powinna umożliwiać prostą definicję problemów sterowania optymalnego. Udało się to osiągnąć, stosując różne bardziej zaawansowane elementy składni języka programowania, w szczególności przeładowywania operatorów, aby składnia była jak najbardziej zbliżona do matematycznego zapisu.
+    \item Składnia musi być jak najbardziej intuicyjna, aby nie odrzucać potencjalnych użytkowników (którzy mogą nie mieć dużego doświadczenia z językiem C++) ilością kodu szablonowego (ang. \emph{boilerplate code}). Powinna umożliwiać prostą definicję problemów sterowania optymalnego. Udało się to osiągnąć, stosując różne bardziej zaawansowane elementy języka programowania, w szczególności przeładowywania operatorów, aby składnia opisu w ACADO była jak najbardziej zbliżona do zapisu matematycznego.
     \item Kod powinien być napisany w taki sposób, aby ułatwić rozszerzanie go o własne algorytmy oraz używanie metod z tej biblioteki w innych, większych projektach. To założenie jest spełnione przez odpowiednie zaplanowanie struktury oprogramowania oraz przestrzeganie paradygmatu programowania obiektowego.
     \item Brak zewnętrznych zależności. Użytkownik może zastosować ACADO, jeśli tylko posiada kompilator języka C++. Dodatkowe biblioteki nie są wymagane, ale mogą być użyte przy rysowaniu wykresów oraz specjalistycznych obliczeniach algebraicznych.
 \end{enumerate}
@@ -247,7 +243,7 @@ Aby zilustrować prostotę składni, poniżej załączono definicję modelu mate
 
 \lstinputlisting[language=C++, firstline=21, lastline=58]{../masthe-acado-tanks-optimisation/tanks-optimisation.cpp}
 
-Mimo iż pakiet ACADO jest napisany w języku C++, a nie w języku Python, została przeprowadzona próba użycia go do rozwiązania problemu znajdowania sterowania czasooptymalnego w opisywanym w niniejszej pracy układzie zbiorników. Wykorzystano tutaj metodę bezpośrednią opartą na programowaniu nieliniowym. Niestety, nie zakończyła się ona powodzeniem: bez względu na zmiany opcji algorytmu (w tym tolerancji rozwiązania) oraz na zastosowane techniki inicjalizacji nie udało się przeprowadzić ani jednej poprawnej optymalizacji. W związku z tym zdecydowano się zrezygnować z dalszych prób użycia pakietu ACADO i poszukać oprogramowania bardziej odpowiedniego do rozpatrywanego problemu.
+Mimo iż pakiet ACADO jest napisany w języku C++, a nie w języku Python, została przeprowadzona próba użycia go do rozwiązania problemu znajdowania sterowania czasooptymalnego w opisywanym w niniejszej pracy układzie zbiorników. Wykorzystano tutaj metodę bezpośrednią strzałów wielokrotnych opartą na programowaniu nieliniowym. Niestety, nie zakończyła się ona powodzeniem: bez względu na zmiany opcji algorytmu (w tym tolerancji rozwiązania) oraz na zastosowane techniki inicjalizacji nie udało się przeprowadzić ani jednej poprawnej optymalizacji. W związku z tym zdecydowano się zrezygnować z dalszych prób użycia pakietu ACADO i poszukać oprogramowania bardziej odpowiedniego do rozpatrywanego problemu.
 
 \subsubsection{Opis pakietu Modelica i JModelica.org}
 
@@ -261,7 +257,8 @@ Celem przyświecającym jego twórcom jest dostarczenie narzędzia służącego 
     \item pneumatycznych.
 \end{itemize}
 
-Opisywany układ może zawierać dowolną kombinację komponentów każdego z tych rodzajów. Każdy z nich ma odpowiadającą sobie część biblioteki standardowej języka Modelica, która oprócz tego zawiera również komponenty przydatne w opisie złożonych systemów (m.in definicje jednostek układu SI, maszyn stanów, zaawansowanych funkcji matematycznych czy stałych fizycznych). Zgodnie z paradygmatem obiektowości, wszystkie komponenty można rozszerzać, aby tworzyć własne ich wariacje.
+Opisywany układ może zawierać dowolną kombinację komponentów każdego z tych rodzajów. Każdy z nich ma odpowiadającą sobie część biblioteki standardowej języka Modelica, która oprócz tego zawiera również ogólne komponenty (m.in definicje jednostek układu SI, maszyn stanów, zaawansowanych funkcji matematycznych czy stałych fizycznych).
+Zgodnie z paradygmatem obiektowości, wszystkie komponenty można rozszerzać, aby tworzyć własne ich wariacje.
 Całe oprogramowanie jest dostępne na własnej, otwartej licencji, która również może być wykorzystywana do licencjonowania modeli napisanych w tym języku.
 
 Poniżej podano definicję modelu opisywanego w niniejszej pracy układu zbiorników w języku Modelica w formie tekstowej, aby zaprezentować jego składnię. Przygotowano paczkę \texttt{TanksPkg} rozszerzającą bibliotekę standardową o następujące komponenty:
@@ -292,15 +289,15 @@ JModelica.org jest platformą do symulacji, optymalizacji i analizy układów op
     \label{fig:jmodelicaarchitecture}
 \end{figure}
 
-Architektura platformy JModelica.org składa się następujących komponentów (pokazanych schematycznie na rys. \ref{fig:jmodelicaarchitecture}):
+Architektura platformy JModelica.org składa się z następujących komponentów (pokazanych schematycznie na rys. \ref{fig:jmodelicaarchitecture}):
 \begin{itemize}
     \item kompilatora, który sprawdza poprawność modeli opisanych w językach Modelica i Optimica, a następnie generuje kod w języku C zawierający równania układów i pliki w formacie XML z metadanymi,
-    \item biblioteki wykonywalnej JModelica.org napisanej w języku C, która pozwala skompilować model opisany w języku C i dostarczyć go do zewnętrznego oprogramowania do wyliczania pochodnych w formie przez nie zrozumiałej,
-    \item biblioteki w językach C++, Java i Python zawierającej implementacje metod optymalizacji dynamicznej (używana jest tu metoda kolokacji bezpośredniej opisana w \cite{ake+10cace}),
+    \item biblioteki wykonywalnej JModelica.org napisanej w języku C, która pozwala skompilować model i dostarczyć go do zewnętrznego oprogramowania do wyliczania pochodnych w formie przez nie zrozumiałej,
+    \item bibliotek w językach C++, Java i Python zawierającej implementacje metod optymalizacji dynamicznej (używana jest tu metoda kolokacji bezpośredniej opisana w \cite{ake+10cace} i w \cite{and+11mod11}),
     \item API do języka Python dającego użytkownikowi dostęp do wszystkich pozostałych komponentów; w jego skład wchodzą 3 pakiety:
     \begin{itemize}
         \item \emph{PyModelica} dostarcza interfejs do kompilatorów języków Modelica i Optimica,
-        \item \emph{PyFMI} umożliwia manipulację parametrami skompilowanych modeli i ich symulację,
+        \item \emph{PyFMI} umożliwia manipulację parametrami modeli i ich symulację,
         \item \emph{PyJMI} służy jako interfejs do algorytmów optymalizacji;
     \end{itemize}
     \item wtyczki do środowiska programistycznego Eclipse.
@@ -327,20 +324,20 @@ Jest to idealne środowisko do testowania aplikacji wymagających wielu zależno
     \begin{itemize}
         \item pakiet do optymalizacji nieliniowej IPOPT (ang. \emph{Interior Point Optimizer}) oraz jego zależności:
         \begin{itemize}
-            \item biblioteka operacji wektorowych i macierzowych BLAS (ang. \emph{Basic Linear Algebra Subprograms}),
-            \item biblioteka operacji algebraicznych LAPACK (ang. \emph{Linear Algebra Package}),
-            \item biblioteka opisu problemów matematycznych AMPL/MP,
+            \item bibliotekę operacji wektorowych i macierzowych BLAS (ang. \emph{Basic Linear Algebra Subprograms}),
+            \item bibliotekę operacji algebraicznych LAPACK (ang. \emph{Linear Algebra Package}),
+            \item bibliotekę opisu problemów matematycznych AMPL/MP,
             \item oprogramowanie do rozwiązywania układów liniowych MUMPS;
         \end{itemize}
         \item pakiety do wyliczania wartości pochodnych funkcji CppAD i CasADi,
-        \item biblioteka do rozwiązywania równań różniczkowych i algebraicznych Sundials (ang. \emph{Suite of Nonlinear and Differential/Algebraic Equation Solvers}),
+        \item bibliotekę do rozwiązywania równań różniczkowych i algebraicznych Sundials (ang. \emph{Suite of Nonlinear and Differential/Algebraic Equation Solvers}),
         \item pakiet funkcji matematycznych w języku Python SciPy;
     \end{itemize}
     \item oprogramowanie Tango Controls w wersji klienckiej (bez serwera do komunikacji z bazą danych) wraz z zależnościami:
     \begin{itemize}
         \item pakiet implementujący architekturę komunikacji CORBA omniORB,
         \item pakiet do komunikacji zdarzeniowej ZeroMQ,
-        \item biblioteka obliczeń numerycznych języka Python NumPy;
+        \item bibliotekę obliczeń numerycznych języka Python NumPy;
     \end{itemize}
     \item pakiet PyTango, czyli API systemu Tango Controls w języku Python,
     \item pakiet \emph{control}, który został wykorzystany do wyznaczenia regulatora liniowo-kwadratowego.
@@ -353,4 +350,4 @@ Przygotowano również środowisko pracy zawierające następujące kontenery:
     \item opisany wyżej kontener służący do uruchamiania części obliczeniowej aplikacji.
 \end{itemize}
 
-Takie podejście pozwoliło uniezależnić testowanie tego poziomu aplikacji od posiadanego sprzętu, jeśli tylko obsługiwał on platformę Docker.
+Takie podejście pozwoliło uniezależnić testowanie tego poziomu aplikacji od posiadanego sprzętu - jedynym oprogramowaniem potrzebnym do uruchomienia opisanego środowiska pracy jest sama platforma Docker.

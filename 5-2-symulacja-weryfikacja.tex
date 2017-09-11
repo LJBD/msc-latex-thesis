@@ -32,7 +32,7 @@ Poniżej przedstawiono 2 przykłady wykresów uzyskanych w czasie weryfikacji i 
     \label{fig:plot556-303035-normalised-350}
 \end{figure}
 
-Pierwszy przykład to napełnianie zbiorników od poziomów $h_{1}^{0} = 5 cm, h_{2}^{0} = 5 cm, h_{3}^{0} = 6 cm$ do poziomów $h_{1}^{f} = 30 cm, h_{2}^{f} = 30 cm, h_{3}^{f} = 25 cm$. Sterowanie w postaci z algorytmu optymalizacji osiągnęło wartość błędu weryfikacji $e_{wer}^{s} = 0,0002$, a po znormalizowaniu: $e_{wer}^{n} = 0.002$. W tym przypadku sterowanie w postaci ,,surowej'' (przedstawione na rys. \ref{fig:plot556-303035-raw-350}) wizualnie nie różni się bardzo od sterowania znormalizowanego (pokazanego na rys. \ref{fig:plot556-303035-normalised-350}), ale nawet taka niewielka różnica może prowadzić do zwiększenia się błędu weryfikacji o rząd wielkości. Jest to jednak również związane z tym, iż pierwszy błąd jest bardzo niewielki i w czasie wielu prób rzadko uzyskiwano tak niewielkie wartości. W tej optymalizacji użyto 350 elementów skończonych.
+Pierwszy przykład to napełnianie zbiorników od poziomów $h_{1}^{0} = h_{2}^{0} = 5 cm, h_{3}^{0} = 6 cm$ do poziomów $h_{1}^{f} = h_{2}^{f} = 30 cm, h_{3}^{f} = 25 cm$. Sterowanie w postaci z algorytmu optymalizacji osiągnęło wartość błędu weryfikacji $e_{wer}^{s} = 0,0002$, a po znormalizowaniu: $e_{wer}^{n} = 0.0021$. W tym przypadku sterowanie w postaci ,,surowej'' (przedstawione na rys. \ref{fig:plot556-303035-raw-350}) wizualnie nie różni się bardzo od sterowania znormalizowanego (pokazanego na rys. \ref{fig:plot556-303035-normalised-350}), ale nawet taka niewielka różnica może prowadzić do zwiększenia się błędu weryfikacji o rząd wielkości. Jest to jednak również związane z tym, iż pierwszy błąd jest bardzo niewielki i w czasie wielu prób rzadko uzyskiwano tak niewielkie wartości. W tej optymalizacji użyto 350 elementów skończonych.
 
 \begin{figure}[htp]
     \centering
@@ -48,20 +48,20 @@ Pierwszy przykład to napełnianie zbiorników od poziomów $h_{1}^{0} = 5 cm, h
     \label{fig:plot303030-202520normalised200}
 \end{figure}
 
-Drugi przykład to upuszczanie niewielkiej ilości wody ze zbiorników od poziomów $h_{1}^{0} = 30 cm, h_{2}^{0} = 30 cm, h_{3}^{0} = 30 cm$ do $h_{1}^{f} = 20 cm, h_{2}^{f} = 25 cm, h_{3}^{f} = 20 cm$. Sterowanie w postaci ,,surowej'' osiągnęło wartość błędu weryfikacji $e_{wer}^{s} = 0,007$, a w postaci znormalizowanej: $e_{wer}^{n} = 0.019$. Tutaj różnica między błędami jest mniejsza niż w poprzednim przypadku, mimo bardziej skomplikowanej struktury sterowania wyznaczonego przez algorytm optymalizacyjny (pokazanego na rys. \ref{fig:plot303030-202520raw200}). Sterowanie znormalizowane zaprezentowano na rys. \ref{fig:plot303030-202520normalised200}. W tej optymalizacji użyto 200 elementów skończonych, więc trzeba to wziąć pod uwagę, porównując wartości błędów między oboma opisanymi przypadkami.
+Drugi przykład to upuszczanie niewielkiej ilości wody ze zbiorników od poziomów $h_{1}^{0} = h_{2}^{0} = h_{3}^{0} = 30 cm$ do $h_{1}^{f} = 20 cm, h_{2}^{f} = 25 cm, h_{3}^{f} = 20 cm$. Sterowanie w postaci ,,surowej'' osiągnęło wartość błędu weryfikacji $e_{wer}^{s} = 0,007$, a w postaci znormalizowanej: $e_{wer}^{n} = 0.019$. Tutaj różnica między błędami jest mniejsza niż w poprzednim przypadku, mimo bardziej skomplikowanej struktury sterowania wyznaczonego przez algorytm optymalizacyjny (pokazanego na rys. \ref{fig:plot303030-202520raw200}). Sterowanie znormalizowane zaprezentowano na rys. \ref{fig:plot303030-202520normalised200}. W tej optymalizacji użyto 200 elementów skończonych, więc trzeba to wziąć pod uwagę, porównując wartości błędów między oboma opisanymi przypadkami.
 
 
 \subsubsection{Wpływ liczby elementów metody elementów skończonych na rozwiązanie}
 
-W związku z tym, że zastosowana metoda przynosiła dobre rezultaty, lecz wartości błędu weryfikacji były dosyć duże (rzędu jednej dziesiątej), podjęto próbę zwiększenia liczby elementów skończonych i przeprowadzenia ponownej optymalizacji i weryfikacji. Odkryto, iż istotnie ma ono wpływ na wartość błędów weryfikacji, ale również na czas obliczeń.
+W związku z tym, że zastosowana metoda przynosiła dobre rezultaty, lecz wartości błędu weryfikacji były dosyć duże (rzędu jednej dziesiątej), podjęto próbę zwiększenia liczby elementów skończonych i przeprowadzenia ponownej optymalizacji i weryfikacji. Odkryto, iż istotnie ma ono wpływ na wartość błędów weryfikacji i na czas obliczeń.
 
 Przeprowadzono więc eksperyment, który miał pokazać ten wpływ liczby elementów skończonych na błędy weryfikacji dla sterowania ,,surowego'' i znormalizowanego oraz czas obliczeń. Przyjęto zmianę tej liczby w przedziale 50 do 500 z krokiem 50 tak, aby uzyskać 10 punktów pomiarowych.
 
 W pierwszym przypadku skorzystano z napełniania zbiorników od poziomu $h_{1}^{0} = h_{2}^{0} = h_{3}^{0} = 1 cm$ do $h_{1}^{f} = h_{2}^{f} = h_{3}^{f} = 15 cm$. Uzyskane wyniki przedstawiono na rys. \ref{fig:elementsinfluence1-15_50-500}. Zauważono, iż:
 \begin{itemize}
     \item różnica absolutna i relatywna między błędem weryfikacji dla sterowania ,,surowego'' i znormalizowanego jest największa w przypadku najmniejszej rozważanej liczby elementów,
-    \item prędkość zmniejszania się błędów
     \item wartości czasów obliczeń rosną najprawdopodobniej wielomianowo,
+    \item charakter zmniejszania się błędów jest podobny do charakteru wzrostu czasu obliczeń,
     \item należy stosować wartości liczby elementów z przedziału między 200 a 350, gdyż tam występuje najlepszy stosunek czasu obliczeń do wartości błędów.
 \end{itemize}
 
@@ -74,8 +74,8 @@ W pierwszym przypadku skorzystano z napełniania zbiorników od poziomu $h_{1}^{
 
 Przeprowadzono drugi eksperyment dla innych danych w celu weryfikacji powyższych wniosków. Tym razem skorzystano z napełniania zbiorników od poziomu $h_{1}^{0} = h_{2}^{0} = h_{3}^{0} = 10 cm$ do $h_{1}^{f} = h_{2}^{f} = h_{3}^{f} = 20 cm$. Wyniki pokazano na rys. \ref{fig:elementsinfluence10-2050-500}. Tym razem zaobserwowano, iż:
 \begin{itemize}
-    \item wartości błędów są zależne od warunków zadania - w tym przypadku błędy były około 2 razy większe,
-    \item czasy obliczeń nie zachowują się tak regularnie, jak w powyższym przypadku i osiągają wartości o rząd wielkości większe, a więc również silnie zależą od warunków zadania,
+    \item wartości błędów są zależne od warunków zadania - w tym przypadku były one około 2 razy większe przy wszystkich wartościach liczby elementów skończonych,
+    \item czasy obliczeń nie zachowują się tak regularnie, jak w powyższym przypadku i osiągają wartości o rząd wielkości większe, a więc silnie zależą od warunków zadania,
     \item potwierdziła się hipoteza, iż należy wybierać wartości liczby elementów między 200 a 350.
 \end{itemize}
 
@@ -96,23 +96,24 @@ W przypadku niektórych wartości początkowych i końcowych oraz znalezionego d
 
 %TODO: opisać wykresy i porównać z JModelicą
 
-Symulację weryfikacyjną w programie MATLAB/Simulink przeprowadzono, łącząc oba poziomy aplikacji w całość i uruchamiając odpowiednie obliczenia. Zastosowano tam pewne uproszczenie: symulację uruchamiano dopiero po obliczeniu pierwszego sterowania optymalnego. Pokazano jednak, że w przy kolejnych optymalizacjach dokonywano ich w czasie trwania symulacji i niższy poziom aplikacji był w stanie przełączać się w czasie rzeczywistym między sterowaniem czasooptymalnym a liniowo-kwadratowym.
+Połączenie obu poziomów aplikacji w całość umożliwiło przeprowadzenie symulacji weryfikacyjnej w programie MATLAB/Simulink.
+Zastosowano tu pewne uproszczenie: symulację uruchamiano dopiero po obliczeniu pierwszego sterowania optymalnego. Pokazano jednak, że w przy kolejnych optymalizacjach dokonywano ich w czasie trwania symulacji i niższy poziom aplikacji był w stanie przełączać się w czasie rzeczywistym między sterowaniem czasooptymalnym a liniowo-kwadratowym.
 
-Poniżej pokazano dwa przykłady funnkcjonowania symulacji weryfikacyjnej niższego poziomu aplikacji.
-W obu użyto metody Runge-Kutty 4 rzędu i stałego kroku o wartości 0.001 s. Dobrano taką metodę i wartość kroku czasowego ze względu na przewidywanie możliwości wykorzystania całej opisywanej aplikacji również z rzeczywistym układem zbiorników.
+Poniżej pokazano dwa przykłady funkcjonowania symulacji weryfikacyjnej niższego poziomu aplikacji.
+W obu użyto metody Runge-Kutty 4 rzędu i stałego kroku o wartości 0.001 s. Dobrano taką metodę i wartość kroku czasowego ze względu na przewidywanie możliwości wykorzystania całej opisywanej aplikacji również z rzeczywistym układem zbiorników, gdzie komunikacja ze sprzętem wymusza stosowanie stałego kroku symulacji.
 Symulacje przeprowadzono z nieskończonym czasem końcowym, ale prezentowane są tylko interesujące przedziały czasu.
 
 Pierwszy przykład jest pokazany na rys. \ref{fig:extctrl3opts}. Widoczne są tam 3 procesy aplikacji sterowania czasooptymalnego przedzielone okresami, w których działa regulator liniowo-kwadratowy.
 Drugi przykład jest przedstawiony na rys. \ref{fig:extctrl2opts} i zawiera 2 procesy aplikacji sterowania czasooptymalnego.
-Można je zauważyć na wykresie przedstawiającym sterowanie, gdyż ma ono wtedy postać ,,bang-bang''. W czasie działania regulatora liniowo-kwadratowego sterowanie ma wartość zbliżoną do sterowania ustalonego, które nie leży na ograniczeniach. Nie obserwuje się zbyt dużych zmian sterowania liniowo-kwadratowego, gdyż stan układu jest już w otoczeniu punktu równowagi.
+Można je zauważyć na wykresie przedstawiającym sterowanie, gdyż ma ono wtedy postać ,,bang-bang''. W czasie działania regulatora liniowo-kwadratowego sterowanie ma wartość zbliżoną do sterowania ustalonego, które nie leży na ograniczeniach. Nie obserwuje się zbyt dużych zmian sterowania liniowo-kwadratowego, gdyż stan układu jest już w niedalekim otoczeniu punktu równowagi.
 
-Jak wspominano w podrozdziale \ref{sec:podzial-zadan}, wyznacza się go na podstawie stanu docelowego zagadnienia optymalizacji dynamicznej. Używa się w tym celu metody identycznej z algorytmem inicjalizacyjnym opisanym w sekcji \ref{sub:opt-init}: wyznacza się 3 sterowania ustalone odpowiadające wartościom stanów docelowych w zbiornikach, a następnie wylicza się z nich średnią i traktuje się ją jako sterowanie ustalone dla regulatora liniowo-kwadratowego.
+Jak wspominano w podrozdziale \ref{sec:podzial-zadan}, punkt równowagi wyznacza się na podstawie stanu docelowego zagadnienia optymalizacji dynamicznej. Używa się w tym celu metody identycznej z algorytmem inicjalizacyjnym opisanym w sekcji \ref{sub:opt-init}: wyznacza się 3 sterowania ustalone odpowiadające wartościom stanów docelowych w zbiornikach, a następnie wylicza się z nich średnią i traktuje się ją jako sterowanie ustalone dla regulatora liniowo-kwadratowego.
 
 Wyniki weryfikacji porównano z wynikami analogicznych operacji przeprowadzonych przy użyciu wyższego poziomu aplikacji. Podsumowanie wyników zostało przedstawione w tabeli \ref{tab:extctrl3opts} dla pierwszego przykładu i \ref{tab:extctrl2opts} dla drugiego. W jej kolumnach przedstawiono:
 \begin{itemize}
     \item czas zakończenia optymalizacji liczony od początku symulacji,
     \item stan początkowy układu użyty do wyznaczenia sterowania czasooptymalnego,
-    \item stan docelowy układu,
+    \item stan docelowy,
     \item błąd weryfikacji obliczony na niższym poziomie aplikacji w programie MATLAB/Simulink,
     \item błąd weryfikacji obliczony na wyższym poziomie aplikacji przy użyciu platformy JModelica.org; obliczono go, używając 350 elementów skończonych w algorytmie optymalizacji i normalizując sterowanie.
 \end{itemize}
@@ -164,6 +165,6 @@ Wyniki weryfikacji porównano z wynikami analogicznych operacji przeprowadzonych
     \label{tab:extctrl2opts}
 \end{table}
 
-Zauważono, iż błędy weryfikacji na niższym poziomie rosną przy kolejnych optymalizacjach. Dzieje się tak ze względu na fakt, iż aplikacja wyższego poziomu przeprowadza optymalizację na podstawie danych pobranych przed uruchomieniem algorytmu, ale sterowanie jest wysyłane na niższy poziom po zakończeniu jej działania. Przez czas działania algorytmu poziomy zmieniają się jednak i dążą dalej do odpowiedniego punktu równowagi. Ten problem mógłby rozwiązać układ predykcyjny działający po stronie wyższego poziomu aplikacji, który wyznaczałby spodziewane wartości poziomów początkowych w momencie rozpoczęcia aplikacji sterowania czasooptymalnego. Jednakże jak pokazano w sekcji \ref{sub:sym-wer-jmodelica}, czas działania algorytmu optymalizacji jest różny dla różnych zestawów stanów początkowych i końcowych, a jego oszacowanie mogłoby być trudnym zadaniem.
+Zauważono, iż błędy weryfikacji na niższym poziomie rosną przy kolejnych optymalizacjach. Dzieje się tak ze względu na fakt, iż aplikacja wyższego poziomu przeprowadza optymalizację na podstawie danych pobranych przed uruchomieniem algorytmu, ale sterowanie jest wysyłane na niższy poziom po jego zakończeniu. Przez czas działania algorytmu poziomy zmieniają się jednak i dążą dalej do odpowiedniego punktu równowagi. Ten problem mógłby rozwiązać układ predykcyjny działający po stronie wyższego poziomu aplikacji, który wyznaczałby spodziewane wartości poziomów początkowych w momencie rozpoczęcia aplikacji sterowania czasooptymalnego. Jednakże jak pokazano w sekcji \ref{sub:sym-wer-jmodelica}, czas działania algorytmu optymalizacji jest różny dla różnych zestawów stanów początkowych i końcowych, a jego oszacowanie mogłoby być trudnym zadaniem.
 
-Błędy pierwszych optymalizacji nie powinny być obarczone tym problemem, ale i tak są o rząd wielkości większe od tych uzyskanych na wyższym poziomie aplikacji. Jest to najprawdopodobniej spowodowane niedokładnością wyznaczenia czasów przełączeń: w aplikacji wyższego poziomu do weryfikacji podaje się cały wektor sterowania, a w aplikacji niższego poziomu używa się tylko czasów przełączeń, które mogą być obarczone numerycznym błędem obcięcia.
+Błędy pierwszych optymalizacji nie powinny być obarczone tym problemem, ale i tak są o rząd wielkości większe od tych uzyskanych na wyższym poziomie aplikacji. Jest to najprawdopodobniej spowodowane niedokładnością wyznaczenia czasów przełączeń: w aplikacji wyższego poziomu do weryfikacji podaje się cały wektor sterowania, a w aplikacji niższego poziomu używa się tylko czasów przełączeń przesłanych przez sieć, które mogą być obarczone numerycznym błędem obcięcia.

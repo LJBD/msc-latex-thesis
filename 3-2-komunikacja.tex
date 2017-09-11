@@ -8,27 +8,27 @@ Poniżej znajduje się podsumowanie wartości wysyłanych przez oba poziomy.
     \item Część obliczeniowa wysyła:
     \begin{enumerate}
         \item wartości końcowe poziomów w zbiornikach (będące stanem docelowym w zadaniu czasooptymalnym oraz punktem linearyzacji modelu służącym do wyliczenia nastaw regulatora liniowo-kwadratowego),
-        \item dla regulatora czasooptymalnego:
+        \item dla sterowania czasooptymalnego:
         \begin{enumerate}
-            \item czasy przełączeń (założono postać sterowania typu ,,bang-bang''),
+            \item czasy przełączeń,
             \item wartość początkową sterowania czasooptymalnego,
-            \item wartość ,,drugorzędną'' tego sterowania (założono, że część ,,niższa'' nie musi znać ograniczeń nałożonych na sterowanie),
-            \item czas aplikacji sterowania czasooptymalnego (będący wartością wskaźnika jakości w tym zadaniu);
+            \item wartość ,,drugorzędną'' tego sterowania (założono, że niższy poziom aplikacji nie musi znać ograniczeń nałożonych na sterowanie),
+            \item czas optymalny;
         \end{enumerate}
-        \item dla regulatora liniowo-kwadratowego:
+        \item dla sterowania liniowo-kwadratowego:
         \begin{enumerate}
             \item wektor K współczynników regulatora,
             \item sterowanie ustalone, od którego są liczone odchyłki.
         \end{enumerate}
     \end{enumerate}
     \item Część sterowania bezpośredniego wysyła:
-    \begin{itemize}
+    \begin{enumerate}
         \item aktualne poziomy wody w zbiornikach,
         \item aktualną wartość sterowania.
-    \end{itemize}
+    \end{enumerate}
 \end{enumerate}
 
-Wyszczególniono 3 możliwe akcje zachodzące w systemie, poniżej znajduje się ich lista. Zilustrowano je odpowiednimi (aczkolwiek uproszczonymi do poziomu ogólnej specyfikacji) diagramami sekwencji według konwencji UML. Wyszczególniono na nich użytkownika, część obliczeniową i sterującą oraz oprogramowanie optymalizacyjne, aby zaznaczyć, że jest ono de facto osobnym elementem, zewnętrznym i niestanowiącym części aplikacji będącej przedmiotem niniejszej pracy.
+Poniżej znajduje się ich lista wyszczególnionych 3 możliwych akcji zachodzących w systemie. Zilustrowano je odpowiednimi (aczkolwiek uproszczonymi do poziomu ogólnej specyfikacji) diagramami sekwencji według konwencji UML (ang. \emph{Unified Modelling Language}). Wyszczególniono na nich użytkownika, część obliczeniową i sterującą oraz oprogramowanie optymalizacyjne, aby zaznaczyć, że jest ono de facto osobnym elementem, zewnętrznym i niestanowiącym części aplikacji będącej przedmiotem niniejszej pracy.
 
 \begin{enumerate}
     \item Akcja obliczania sterowania czasooptymalnego (przedstawiona na rys. \ref{fig:comm-toc}).
