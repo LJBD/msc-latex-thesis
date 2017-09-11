@@ -53,7 +53,7 @@ Drugi przykład to upuszczanie niewielkiej ilości wody ze zbiorników od poziom
 
 \subsubsection{Wpływ liczby elementów metody elementów skończonych na rozwiązanie}
 
-W związku z tym, że zastosowana metoda przynosiła dobre rezultaty, lecz wartości błędu weryfikacji były dosyć duże (rzędu 0,1), podjęto próbę zwiększenia liczby elementów skończonych i przeprowadzenia ponownej optymalizacji i weryfikacji. Odkryto, iż istotnie ma ono wpływ na wartość błędów weryfikacji, ale również na czas obliczeń.
+W związku z tym, że zastosowana metoda przynosiła dobre rezultaty, lecz wartości błędu weryfikacji były dosyć duże (rzędu jednej dziesiątej), podjęto próbę zwiększenia liczby elementów skończonych i przeprowadzenia ponownej optymalizacji i weryfikacji. Odkryto, iż istotnie ma ono wpływ na wartość błędów weryfikacji, ale również na czas obliczeń.
 
 Przeprowadzono więc eksperyment, który miał pokazać ten wpływ liczby elementów skończonych na błędy weryfikacji dla sterowania ,,surowego'' i znormalizowanego oraz czas obliczeń. Przyjęto zmianę tej liczby w przedziale 50 do 500 z krokiem 50 tak, aby uzyskać 10 punktów pomiarowych.
 
@@ -86,6 +86,9 @@ Przeprowadzono drugi eksperyment dla innych danych w celu weryfikacji powyższyc
     \label{fig:elementsinfluence10-2050-500}
 \end{figure}
 
+\subsubsection{Problemy z weryfikacją}
+
+W przypadku niektórych wartości początkowych i końcowych oraz znalezionego dla nich sterowania optymalnego napotykano problem związany z tym, iż pakiet JModelica.org nie był w stanie obliczyć pochodnej jednego ze stanów w punkcie czasu niedługo po pierwszym przełączeniu. Rozwiązano go poprzez zwiększenie liczby elementów skończonych przy rozwiązywaniu danego zadania. Nie zaobserwowano takich problemów przy liczbie elementów powyżej 50.
 
 %-------------------------------------------------
 \subsection{Przy użyciu oprogramowania MATLAB/Simulink}
@@ -94,6 +97,12 @@ Przeprowadzono drugi eksperyment dla innych danych w celu weryfikacji powyższyc
 %TODO: opisać okres próbkowania i inne ustawienia symulacji
 %TODO: opisać wykresy i porównać z JModelicą
 
+Symulację weryfikacyjną w programie MATLAB/Simulink przeprowadzono, łącząc oba poziomy aplikacji w całość i uruchamiając odpowiednie obliczenia. Zastosowano tam pewne uproszczenie: symulację uruchamiano dopiero po obliczeniu pierwszego sterowania optymalnego. Pokazano jednak, że w przy kolejnych optymalizacjach dokonywano ich w czasie trwania symulacji i niższy poziom aplikacji był w stanie przełączać się w czasie rzeczywistym między sterowaniem czasooptymalnym a liniowo-kwadratowym.
+
+Poniżej pokazano dwa przykłady funnkcjonowania symulacji weryfikacyjnej niższego poziomu aplikacji.
+W obu użyto metody Runge-Kutty 4 rzędu i stałego kroku o wartości 0.001 s. Dobrano taką metodę i wartość kroku czasowego ze względu na przewidywanie możliwości wykorzystania całej opisywanej aplikacji również z rzeczywistym układem zbiorników.
+Symulacje przeprowadzono z nieskończonym czasem końcowym, ale prezentowane są tylko interesujące przedziały czasu.
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.5,angle=90]{Grafika/ext_ctrl_2_opts}
@@ -101,33 +110,11 @@ Przeprowadzono drugi eksperyment dla innych danych w celu weryfikacji powyższyc
     \label{fig:extctrl2opts}
 \end{figure}
 
+Pierwszy przykład jest pokazany na rys. \ref{fig:extctrl3opts}. Widoczne są tam 3 
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.5,angle=90]{Grafika/ext_ctrl_3_opts}
     \caption{Trzy procesy optymalizacji zweryfikowane w symulacji niższego poziomu aplikacji. Źródło: własne.}
     \label{fig:extctrl3opts}
 \end{figure}
-
-%-------------------------------------------------
-\subsection{Napotkane problemy}
-\label{sub:sym-problems}
-
-\subsubsection{Problemy z weryfikacją}
-
-W przypadku niektórych wartości początkowych i końcowych oraz znalezionego dla nich sterowania optymalnego napotykano problem związany z tym, iż pakiet JModelica.org nie był w stanie obliczyć pochodnej jednego ze stanów w losowym punkcie czasu. Rozwiązano go poprzez zwiększenie liczby elementów skończonych przy rozwiązywaniu danego zadania. Nie zaobserwowano takich problemów przy liczbie elementów powyżej 50.
-
-\subsubsection{Problem dostępności interfejsu systemu Tango}
-
-Biblioteka Tango Controls nakłada jeszcze jedno ograniczenie na część obliczeniową aplikacji: interfejs powinien być dostępny z maksymalnie trzysekundowym opóźnieniem. To znaczy, że każda prośba klienta musi zostać obsłużona w ciągu 3 sekund. W przypadku operacji symulacji, a szczególnie optymalizacji to założenie nie jest spełnione, ponieważ szczególnie ta druga operacja może trwać nawet kilka minut.
-
-W API Tango Controls do języka Python (nazywającym się PyTango) istnieją sposoby na asynchroniczne wywoływanie operacji (tzw. \emph{green modes}), ale mają dwie wady:
-\begin{itemize}
-    \item używają tylko jednego wątku głównego aplikacji,
-    \item procedury pakietu JModelica.org są z nimi niekompatybilne.
-\end{itemize}
-
-W związku z tym zaproponowano własne, ogólne rozwiązanie problemu potrzeby asynchronicznego wykonywania operacji wewnątrz klasy urządzeń. W tym celu użyto biblioteki \texttt{multiprocessing} wchodzącej w skład standardowego zestawu narzędzi języka Python. Za jej pomocą zaimplementowano asynchroniczne wywoływanie długich operacji w osobnych procesach, które po swoim końcu wywołuja metody odwołania (ang. \emph{callback}) w głównym wątku aplikacji. Dzięki temu wszystkie komendy, które wywołują długie operacje (\emph{Optimise}, \emph{RunSimulation} oraz \emph{RunVerification}) tylko uruchamiają osobny proces i przypisują odpowiednią metodę odwołania, nie blokując interfejsu urządzenia.
-
-Osobnym procesem jest również serwer TCP. Posiada on własny system logowania i komunikuje się z głównym procesem aplikacji wyższego poziomu poprzez potok danych (ang. \emph{pipe}, nie mylić z częścią interfejsu urządzenia systemu Tango). Jest on dwukierunkowy: serwer może przez niego wysyłać aktualne dane odebrane od aplikacji niższego poziomu, a główny proces wszystkie informacje o sterowaniu. Odbiór danych po stronie serwera znajduje się na początku pętli obsługi komunikacji z klientem TCP (aplikacją niższego poziomu). Odbiór danych po stronie urządzenia odbywa się w odpytywanej co 50 milisekund komendzie \emph{GetDataFromDirectControl}.
-
-Użyto w tym celu procesów, a nie wątków ze względu na tzw. \emph{Global Interpreter Lock} - globalny zamek interpretera. Jest to cecha języka Python, która powoduje, że wątki nie mogą być uruchamiane równolegle (nawet w przypadku dostępnych rdzeni procesora), a zawsze są tylko współbieżne. Z kolei procesy nie są objęte tym ograniczeniem i można ich używać w prawdziwie równoległy sposób.

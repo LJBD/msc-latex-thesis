@@ -38,3 +38,5 @@ Przygotowano model w programie Simulink, pokazany na rys. \ref{fig:simulinkmodel
 \end{itemize}
 
 Przeprowadzone testy komunikacji między poziomami aplikacji wykazały, że serwer urządzeń systemu Tango Controls, będący wyższym jej poziomem, nie jest w stanie obsłużyć wysyłanych w każdym kroku symulacji danych. Zastosowano więc blok wyzwalający wysyłanie z mniejszą częstotliwością. Dobrano eksperymentalnie wartość 100 ms jako okres wysyłania, ponieważ stwierdzono, że dynamika układu jest stosunkowo wolno zmienna, a więc taki okres nie spowoduje większych błędów w obliczaniu sterowania czasooptymalnego przez część obliczeniową aplikacji.
+
+Ostatecznie na potrzeby niniejszej pracy nie prowadzono żadnych badań eksperymentalnych z rzeczywistym układem zbiorników i systemem pomiarowo-sterującym, ale niższy poziom aplikacji został przygotowany, aby takie badania przeprowadzić w przyszłości.

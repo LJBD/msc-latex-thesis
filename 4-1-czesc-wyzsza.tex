@@ -186,6 +186,32 @@ Poniższa lista zawiera wszystkie istotne dla użytkownika elementy interfejsu s
     \end{enumerate}
 \end{enumerate}
 
+\subsubsection{Problem dostępności interfejsu systemu Tango}
+
+Biblioteka Tango Controls nakłada jeszcze jedno ograniczenie na część obliczeniową aplikacji: interfejs powinien być dostępny z maksymalnie trzysekundowym opóźnieniem. To znaczy, że każda prośba klienta musi zostać obsłużona w ciągu 3 sekund. W przypadku operacji symulacji, a szczególnie optymalizacji to założenie nie jest spełnione, ponieważ szczególnie ta druga operacja może trwać nawet kilka minut.
+
+W API Tango Controls do języka Python (nazywającym się PyTango) istnieją sposoby na asynchroniczne wywoływanie operacji (tzw. \emph{green modes}), ale mają dwie wady:
+\begin{itemize}
+    \item używają tylko jednego wątku głównego aplikacji,
+    \item procedury pakietu JModelica.org są z nimi niekompatybilne.
+\end{itemize}
+
+W związku z tym zaproponowano własne, ogólne rozwiązanie problemu potrzeby asynchronicznego wykonywania operacji wewnątrz klasy urządzeń. W tym celu użyto biblioteki \texttt{multiprocessing} wchodzącej w skład standardowego zestawu narzędzi języka Python. Za jej pomocą zaimplementowano asynchroniczne wywoływanie długich operacji w osobnych procesach, które po swoim końcu wywołuja metody odwołania (ang. \emph{callback}) w głównym wątku aplikacji. Dzięki temu wszystkie komendy, które wywołują długie operacje (\emph{Optimise}, \emph{RunSimulation} oraz \emph{RunVerification}) tylko uruchamiają osobny proces i przypisują odpowiednią metodę odwołania, nie blokując interfejsu urządzenia.
+
+Osobnym procesem jest również serwer TCP. Posiada on własny system logowania i komunikuje się z głównym procesem aplikacji wyższego poziomu poprzez potok danych (ang. \emph{pipe}, nie mylić z częścią interfejsu urządzenia systemu Tango). Jest on dwukierunkowy: serwer może przez niego wysyłać aktualne dane odebrane od aplikacji niższego poziomu, a główny proces wszystkie informacje o sterowaniu. Odbiór danych po stronie serwera znajduje się na początku pętli obsługi komunikacji z klientem TCP (aplikacją niższego poziomu). Odbiór danych po stronie urządzenia odbywa się w odpytywanej co 50 milisekund komendzie \emph{GetDataFromDirectControl}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.8]{Grafika/tanks_opt_ctrl_architecture}
+    \caption{Schemat architektury procesów i wątków wyższego poziomu aplikacji. Źródło: własne.}
+    \label{fig:tanksoptctrlarchitecture}
+\end{figure}
+
+Na rys. \ref{fig:tanksoptctrlarchitecture} przedstawiono schematycznie użycie procesów (oznaczonych prostokątami o ostrych wierzchołkach) i wątków (oznaczonych prostokątami o obłych wierzchołkach) w wyższym poziomie aplikacji. Kolorem szarym zaznaczono kontener procesów klasy \texttt{multiprocessing.Pool}. Wywołuje on odpowiednie procesy robocze dla zadań optymalizacji i/lub symulacji. Wszystkie wątki odpalane przez główny proces tego poziomu aplikacji są uruchamiane przez system Tango Controls. Kolorem czerwonym oznaczono wątki związane z komunikacją synchroniczną i asynchroniczną, kolorem żółtym - zdarzeniową, a fioletowym wątek sygnałowy (dokładniejszy opis znajduje się w \cite{TangoDocs}).
+
+Użyto w tym celu procesów, a nie wątków ze względu na tzw. \emph{Global Interpreter Lock} - globalny zamek interpretera. Jest to cecha języka Python, która powoduje, że wątki nie mogą być uruchamiane równolegle (nawet w przypadku dostępnych rdzeni procesora), a zawsze są tylko współbieżne. Z kolei procesy nie są objęte tym ograniczeniem i można ich używać w prawdziwie równoległy sposób.
+
+
 %-------------------------------------------------
 \subsection{Wybór pakietu do optymalizacji dynamicznej}
 \label{sub:czesc-wyzsza-wybor}
@@ -316,7 +342,8 @@ Jest to idealne środowisko do testowania aplikacji wymagających wielu zależno
         \item pakiet do komunikacji zdarzeniowej ZeroMQ,
         \item biblioteka obliczeń numerycznych języka Python NumPy;
     \end{itemize}
-    \item pakiet PyTango, czyli API systemu Tango Controls w języku Python.
+    \item pakiet PyTango, czyli API systemu Tango Controls w języku Python,
+    \item pakiet \emph{control}, który został wykorzystany do wyznaczenia regulatora liniowo-kwadratowego.
 \end{itemize}
 
 Przygotowano również środowisko pracy zawierające następujące kontenery:
