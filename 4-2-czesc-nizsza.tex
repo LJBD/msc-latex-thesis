@@ -1,11 +1,12 @@
 \section{Część realizująca sterowanie bezpośrednie (,,niższego poziomu'')}
 \label{sec:czesc-nizsza}
 
+Niezależnie od faktu, iż w ramach niniejszej pracy nie wykonywano badań eksperymentalnych z rzeczywistym obiektem, część aplikacji realizującą sterowanie bezpośrednie przygotowano do tego, aby takie badania przeprowadzić w przyszłości.
 Ze względu na dostępność sprzętu służącego do sterowania fizycznym układem zbiorników, wybór technologii mogącej stanowić podstawę niższego poziomu aplikacji był ograniczony do dwóch możliwości.
 
 Stanowisko laboratoryjne jest wyposażone w komputer, który za pomocą karty przemysłowej RTDAC/PCI komunikuje się z układem czujników i pompą. Komputer komunikuje się z kartą za pomocą pakietu MATLAB/Simulink i to właśnie jest pierwsza opcja oprogramowania do komunikacji z urządzeniami wykonawczymi.
 
-Alternatywnie, można skorzystać ze sterownika PLC firmy GE Fanuc z serii Versa Max. Wybrano pierwszą możliwość ze względu na fakt, iż pakiet MATLAB/Simulink umożliwia symulację modelu zbiorników, w której można przeprowadzić dodatkową weryfikację sterowania czasooptymalnego obliczonego przez aplikację wyższego poziomu.
+Alternatywnie, można skorzystać ze sterownika PLC firmy GE Fanuc z serii Versa Max. Wybrano pierwszą możliwość ze względu na fakt, iż pakiet MATLAB/Simulink umożliwia symulację modelu zbiorników, w której można przeprowadzić weryfikację sterowania czasooptymalnego obliczonego przez aplikację wyższego poziomu.
 
 %-------------------------------------------------
 \subsection{Pakiet MATLAB/Simulink jako narzędzie realizujące sterowanie bezpośrednie}
@@ -38,5 +39,3 @@ Przygotowano model w programie Simulink, pokazany na rys. \ref{fig:simulinkmodel
 \end{itemize}
 
 Przeprowadzone testy komunikacji między poziomami aplikacji wykazały, że serwer urządzeń systemu Tango Controls, będący wyższym jej poziomem, nie jest w stanie obsłużyć wysyłanych w każdym kroku symulacji danych. Zastosowano więc blok wyzwalający wysyłanie z mniejszą częstotliwością. Dobrano eksperymentalnie wartość 100 ms jako okres wysyłania, ponieważ stwierdzono, że dynamika układu jest stosunkowo wolno zmienna, a więc taki okres nie spowoduje większych błędów w obliczaniu sterowania czasooptymalnego przez część obliczeniową aplikacji.
-
-Na potrzeby niniejszej pracy nie prowadzono żadnych badań eksperymentalnych z rzeczywistym układem zbiorników i systemem pomiarowo-sterującym, ale niższy poziom aplikacji został przygotowany do tego, żeby takie badania przeprowadzić w przyszłości.
