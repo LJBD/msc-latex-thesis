@@ -8,7 +8,7 @@ W obu tych przypadkach błąd weryfikacji jest liczony według wzoru \ref{eq:ver
 e_{wer} = \sum_{i=1}^{3} (h_{i}^{s}(T) - h_{i}^{f})^{2}
 \end{equation}
 
-Należy zwrócić uwagę na to, iż weryfikacja poprawności rozwiązania korzysta z innych danych, niż sprawdzenie dokładności rozwiązania opisane w sekcji \ref{sub:opt-dokladnosc}. Pierwsza procedura używa danych symulacyjnych uzyskanych po optymalizacji, a druga - danych pochodzących bezpośrednio z algorytmu optymalizacyjnego.
+Należy zwrócić uwagę na to, iż weryfikacja poprawności rozwiązania korzysta z innych danych, niż sprawdzenie jego dokładności opisane w sekcji \ref{sub:opt-dokladnosc}. Pierwsza procedura używa danych symulacyjnych uzyskanych po optymalizacji, a druga - danych pochodzących bezpośrednio z algorytmu optymalizacyjnego.
 
 %-------------------------------------------------
 \subsection{Weryfikacja przy użyciu pakietu JModelica.org}
@@ -17,6 +17,8 @@ Należy zwrócić uwagę na to, iż weryfikacja poprawności rozwiązania korzys
 Po zakończeniu optymalizacji wyższy poziom aplikacji umożliwia przeprowadzenie symulacji weryfikacyjnej. Podaje się wtedy cały uzyskany wektor sterowania optymalnego (w postaci ,,surowej'' lub znormalizowanej) jako trajektorię wejściową do symulacji, a na koniec wylicza się błąd weryfikacji.
 
 Poniżej przedstawiono 2 przykłady wykresów uzyskanych w czasie weryfikacji i porównano wartości błędów przy zastosowaniu sterowania w postaci ,,surowej'' oraz znormalizowanej.
+Pokazano również wykresy modułów różnic między trajektoriami uzyskanymi w procesie optymalizacji a tymi pochodzącymi z symulacji.
+Można było obliczyć takie różnice dokładnie w tych samych chwilach czasu, ponieważ w opcjach symulacji ustawiono taką samą liczbę elementów wektorów wyjściowych, jak w trajektoriach otrzymanych z optymalizacji, a więc horyzont czasowy był podzielony na dokładnie takie same przedziały o równej długości w obu tych procesach.
 
 \begin{figure}[htp]
     \centering
@@ -27,12 +29,31 @@ Poniżej przedstawiono 2 przykłady wykresów uzyskanych w czasie weryfikacji i 
 
 \begin{figure}[htp]
     \centering
+    \includegraphics{Grafika/plot_5_5_6-30_30_25-raw-error-350}
+    \caption{Moduł błędu przykładowych trajektorii optymalnych przy użyciu pakietu JModelica.org. Źródło: własne.}
+    \label{fig:plot556-303025-raw-error-350}
+\end{figure}
+
+
+\begin{figure}[htp]
+    \centering
     \includegraphics{Grafika/plot_5_5_6-30_30_25-normalised-350}
     \caption{Przykładowa weryfikacja po normalizacji sterowania. Źródło: własne.}
     \label{fig:plot556-303035-normalised-350}
 \end{figure}
 
-Pierwszy przykład to napełnianie zbiorników od poziomów $h_{1}^{0} = h_{2}^{0} = 5 cm, h_{3}^{0} = 6 cm$ do poziomów $h_{1}^{f} = h_{2}^{f} = 30 cm, h_{3}^{f} = 25 cm$. Sterowanie w postaci z algorytmu optymalizacji osiągnęło wartość błędu weryfikacji $e_{wer}^{s} = 0,0002$, a po znormalizowaniu: $e_{wer}^{n} = 0.0021$. W tym przypadku sterowanie w postaci ,,surowej'' (przedstawione na rys. \ref{fig:plot556-303035-raw-350}) wizualnie nie różni się bardzo od sterowania znormalizowanego (pokazanego na rys. \ref{fig:plot556-303035-normalised-350}), ale nawet taka niewielka różnica może prowadzić do zwiększenia się błędu weryfikacji o rząd wielkości. Jest to jednak również związane z tym, iż pierwszy błąd jest bardzo niewielki i w czasie wielu prób rzadko uzyskiwano tak niewielkie wartości. W tej optymalizacji użyto 350 elementów skończonych.
+\begin{figure}
+    \centering
+    \includegraphics{Grafika/plot_5_5_6-30_30_25-normalised-error-350}
+    \caption{Moduł błędu przykładowych trajektorii optymalnych po normalizacji sterowania. Źródło: własne.}
+    \label{fig:plot556-303025-normalised-error-350}
+\end{figure}
+
+
+Pierwszy przykład to napełnianie zbiorników od poziomów $h_{1}^{0} = h_{2}^{0} = 5 cm, h_{3}^{0} = 6 cm$ do poziomów $h_{1}^{f} = h_{2}^{f} = 30 cm, h_{3}^{f} = 25 cm$. Sterowanie w postaci z algorytmu optymalizacji osiągnęło wartość błędu weryfikacji $e_{wer}^{s} = 0,0018$, a po znormalizowaniu: $e_{wer}^{n} = 0.0019$. Taka mała różnica między tymi błędami może wynikać z faktu, iż w tym przypadku sterowanie w postaci ,,surowej'' (przedstawione na rys. \ref{fig:plot556-303035-raw-350}) wizualnie nie różni się bardzo od sterowania znormalizowanego (pokazanego na rys. \ref{fig:plot556-303035-normalised-350}).
+
+Różnice między funkcjonowaniem tych dwóch postaci sterowania są jednak widoczne na wykresach przedstawiających moduły błędów między trajektoriami pochodzącymi z optymalizacji i symulowanymi. Dla sterowania w postaci ,,surowej'' pokazano go na rys. \ref{fig:plot556-303025-raw-error-350}, a dla postaci znormalizowanej - na rys. \ref{fig:plot556-303025-normalised-error-350}. Te dwa wykresy najbardziej się różnią dla poziomu w pierwszym zbiorniku, na który sterowanie ma bezpośredni wpływ. Błędy są większe dla sterowania znormalizowanego ze względu na to, iż są liczone względem trajektorii uzyskanej w procesie optymalizacji dla sterowania tam wyznaczonego. Na tych wykresach widać również, że największe różnice są tam, gdzie szybkość zmian poziomów wody jest największa, a więc również przy zmianach sterowania.
+W tej optymalizacji użyto 350 elementów skończonych.
 
 \begin{figure}[htp]
     \centering
@@ -43,15 +64,35 @@ Pierwszy przykład to napełnianie zbiorników od poziomów $h_{1}^{0} = h_{2}^{
 
 \begin{figure}[htp]
     \centering
+    \includegraphics{Grafika/plot_30_30_30-20_25_20_raw-error_200}
+    \caption{Moduł błędu drugich przykładowych trajektorii optymalnych uzyskanych przy pomocy pakietu JModelica.org. Źródło: własne.}
+    \label{fig:plot303030-202520raw-error200}
+\end{figure}
+
+
+\begin{figure}[htp]
+    \centering
     \includegraphics{Grafika/plot_30_30_30-20_25_20_normalised_200}
     \caption{Druga przykładowa weryfikacja po normalizacji sterowania. Źródło: własne.}
     \label{fig:plot303030-202520normalised200}
 \end{figure}
 
-Drugi przykład to upuszczanie niewielkiej ilości wody ze zbiorników od poziomów $h_{1}^{0} = h_{2}^{0} = h_{3}^{0} = 30 cm$ do $h_{1}^{f} = 20 cm, h_{2}^{f} = 25 cm, h_{3}^{f} = 20 cm$. Sterowanie w postaci ,,surowej'' osiągnęło wartość błędu weryfikacji $e_{wer}^{s} = 0,007$, a w postaci znormalizowanej: $e_{wer}^{n} = 0.019$. Tutaj różnica między błędami jest mniejsza niż w poprzednim przypadku, mimo bardziej skomplikowanej struktury sterowania wyznaczonego przez algorytm optymalizacyjny (pokazanego na rys. \ref{fig:plot303030-202520raw200}). Sterowanie znormalizowane zaprezentowano na rys. \ref{fig:plot303030-202520normalised200}. W tej optymalizacji użyto 200 elementów skończonych, więc trzeba to wziąć pod uwagę, porównując wartości błędów między oboma opisanymi przypadkami.
+\begin{figure}[htp]
+    \centering
+    \includegraphics{Grafika/plot_30_30_30-20_25_20_normalised-error_200}
+    \caption{Moduł błędu drugich przykładowych trajektorii optymalnych po normalizacji sterowania. Źródło: własne.}
+    \label{fig:plot303030-202520normalised-error200}
+\end{figure}
 
 
-\subsubsection{Wpływ liczby elementów metody elementów skończonych na rozwiązanie}
+Drugi przykład to upuszczanie niewielkiej ilości wody ze zbiorników od poziomów $h_{1}^{0} = h_{2}^{0} = h_{3}^{0} = 30 cm$ do $h_{1}^{f} = 20 cm, h_{2}^{f} = 25 cm, h_{3}^{f} = 20 cm$. Sterowanie w postaci ,,surowej'' osiągnęło wartość błędu weryfikacji $e_{wer}^{s} = 0,0009$, a w postaci znormalizowanej: $e_{wer}^{n} = 0.0032$. Tutaj różnica między błędami jest większa niż w poprzednim przypadku ze względu na bardziej skomplikowaną strukturę sterowania wyznaczonego przez algorytm optymalizacyjny (pokazanego na rys. \ref{fig:plot303030-202520raw200}). Sterowanie znormalizowane zaprezentowano na rys. \ref{fig:plot303030-202520normalised200}.
+
+Wykresy przedstawiające moduły błędów są pokazane na rys. \ref{fig:plot303030-202520raw-error200} dla sterowania w postaci ,,surowej'' i \ref{fig:plot303030-202520normalised-error200} dla postaci znormalizowanej.
+Widać na nich, iż w tym przypadku błędy dla sterowania ,,surowego'' są około dwu- i trzykrotnie mniejsze odpowiednio dla poziomów w zbiornikach drugim i trzecim. W pierwszym zbiorniku sytuacja przedstawia się podobnie jak w pierwszym przypadku. Ogólnie w żadnym miejscu nie przekraczają 0,25 cm, co jest akceptowalną różnicą.
+W tej optymalizacji użyto 200 elementów skończonych, więc trzeba to wziąć pod uwagę, porównując wartości błędów między oboma opisanymi przypadkami. Również z tego powodu wykresy modułów błędów są mniej gęste niż w poprzednim przypadku, ponieważ występuje na nich mniej punktów (zgodnie ze wzorem \ref{eq:ctrl-len}).
+
+
+\subsubsection{Wpływ liczby podziałów metody elementów skończonych na rozwiązanie}
 
 W związku z tym, że zastosowana metoda przynosiła dobre rezultaty, lecz wartości błędu weryfikacji były dosyć duże (rzędu jednej dziesiątej), podjęto próbę zwiększenia liczby elementów skończonych i przeprowadzenia ponownej optymalizacji i weryfikacji. Odkryto, iż istotnie ma ono wpływ na wartość błędów weryfikacji i na czas obliczeń.
 
@@ -94,14 +135,12 @@ W przypadku niektórych wartości początkowych i końcowych oraz znalezionego d
 \subsection{Weryfikacja przy użyciu oprogramowania MATLAB/Simulink}
 \label{sub:sym-wer-matlab}
 
-%TODO: opisać wykresy i porównać z JModelicą
-
 Połączenie obu poziomów aplikacji w całość umożliwiło przeprowadzenie symulacji weryfikacyjnej w programie MATLAB/Simulink.
 Zastosowano tu pewne uproszczenie: symulację uruchamiano dopiero po obliczeniu pierwszego sterowania optymalnego. Pokazano jednak, że w przy kolejnych optymalizacjach dokonywano ich w czasie trwania symulacji i niższy poziom aplikacji był w stanie przełączać się w czasie rzeczywistym między sterowaniem czasooptymalnym a liniowo-kwadratowym.
 
 Poniżej pokazano dwa przykłady funkcjonowania symulacji weryfikacyjnej niższego poziomu aplikacji.
 W obu użyto metody Runge-Kutty 4 rzędu i stałego kroku o wartości 0.001 s. Dobrano taką metodę i wartość kroku czasowego ze względu na przewidywanie możliwości wykorzystania całej opisywanej aplikacji również z rzeczywistym układem zbiorników, gdzie komunikacja ze sprzętem wymusza stosowanie stałego kroku symulacji.
-Symulacje przeprowadzono z nieskończonym czasem końcowym, ale prezentowane są tylko interesujące przedziały czasu.
+Symulacje przeprowadzono, ustawiając w opcjach programu Simulink nieskończony czas końcowy, ale prezentowane są tylko interesujące przedziały czasu.
 
 Pierwszy przykład jest pokazany na rys. \ref{fig:extctrl3opts}. Widoczne są tam 3 procesy aplikacji sterowania czasooptymalnego przedzielone okresami, w których działa regulator liniowo-kwadratowy.
 Drugi przykład jest przedstawiony na rys. \ref{fig:extctrl2opts} i zawiera 2 procesy aplikacji sterowania czasooptymalnego.
